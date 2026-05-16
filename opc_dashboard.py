@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-opc_dashboard.py v5
-支持自动显示本地生成的 Backlog
+opc_dashboard.py v6
+美化版 Backlog 展示
 """
 
 import streamlit as st
 import os
 import glob
-from datetime import datetime
+import re
 
 import sys
 sys.path.append(os.path.dirname(__file__))
@@ -18,9 +18,9 @@ from validation_generator import generate_validation_experiments
 
 st.set_page_config(page_title="One-Person OPC", page_icon="🚀", layout="wide")
 st.title("🚀 One-Person OPC Dashboard")
-st.caption("一人公司产品决策引擎 | Backlog 自动同步")
+st.caption("一人公司产品决策引擎 | 验证实验 + 一人评分 + 执行追踪")
 
-# 优先读取仓库内的 Backlog，其次读取本地
+# Backlog 路径
 BACKLOG_DIR = os.path.join(os.path.dirname(__file__), "backlogs")
 if not os.path.exists(BACKLOG_DIR):
     BACKLOG_DIR = os.path.expanduser("~/.hermes/knowledge-wiki/one-person-company/")
@@ -28,27 +28,89 @@ if not os.path.exists(BACKLOG_DIR):
 def load_latest_backlog():
     files = sorted(glob.glob(os.path.join(BACKLOG_DIR, "backlog-*.md")), reverse=True)
     if not files:
-        return None, "暂无 Backlog 数据"
+        return None
     with open(files[0], "r", encoding="utf-8") as f:
-        return files[0], f.read()
+        return f.read()
+
+def parse_backlog(content):
+    """简单解析 Backlog，提取 S-Tier 和 A-Tier"""
+    s_tier = []
+    a_tier = []
+    
+    current_tier = None
+    current_item = {}
+    
+    for line in content.split("\n"):
+        line = line.strip()
+        if line.startswith("## S-Tier"):
+            current_tier = "S"
+        elif line.startswith("## A-Tier"):
+            current_tier = "A"
+        elif line.startswith("### ") and current_tier:
+            if current_item:
+                if current_tier == "S":
+                    s_tier.append(current_item)
+                else:
+                    a_tier.append(current_item)
+            current_item = {"title": line.replace("### ", "").strip(), "tier": current_tier}
+        elif line.startswith("- ") and current_item:
+            if "得分" in line:
+                match = re.search(r"得分[:：]\s*([\d.]+)", line)
+                if match:
+                    current_item["score"] = float(match.group(1))
+            if "一人可行性" in line:
+                match = re.search(r"一人可行性[:：]\s*(\d+)", line)
+                if match:
+                    current_item["solo"] = int(match.group(1))
+            if "资源类型" in line:
+                match = re.search(r"资源类型[:：]\s*(.+)", line)
+                if match:
+                    current_item["resource"] = match.group(1).strip()
+    
+    if current_item:
+        if current_tier == "S":
+            s_tier.append(current_item)
+        else:
+            a_tier.append(current_item)
+    
+    return s_tier, a_tier
 
 # 侧边栏
 st.sidebar.header("功能导航")
-page = st.sidebar.radio("选择页面", [
-    "今日 Backlog", 
-    "验证实验", 
-    "执行记录", 
-    "状态管理"
-])
+page = st.sidebar.radio("选择页面", ["今日 Backlog", "验证实验", "执行记录", "状态管理"])
 
 if page == "今日 Backlog":
     st.header("📅 最新 Backlog")
-    filepath, content = load_latest_backlog()
-    if filepath:
-        st.success(f"数据来源：{os.path.basename(filepath)}")
-        st.markdown(content)
+    
+    content = load_latest_backlog()
+    if not content:
+        st.warning("暂无 Backlog 数据")
     else:
-        st.warning(content)
+        s_tier, a_tier = parse_backlog(content)
+        
+        # S-Tier
+        if s_tier:
+            st.subheader("🔥 S-Tier（强烈推荐）")
+            for item in s_tier:
+                with st.container():
+                    col1, col2, col3, col4 = st.columns([4, 1.2, 1.2, 1.5])
+                    col1.markdown(f"**{item.get('title', '')}**")
+                    col2.metric("得分", item.get('score', 0))
+                    col3.metric("一人可行性", item.get('solo', 0))
+                    col4.caption(item.get('resource', ''))
+                    st.divider()
+        
+        # A-Tier
+        if a_tier:
+            st.subheader("⭐ A-Tier（值得关注）")
+            for item in a_tier:
+                with st.container():
+                    col1, col2, col3, col4 = st.columns([4, 1.2, 1.2, 1.5])
+                    col1.markdown(f"**{item.get('title', '')}**")
+                    col2.metric("得分", item.get('score', 0))
+                    col3.metric("一人可行性", item.get('solo', 0))
+                    col4.caption(item.get('resource', ''))
+                    st.divider()
 
 elif page == "验证实验":
     st.header("🧪 验证实验生成器")
