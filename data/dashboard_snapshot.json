@@ -1,18 +1,19 @@
 {
-  "schema_version": 1,
-  "generated_at": "2026-05-17 21:30:37",
+  "schema_version": 2,
+  "generated_at": "2026-05-17 22:37:14",
   "summary": {
     "raw_count": 700,
     "unique_count": 448,
-    "candidate_count": 183,
+    "candidate_count": 184,
     "build_now_count": 4,
-    "monitor_count": 37,
+    "monitor_count": 38,
     "discard_count": 142,
-    "saved_count": 183,
+    "saved_count": 184,
     "errors": []
   },
   "top_ideas": [
     {
+      "idea_id": "2095dd9931b9e981",
       "mvp_concept": "为r/startups 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。",
       "category": "客服/成功/留存",
       "total_score": 84,
@@ -22,10 +23,11 @@
       "source": "Reddit r/startups",
       "title": "I spent 3 months convinced I knew why users were leaving. I was completely wrong. (I will not promote)",
       "source_url": "https://www.reddit.com/r/startups/comments/1sz8y3i/i_spent_3_months_convinced_i_knew_why_users_were/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "e69bb7cef3d40ddc",
       "mvp_concept": "为r/startups 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。",
       "category": "研发/产品功能",
       "total_score": 83,
@@ -35,10 +37,11 @@
       "source": "Reddit r/startups",
       "title": "CEO running $400M ARR told me AI adoption is binary. Soft transitions to AI will lose, you shock the company or you're out (I will not promote)",
       "source_url": "https://www.reddit.com/r/startups/comments/1t2zogs/ceo_running_400m_arr_told_me_ai_adoption_is/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "440486caf0ddcaa4",
       "mvp_concept": "为r/startups 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。",
       "category": "研发/产品功能",
       "total_score": 79,
@@ -48,10 +51,11 @@
       "source": "Reddit r/startups",
       "title": "I spent 4 months fighting churn before realizing I was the problem, not the product (I will not promote I sweaar!)",
       "source_url": "https://www.reddit.com/r/startups/comments/1t5kpro/i_spent_4_months_fighting_churn_before_realizing/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "c4cb0ca6024a5807",
       "mvp_concept": "为r/startups 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。",
       "category": "研发/产品功能",
       "total_score": 76,
@@ -61,10 +65,11 @@
       "source": "Reddit r/startups",
       "title": "Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote)",
       "source_url": "https://www.reddit.com/r/startups/comments/1tdot03/maybe_some_startup_advice_is_too_universal/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "284f05b514173978",
       "mvp_concept": "为r/NoCode 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。",
       "category": "研发/产品功能",
       "total_score": 74,
@@ -74,10 +79,11 @@
       "source": "Reddit r/NoCode",
       "title": "Finished 30+ vibe coded SaaS builds this year. Same mistakes show up almost every time.",
       "source_url": "https://www.reddit.com/r/nocode/comments/1t9xcy6/finished_30_vibe_coded_saas_builds_this_year_same/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "730a095cff95f26d",
       "mvp_concept": "为r/ProductManagement 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。",
       "category": "研发/产品功能",
       "total_score": 73,
@@ -87,10 +93,11 @@
       "source": "Reddit r/ProductManagement",
       "title": "Confused how to work with a PM",
       "source_url": "https://www.reddit.com/r/ProductManagement/comments/1swh0nt/confused_how_to_work_with_a_pm/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "3e7392f04361988d",
       "mvp_concept": "为r/NoCode 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。",
       "category": "研发/产品功能",
       "total_score": 73,
@@ -100,10 +107,11 @@
       "source": "Reddit r/NoCode",
       "title": "Building no code tools made me realize most small businesses dont actually need more features",
       "source_url": "https://www.reddit.com/r/nocode/comments/1tdvlzx/building_no_code_tools_made_me_realize_most_small/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "7163865f4d9b0370",
       "mvp_concept": "为r/indiehackers 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。",
       "category": "研发/产品功能",
       "total_score": 71,
@@ -113,10 +121,11 @@
       "source": "Reddit r/indiehackers",
       "title": "My \"builder trap\" experience and how I try to learn from it",
       "source_url": "https://www.reddit.com/r/indiehackers/comments/1t4k4su/my_builder_trap_experience_and_how_i_try_to_learn/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "8b05952b1f911a62",
       "mvp_concept": "为r/NoCode 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。",
       "category": "研发/产品功能",
       "total_score": 71,
@@ -126,10 +135,11 @@
       "source": "Reddit r/NoCode",
       "title": "I built a tool that turns customer complaints into ready-to-ship code instantly. It's kinda insane how fast it works [NO PROMOTION]",
       "source_url": "https://www.reddit.com/r/nocode/comments/1teostp/i_built_a_tool_that_turns_customer_complaints/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "ceba9c65568c4e73",
       "mvp_concept": "为r/startups 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。",
       "category": "研发/产品功能",
       "total_score": 69,
@@ -139,10 +149,11 @@
       "source": "Reddit r/startups",
       "title": "3 years into building a startup. Here’s what no one warns you about (I will not promote).",
       "source_url": "https://www.reddit.com/r/startups/comments/1t4i6pw/3_years_into_building_a_startup_heres_what_no_one/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "591df65b392c2d31",
       "mvp_concept": "为r/SaaS 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。",
       "category": "研发/产品功能",
       "total_score": 68,
@@ -152,10 +163,11 @@
       "source": "Reddit r/SaaS",
       "title": "what feature feels small but massively improves UX?",
       "source_url": "https://www.reddit.com/r/SaaS/comments/1tffzso/what_feature_feels_small_but_massively_improves_ux/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     },
     {
+      "idea_id": "6f3fc9d2c4fb3252",
       "mvp_concept": "为r/indiehackers 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。",
       "category": "研发/产品功能",
       "total_score": 68,
@@ -165,25 +177,34 @@
       "source": "Reddit r/indiehackers",
       "title": "0 to 140 users building a platform where developers form teams and ship projects together",
       "source_url": "https://www.reddit.com/r/indiehackers/comments/1sfu4x2/0_to_140_users_building_a_platform_where/",
-      "repeat_7d": 2,
+      "repeat_7d": 6,
       "label": "未标注"
     }
   ],
   "category_counts": {
-    "运营/内部流程": 30,
-    "客服/成功/留存": 8,
-    "研发/产品功能": 198,
-    "销售/线索转化": 10,
-    "定价/商业模式": 36,
-    "营销/内容增长": 6,
-    "竞品/市场情报": 38,
-    "其他/待判定": 50
+    "运营/内部流程": 70,
+    "客服/成功/留存": 24,
+    "研发/产品功能": 598,
+    "销售/线索转化": 30,
+    "定价/商业模式": 108,
+    "营销/内容增长": 18,
+    "竞品/市场情报": 114,
+    "其他/待判定": 150
   },
   "repeated_signals_7d": [
     {
+      "signal_key": "97c4f96f16e4028e",
+      "category": "定价/商业模式",
+      "count": 12,
+      "top_score": 43,
+      "sample_title": "AI Agents: too early, too expensive, too unreliable (for now)",
+      "sample_url": "https://www.kadoa.com/blog/ai-agents-hype-vs-reality",
+      "sample_concept": "为有明确工具替代需求的利基用户提供一个定价更友好的垂直轻量版。"
+    },
+    {
       "signal_key": "825c766f7a08ddf8",
       "category": "运营/内部流程",
-      "count": 4,
+      "count": 8,
       "top_score": 55,
       "sample_title": "Show HN: Flowdash – Build internal tools for your team’s manual workflows",
       "sample_url": "https://flowdash.com/",
@@ -192,7 +213,7 @@
     {
       "signal_key": "0b1fb6e769fb83e7",
       "category": "运营/内部流程",
-      "count": 4,
+      "count": 8,
       "top_score": 55,
       "sample_title": "Replacing manual marketing workflows with autonomous AI agents",
       "sample_url": "https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8",
@@ -201,7 +222,7 @@
     {
       "signal_key": "082b4645338d27e4",
       "category": "运营/内部流程",
-      "count": 4,
+      "count": 8,
       "top_score": 52,
       "sample_title": "Show HN: Phiona – Automate manual data workflows, no code required",
       "sample_url": "https://news.ycombinator.com/item?id=25126131",
@@ -210,7 +231,7 @@
     {
       "signal_key": "52f097b44a19bb11",
       "category": "运营/内部流程",
-      "count": 4,
+      "count": 8,
       "top_score": 52,
       "sample_title": "Show HN: The Cost of Manual Workflows",
       "sample_url": "https://news.ycombinator.com/item?id=47459627",
@@ -219,25 +240,16 @@
     {
       "signal_key": "a56274ed7ce1d183",
       "category": "运营/内部流程",
-      "count": 4,
+      "count": 8,
       "top_score": 52,
       "sample_title": "A manual workflow to fix the \"muffled\" audio of AI music models",
       "sample_url": "https://news.ycombinator.com/item?id=46884442",
       "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
     },
     {
-      "signal_key": "97c4f96f16e4028e",
-      "category": "定价/商业模式",
-      "count": 4,
-      "top_score": 43,
-      "sample_title": "AI Agents: too early, too expensive, too unreliable (for now)",
-      "sample_url": "https://www.kadoa.com/blog/ai-agents-hype-vs-reality",
-      "sample_concept": "为有明确工具替代需求的利基用户提供一个定价更友好的垂直轻量版。"
-    },
-    {
       "signal_key": "453132c214f829a0",
       "category": "客服/成功/留存",
-      "count": 2,
+      "count": 6,
       "top_score": 84,
       "sample_title": "I spent 3 months convinced I knew why users were leaving. I was completely wrong. (I will not promote)",
       "sample_url": "https://www.reddit.com/r/startups/comments/1sz8y3i/i_spent_3_months_convinced_i_knew_why_users_were/",
@@ -246,7 +258,7 @@
     {
       "signal_key": "b5e4dac0a23a2c7b",
       "category": "研发/产品功能",
-      "count": 2,
+      "count": 6,
       "top_score": 83,
       "sample_title": "CEO running $400M ARR told me AI adoption is binary. Soft transitions to AI will lose, you shock the company or you're out (I will not promote)",
       "sample_url": "https://www.reddit.com/r/startups/comments/1t2zogs/ceo_running_400m_arr_told_me_ai_adoption_is/",
@@ -255,7 +267,7 @@
     {
       "signal_key": "9bcd042705dde776",
       "category": "研发/产品功能",
-      "count": 2,
+      "count": 6,
       "top_score": 79,
       "sample_title": "I spent 4 months fighting churn before realizing I was the problem, not the product (I will not promote I sweaar!)",
       "sample_url": "https://www.reddit.com/r/startups/comments/1t5kpro/i_spent_4_months_fighting_churn_before_realizing/",
@@ -264,7 +276,7 @@
     {
       "signal_key": "88e1a41883dacdea",
       "category": "研发/产品功能",
-      "count": 2,
+      "count": 6,
       "top_score": 76,
       "sample_title": "Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote)",
       "sample_url": "https://www.reddit.com/r/startups/comments/1tdot03/maybe_some_startup_advice_is_too_universal/",
@@ -273,7 +285,7 @@
     {
       "signal_key": "6e74dd430eb21232",
       "category": "研发/产品功能",
-      "count": 2,
+      "count": 6,
       "top_score": 74,
       "sample_title": "Finished 30+ vibe coded SaaS builds this year. Same mistakes show up almost every time.",
       "sample_url": "https://www.reddit.com/r/nocode/comments/1t9xcy6/finished_30_vibe_coded_saas_builds_this_year_same/",
@@ -282,15 +294,466 @@
     {
       "signal_key": "8c25ea130d7a05a1",
       "category": "研发/产品功能",
-      "count": 2,
+      "count": 6,
       "top_score": 73,
       "sample_title": "Confused how to work with a PM",
       "sample_url": "https://www.reddit.com/r/ProductManagement/comments/1swh0nt/confused_how_to_work_with_a_pm/",
       "sample_concept": "为r/ProductManagement 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。"
     }
   ],
-  "label_counts": {
-    "未标注": 183
+  "opportunity_clusters": [
+    {
+      "cluster_id": "cluster-confused-work-software-65c1313fc2d162bf",
+      "title": "待验证的垂直痛点",
+      "category": "研发/产品功能",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Reddit r/ProductManagement"
+      ],
+      "top_score": 73,
+      "avg_score": 73.0,
+      "decision_score": 73,
+      "decision_verdict": "Monitor",
+      "decision_reason": "原始最高分 73，重复加分 +0，来源加分 +0，决策分 73；7 天重复信号不足",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "730a095cff95f26d",
+          "title": "Confused how to work with a PM",
+          "source": "Reddit r/ProductManagement",
+          "source_url": "https://www.reddit.com/r/ProductManagement/comments/1swh0nt/confused_how_to_work_with_a_pm/",
+          "total_score": 73,
+          "pain_summary": "Confused how to work with a PM I am a software engineering manager at a FAANG company.",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 73，平均分 73.0。",
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 1 条。"
+    },
+    {
+      "cluster_id": "cluster-content-ab84a8390f27d942",
+      "title": "内容生产与增长流程",
+      "category": "营销/内容增长",
+      "count_7d": 2,
+      "source_count": 2,
+      "source_names": [
+        "Reddit r/SaaS",
+        "Reddit r/smallbusiness"
+      ],
+      "top_score": 59,
+      "avg_score": 51.5,
+      "decision_score": 68,
+      "decision_verdict": "Monitor",
+      "decision_reason": "原始最高分 59，重复加分 +5，来源加分 +4，决策分 68；重复、场景和验证动作均达标",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "587b4c7fa251528e",
+          "title": "Founder here I honestly didn’t expect growth to become more stressful than building the product itself",
+          "source": "Reddit r/SaaS",
+          "source_url": "https://www.reddit.com/r/SaaS/comments/1tf7lap/founder_here_i_honestly_didnt_expect_growth_to/",
+          "total_score": 59,
+          "pain_summary": "Founder here I honestly didn’t expect growth to become more stressful than building the product itself When we first started building our SaaS, I thought mos...",
+          "label": "未标注"
+        },
+        {
+          "idea_id": "97820f67973e0a2b",
+          "title": "Building the product was easy. Getting people to care about it wasn’t.",
+          "source": "Reddit r/smallbusiness",
+          "source_url": "https://www.reddit.com/r/smallbusiness/comments/1tcudfj/building_the_product_was_easy_getting_people_to/",
+          "total_score": 44,
+          "pain_summary": "Building the product was easy. Getting people to care about it wasn’t. Does anyone else feel like building the product was actually the easy part… and market...",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 2 条同类信号，覆盖 2 个来源；最高原始分 59，平均分 51.5。",
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 2 条。"
+    },
+    {
+      "cluster_id": "cluster-what-feels-small-2214543aa8154e67",
+      "title": "待验证的垂直痛点",
+      "category": "研发/产品功能",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Reddit r/SaaS"
+      ],
+      "top_score": 68,
+      "avg_score": 68.0,
+      "decision_score": 68,
+      "decision_verdict": "Monitor",
+      "decision_reason": "原始最高分 68，重复加分 +0，来源加分 +0，决策分 68；7 天重复信号不足",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "591df65b392c2d31",
+          "title": "what feature feels small but massively improves UX?",
+          "source": "Reddit r/SaaS",
+          "source_url": "https://www.reddit.com/r/SaaS/comments/1tffzso/what_feature_feels_small_but_massively_improves_ux/",
+          "total_score": 68,
+          "pain_summary": "what feature feels small but massively improves UX?",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 68，平均分 68.0。",
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 1 条。"
+    },
+    {
+      "cluster_id": "cluster-reporting-3c80d460ab03aafd",
+      "title": "报表与数据导出工作流",
+      "category": "研发/产品功能",
+      "count_7d": 11,
+      "source_count": 8,
+      "source_names": [
+        "Reddit r/Entrepreneur",
+        "Reddit r/NoCode",
+        "Reddit r/ProductManagement",
+        "Reddit r/SaaS",
+        "Reddit r/freelance",
+        "Reddit r/indiehackers",
+        "Reddit r/smallbusiness",
+        "Reddit r/startups"
+      ],
+      "top_score": 74,
+      "avg_score": 61.2,
+      "decision_score": 79,
+      "decision_verdict": "Monitor",
+      "decision_reason": "原始最高分 74，重复加分 +25，来源加分 +12，决策分 79；噪音惩罚 -20",
+      "label_adjustment": 0,
+      "noise_penalty": 20,
+      "sample_ideas": [
+        {
+          "idea_id": "284f05b514173978",
+          "title": "Finished 30+ vibe coded SaaS builds this year. Same mistakes show up almost every time.",
+          "source": "Reddit r/NoCode",
+          "source_url": "https://www.reddit.com/r/nocode/comments/1t9xcy6/finished_30_vibe_coded_saas_builds_this_year_same/",
+          "total_score": 74,
+          "pain_summary": "Finished 30+ vibe coded SaaS builds this year.",
+          "label": "未标注"
+        },
+        {
+          "idea_id": "7163865f4d9b0370",
+          "title": "My \"builder trap\" experience and how I try to learn from it",
+          "source": "Reddit r/indiehackers",
+          "source_url": "https://www.reddit.com/r/indiehackers/comments/1t4k4su/my_builder_trap_experience_and_how_i_try_to_learn/",
+          "total_score": 71,
+          "pain_summary": "My \"builder trap\" experience and how I try to learn from it Recently I've been a bit more active on Reddit, as I'm building another startup.",
+          "label": "未标注"
+        },
+        {
+          "idea_id": "6f3fc9d2c4fb3252",
+          "title": "0 to 140 users building a platform where developers form teams and ship projects together",
+          "source": "Reddit r/indiehackers",
+          "source_url": "https://www.reddit.com/r/indiehackers/comments/1sfu4x2/0_to_140_users_building_a_platform_where/",
+          "total_score": 68,
+          "pain_summary": "0 to 140 users building a platform where developers form teams and ship projects together Two weeks ago, I created something out of pure frustration.",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 11 条同类信号，覆盖 8 个来源；最高原始分 74，平均分 61.2。",
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 11 条。"
+    },
+    {
+      "cluster_id": "cluster-support-48800e2d97bc570b",
+      "title": "客服工单与响应自动化",
+      "category": "客服/成功/留存",
+      "count_7d": 3,
+      "source_count": 2,
+      "source_names": [
+        "Hacker News",
+        "Reddit r/startups"
+      ],
+      "top_score": 84,
+      "avg_score": 60.7,
+      "decision_score": 78,
+      "decision_verdict": "Monitor",
+      "decision_reason": "原始最高分 84，重复加分 +10，来源加分 +4，决策分 78；噪音惩罚 -20",
+      "label_adjustment": 0,
+      "noise_penalty": 20,
+      "sample_ideas": [
+        {
+          "idea_id": "2095dd9931b9e981",
+          "title": "I spent 3 months convinced I knew why users were leaving. I was completely wrong. (I will not promote)",
+          "source": "Reddit r/startups",
+          "source_url": "https://www.reddit.com/r/startups/comments/1sz8y3i/i_spent_3_months_convinced_i_knew_why_users_were/",
+          "total_score": 84,
+          "pain_summary": "I spent 3 months convinced I knew why users were leaving.",
+          "label": "未标注"
+        },
+        {
+          "idea_id": "a1e9cf3b33742968",
+          "title": "Looking Forward: Support for Secure Shell",
+          "source": "Hacker News",
+          "source_url": "http://blogs.msdn.com/b/looking_forward_microsoft__support_for_secure_shell_ssh1/archive/2015/06/02/managing-looking-forward-microsoft-support-for-secure-shell-ssh.aspx",
+          "total_score": 49,
+          "pain_summary": "Looking Forward: Support for Secure Shell",
+          "label": "未标注"
+        },
+        {
+          "idea_id": "d169bba721778edd",
+          "title": "PyPy Project looking for sponsorship to add support for Apple Silicon",
+          "source": "Hacker News",
+          "source_url": "https://morepypy.blogspot.com/2020/12/mac-meets-arm64.html",
+          "total_score": 49,
+          "pain_summary": "PyPy Project looking for sponsorship to add support for Apple Silicon",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 3 条同类信号，覆盖 2 个来源；最高原始分 84，平均分 60.7。",
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 3 条。"
+    },
+    {
+      "cluster_id": "cluster-content-db03cba27acfa786",
+      "title": "内容生产与增长流程",
+      "category": "研发/产品功能",
+      "count_7d": 2,
+      "source_count": 2,
+      "source_names": [
+        "Hacker News",
+        "Reddit r/indiehackers"
+      ],
+      "top_score": 49,
+      "avg_score": 47.5,
+      "decision_score": 58,
+      "decision_verdict": "Monitor",
+      "decision_reason": "原始最高分 49，重复加分 +5，来源加分 +4，决策分 58；缺少可执行验证动作",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "3354189638d4810e",
+          "title": "Top Missing PostgreSQL Features",
+          "source": "Hacker News",
+          "source_url": "http://blog.kimiensoftware.com/2011/04/top-10-missing-postgresql-features/",
+          "total_score": 49,
+          "pain_summary": "Top Missing PostgreSQL Features",
+          "label": "未标注"
+        },
+        {
+          "idea_id": "da663c1f2b16b0ae",
+          "title": "Distributing posts on social media via CSV dos and don’ts",
+          "source": "Reddit r/indiehackers",
+          "source_url": "https://www.reddit.com/r/indiehackers/comments/1sdx8zp/distributing_posts_on_social_media_via_csv_dos/",
+          "total_score": 46,
+          "pain_summary": "Distributing posts on social media via CSV dos and don’ts We like to keep the app lean so when there’s no demand for new features, we tend to clean up the ba...",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 2 条同类信号，覆盖 2 个来源；最高原始分 49，平均分 47.5。",
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 2 条。"
+    },
+    {
+      "cluster_id": "cluster-first-month-saas-38720f0a4fcf1f78",
+      "title": "待验证的垂直痛点",
+      "category": "研发/产品功能",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Reddit r/indiehackers"
+      ],
+      "top_score": 56,
+      "avg_score": 56.0,
+      "decision_score": 56,
+      "decision_verdict": "Monitor",
+      "decision_reason": "原始最高分 56，重复加分 +0，来源加分 +0，决策分 56；7 天重复信号不足",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "3378bef083274bf5",
+          "title": "First month build saas, need your advices to get revenue",
+          "source": "Reddit r/indiehackers",
+          "source_url": "https://www.reddit.com/r/indiehackers/comments/1skxvhn/first_month_build_saas_need_your_advices_to_get/",
+          "total_score": 56,
+          "pain_summary": "First month build saas, need your advices to get revenue This is my first month building trunktransfer, alternative to wetransfer.",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 56，平均分 56.0。",
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 1 条。"
+    },
+    {
+      "cluster_id": "cluster-replacing-marketing-workflows-1e6bd0dd2e90e860",
+      "title": "待验证的垂直痛点",
+      "category": "运营/内部流程",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Hacker News"
+      ],
+      "top_score": 55,
+      "avg_score": 55.0,
+      "decision_score": 55,
+      "decision_verdict": "Monitor",
+      "decision_reason": "原始最高分 55，重复加分 +0，来源加分 +0，决策分 55；7 天重复信号不足",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "7a8061a1bb5ce4ac",
+          "title": "Replacing manual marketing workflows with autonomous AI agents",
+          "source": "Hacker News",
+          "source_url": "https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8",
+          "total_score": 55,
+          "pain_summary": "Replacing manual marketing workflows with autonomous AI agents",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 55，平均分 55.0。",
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 1 条。"
+    },
+    {
+      "cluster_id": "cluster-support-d569341940393085",
+      "title": "客服工单与响应自动化",
+      "category": "定价/商业模式",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Hacker News"
+      ],
+      "top_score": 54,
+      "avg_score": 54.0,
+      "decision_score": 54,
+      "decision_verdict": "Discard",
+      "decision_reason": "原始最高分 54，重复加分 +0，来源加分 +0，决策分 54；7 天重复信号不足；缺少可执行验证动作",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "3f599ad17ca74501",
+          "title": "They tried Made in the USA – it was too expensive for their customers",
+          "source": "Hacker News",
+          "source_url": "https://www.reuters.com/business/they-tried-made-usa-it-was-too-expensive-their-customers-2025-07-02/",
+          "total_score": 54,
+          "pain_summary": "They tried Made in the USA – it was too expensive for their customers",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 54，平均分 54.0。",
+      "recommended_action": "暂不投入开发，只保留为历史样本，等待更明确的用户场景或付费证据。"
+    },
+    {
+      "cluster_id": "cluster-anyone-else-head-655e265c1ca44f02",
+      "title": "待验证的垂直痛点",
+      "category": "研发/产品功能",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Reddit r/ProductManagement"
+      ],
+      "top_score": 53,
+      "avg_score": 53.0,
+      "decision_score": 53,
+      "decision_verdict": "Discard",
+      "decision_reason": "原始最高分 53，重复加分 +0，来源加分 +0，决策分 53；7 天重复信号不足；缺少可执行验证动作",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "e57d28a3ba434681",
+          "title": "Anyone else at head/director/vp level missing the product craft?",
+          "source": "Reddit r/ProductManagement",
+          "source_url": "https://www.reddit.com/r/ProductManagement/comments/1te2d5w/anyone_else_at_headdirectorvp_level_missing_the/",
+          "total_score": 53,
+          "pain_summary": "Anyone else at head/director/vp level missing the product craft?",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 53，平均分 53.0。",
+      "recommended_action": "暂不投入开发，只保留为历史样本，等待更明确的用户场景或付费证据。"
+    },
+    {
+      "cluster_id": "cluster-docs-open-source-c159568bbc782cd4",
+      "title": "待验证的垂直痛点",
+      "category": "客服/成功/留存",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Hacker News"
+      ],
+      "top_score": 52,
+      "avg_score": 52.0,
+      "decision_score": 52,
+      "decision_verdict": "Discard",
+      "decision_reason": "原始最高分 52，重复加分 +0，来源加分 +0，决策分 52；7 天重复信号不足；缺少可执行验证动作",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "9d8113fe5f73b8e9",
+          "title": "Docs – Open source alternative to Notion or Outline",
+          "source": "Hacker News",
+          "source_url": "https://github.com/suitenumerique/docs",
+          "total_score": 52,
+          "pain_summary": "Docs – Open source alternative to Notion or Outline",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 52，平均分 52.0。",
+      "recommended_action": "暂不投入开发，只保留为历史样本，等待更明确的用户场景或付费证据。"
+    },
+    {
+      "cluster_id": "cluster-focalboard-self-hosted-eeb8b65b6e3eef5a",
+      "title": "待验证的垂直痛点",
+      "category": "竞品/市场情报",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Hacker News"
+      ],
+      "top_score": 52,
+      "avg_score": 52.0,
+      "decision_score": 52,
+      "decision_verdict": "Discard",
+      "decision_reason": "原始最高分 52，重复加分 +0，来源加分 +0，决策分 52；7 天重复信号不足；缺少可执行验证动作",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "65d6ea3193f4bf59",
+          "title": "Focalboard – a self-hosted alternative to Trello, Notion, and Asana",
+          "source": "Hacker News",
+          "source_url": "https://www.focalboard.com/",
+          "total_score": 52,
+          "pain_summary": "Focalboard – a self-hosted alternative to Trello, Notion, and Asana",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 52，平均分 52.0。",
+      "recommended_action": "暂不投入开发，只保留为历史样本，等待更明确的用户场景或付费证据。"
+    }
+  ],
+  "decision_summary": {
+    "total_clusters": 12,
+    "build_now_count": 0,
+    "monitor_count": 8,
+    "discard_count": 4
   },
-  "markdown_report": "# 蓝海需求扫描日报 - 2026-05-17 21:30:37\n\n## 概览\n\n- 原始数据：700 条\n- 去重后：448 条\n- 候选痛点：183 条\n- Build Now：4 条\n- Monitor：37 条\n\n## Top 机会\n\n### 1. 为r/startups 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1sz8y3i/i_spent_3_months_convinced_i_knew_why_users_were/)\n- 原标题：I spent 3 months convinced I knew why users were leaving. I was completely wrong. (I will not promote)\n- 总分：84 / 100\n- 分类：客服/成功/留存\n- 7 天重复信号：2\n- 评分：ERRC 25 / JTBD 25 / OPC 21 / RICE 13\n- 结论：Build Now\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：I spent 3 months convinced I knew why users were leaving.\n- 命中规则：too expensive, missing, manual, slow\n- 下一步：今天收集 5 条同类客服/流失案例，确认是否可用模板或自动化解决。\n\n### 2. 为r/startups 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1t2zogs/ceo_running_400m_arr_told_me_ai_adoption_is/)\n- 原标题：CEO running $400M ARR told me AI adoption is binary. Soft transitions to AI will lose, you shock the company or you're out (I will not promote)\n- 总分：83 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：2\n- 评分：ERRC 19 / JTBD 23 / OPC 25 / RICE 16\n- 结论：Build Now\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：CEO running $400M ARR told me AI adoption is binary.\n- 命中规则：slow, broken\n- 下一步：今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。\n\n### 3. 为r/startups 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1t5kpro/i_spent_4_months_fighting_churn_before_realizing/)\n- 原标题：I spent 4 months fighting churn before realizing I was the problem, not the product (I will not promote I sweaar!)\n- 总分：79 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：2\n- 评分：ERRC 25 / JTBD 25 / OPC 21 / RICE 8\n- 结论：Build Now\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：I spent 4 months fighting churn before realizing I was the problem, not the product (I will not promote I sweaar!) What you will read here is my real story ahah.\n- 命中规则：too expensive, missing, slow\n- 下一步：今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。\n\n### 4. 为r/startups 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1tdot03/maybe_some_startup_advice_is_too_universal/)\n- 原标题：Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote)\n- 总分：76 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：2\n- 评分：ERRC 15 / JTBD 20 / OPC 24 / RICE 17\n- 结论：Build Now\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote) I’ve been thinking about a lot of common SaaS/startup advice lately.\n- 命中规则：missing\n- 下一步：今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。\n\n### 5. 为r/NoCode 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。\n\n- 来源：[Reddit r/NoCode](https://www.reddit.com/r/nocode/comments/1t9xcy6/finished_30_vibe_coded_saas_builds_this_year_same/)\n- 原标题：Finished 30+ vibe coded SaaS builds this year. Same mistakes show up almost every time.\n- 总分：74 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：2\n- 评分：ERRC 11 / JTBD 20 / OPC 30 / RICE 13\n- 结论：Monitor\n- 目标用户：r/NoCode 中反复表达类似痛点的用户\n- 痛点摘要：Finished 30+ vibe coded SaaS builds this year.\n- 命中规则：broken\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 6. 为r/ProductManagement 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/ProductManagement](https://www.reddit.com/r/ProductManagement/comments/1swh0nt/confused_how_to_work_with_a_pm/)\n- 原标题：Confused how to work with a PM\n- 总分：73 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：2\n- 评分：ERRC 21 / JTBD 20 / OPC 18 / RICE 14\n- 结论：Monitor\n- 目标用户：r/ProductManagement 中反复表达类似痛点的用户\n- 痛点摘要：Confused how to work with a PM I am a software engineering manager at a FAANG company.\n- 命中规则：missing, hard to, looking for\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 7. 为r/NoCode 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/NoCode](https://www.reddit.com/r/nocode/comments/1tdvlzx/building_no_code_tools_made_me_realize_most_small/)\n- 原标题：Building no code tools made me realize most small businesses dont actually need more features\n- 总分：73 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：2\n- 评分：ERRC 23 / JTBD 18 / OPC 21 / RICE 11\n- 结论：Monitor\n- 目标用户：r/NoCode 中反复表达类似痛点的用户\n- 痛点摘要：Building no code tools made me realize most small businesses dont actually need more features One thing thats surprised me while building around small busine...\n- 命中规则：missing, manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 8. 为r/indiehackers 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/indiehackers](https://www.reddit.com/r/indiehackers/comments/1t4k4su/my_builder_trap_experience_and_how_i_try_to_learn/)\n- 原标题：My \"builder trap\" experience and how I try to learn from it\n- 总分：71 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：2\n- 评分：ERRC 16 / JTBD 9 / OPC 30 / RICE 16\n- 结论：Monitor\n- 目标用户：r/indiehackers 中反复表达类似痛点的用户\n- 痛点摘要：My \"builder trap\" experience and how I try to learn from it Recently I've been a bit more active on Reddit, as I'm building another startup.\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 9. 为r/NoCode 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/NoCode](https://www.reddit.com/r/nocode/comments/1teostp/i_built_a_tool_that_turns_customer_complaints/)\n- 原标题：I built a tool that turns customer complaints into ready-to-ship code instantly. It's kinda insane how fast it works [NO PROMOTION]\n- 总分：71 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：2\n- 评分：ERRC 18 / JTBD 12 / OPC 30 / RICE 11\n- 结论：Monitor\n- 目标用户：r/NoCode 中反复表达类似痛点的用户\n- 痛点摘要：I built a tool that turns customer complaints into ready-to-ship code instantly.\n- 命中规则：missing, broken\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 10. 为r/startups 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1t4i6pw/3_years_into_building_a_startup_heres_what_no_one/)\n- 原标题：3 years into building a startup. Here’s what no one warns you about (I will not promote).\n- 总分：69 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：2\n- 评分：ERRC 19 / JTBD 18 / OPC 18 / RICE 14\n- 结论：Monitor\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：3 years into building a startup. Here’s what no one warns you about (I will not promote). My co-founder and I went through YC in 2023. We started as a team o...\n- 命中规则：slow, hard to\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n"
+  "source_health": {
+    "status": "ok",
+    "raw_count": 700,
+    "unique_count": 448,
+    "candidate_count": 184,
+    "error_count": 0,
+    "errors": [],
+    "source_counts": {
+      "Reddit r/startups": 12,
+      "Reddit r/NoCode": 10,
+      "Reddit r/ProductManagement": 9,
+      "Reddit r/indiehackers": 9,
+      "Reddit r/SaaS": 10,
+      "Reddit r/Entrepreneur": 9,
+      "Hacker News": 113,
+      "Reddit r/smallbusiness": 9,
+      "Reddit r/freelance": 3
+    }
+  },
+  "label_counts": {
+    "未标注": 184
+  },
+  "markdown_report": "# 蓝海需求扫描日报 - 2026-05-17 22:37:14\n\n## 概览\n\n- 原始数据：700 条\n- 去重后：448 条\n- 候选痛点：184 条\n- Build Now：4 条\n- Monitor：38 条\n\n## Top 机会\n\n### 1. 为r/startups 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1sz8y3i/i_spent_3_months_convinced_i_knew_why_users_were/)\n- 原标题：I spent 3 months convinced I knew why users were leaving. I was completely wrong. (I will not promote)\n- 总分：84 / 100\n- 分类：客服/成功/留存\n- 7 天重复信号：6\n- 评分：ERRC 25 / JTBD 25 / OPC 21 / RICE 13\n- 结论：Build Now\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：I spent 3 months convinced I knew why users were leaving.\n- 命中规则：too expensive, missing, manual, slow\n- 下一步：今天收集 5 条同类客服/流失案例，确认是否可用模板或自动化解决。\n\n### 2. 为r/startups 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1t2zogs/ceo_running_400m_arr_told_me_ai_adoption_is/)\n- 原标题：CEO running $400M ARR told me AI adoption is binary. Soft transitions to AI will lose, you shock the company or you're out (I will not promote)\n- 总分：83 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：6\n- 评分：ERRC 19 / JTBD 23 / OPC 25 / RICE 16\n- 结论：Build Now\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：CEO running $400M ARR told me AI adoption is binary.\n- 命中规则：slow, broken\n- 下一步：今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。\n\n### 3. 为r/startups 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1t5kpro/i_spent_4_months_fighting_churn_before_realizing/)\n- 原标题：I spent 4 months fighting churn before realizing I was the problem, not the product (I will not promote I sweaar!)\n- 总分：79 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：6\n- 评分：ERRC 25 / JTBD 25 / OPC 21 / RICE 8\n- 结论：Build Now\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：I spent 4 months fighting churn before realizing I was the problem, not the product (I will not promote I sweaar!) What you will read here is my real story ahah.\n- 命中规则：too expensive, missing, slow\n- 下一步：今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。\n\n### 4. 为r/startups 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1tdot03/maybe_some_startup_advice_is_too_universal/)\n- 原标题：Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote)\n- 总分：76 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：6\n- 评分：ERRC 15 / JTBD 20 / OPC 24 / RICE 17\n- 结论：Build Now\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote) I’ve been thinking about a lot of common SaaS/startup advice lately.\n- 命中规则：missing\n- 下一步：今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。\n\n### 5. 为r/NoCode 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。\n\n- 来源：[Reddit r/NoCode](https://www.reddit.com/r/nocode/comments/1t9xcy6/finished_30_vibe_coded_saas_builds_this_year_same/)\n- 原标题：Finished 30+ vibe coded SaaS builds this year. Same mistakes show up almost every time.\n- 总分：74 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：6\n- 评分：ERRC 11 / JTBD 20 / OPC 30 / RICE 13\n- 结论：Monitor\n- 目标用户：r/NoCode 中反复表达类似痛点的用户\n- 痛点摘要：Finished 30+ vibe coded SaaS builds this year.\n- 命中规则：broken\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 6. 为r/ProductManagement 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/ProductManagement](https://www.reddit.com/r/ProductManagement/comments/1swh0nt/confused_how_to_work_with_a_pm/)\n- 原标题：Confused how to work with a PM\n- 总分：73 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：6\n- 评分：ERRC 21 / JTBD 20 / OPC 18 / RICE 14\n- 结论：Monitor\n- 目标用户：r/ProductManagement 中反复表达类似痛点的用户\n- 痛点摘要：Confused how to work with a PM I am a software engineering manager at a FAANG company.\n- 命中规则：missing, hard to, looking for\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 7. 为r/NoCode 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/NoCode](https://www.reddit.com/r/nocode/comments/1tdvlzx/building_no_code_tools_made_me_realize_most_small/)\n- 原标题：Building no code tools made me realize most small businesses dont actually need more features\n- 总分：73 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：6\n- 评分：ERRC 23 / JTBD 18 / OPC 21 / RICE 11\n- 结论：Monitor\n- 目标用户：r/NoCode 中反复表达类似痛点的用户\n- 痛点摘要：Building no code tools made me realize most small businesses dont actually need more features One thing thats surprised me while building around small busine...\n- 命中规则：missing, manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 8. 为r/indiehackers 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/indiehackers](https://www.reddit.com/r/indiehackers/comments/1t4k4su/my_builder_trap_experience_and_how_i_try_to_learn/)\n- 原标题：My \"builder trap\" experience and how I try to learn from it\n- 总分：71 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：6\n- 评分：ERRC 16 / JTBD 9 / OPC 30 / RICE 16\n- 结论：Monitor\n- 目标用户：r/indiehackers 中反复表达类似痛点的用户\n- 痛点摘要：My \"builder trap\" experience and how I try to learn from it Recently I've been a bit more active on Reddit, as I'm building another startup.\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 9. 为r/NoCode 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/NoCode](https://www.reddit.com/r/nocode/comments/1teostp/i_built_a_tool_that_turns_customer_complaints/)\n- 原标题：I built a tool that turns customer complaints into ready-to-ship code instantly. It's kinda insane how fast it works [NO PROMOTION]\n- 总分：71 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：6\n- 评分：ERRC 18 / JTBD 12 / OPC 30 / RICE 11\n- 结论：Monitor\n- 目标用户：r/NoCode 中反复表达类似痛点的用户\n- 痛点摘要：I built a tool that turns customer complaints into ready-to-ship code instantly.\n- 命中规则：missing, broken\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 10. 为r/startups 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1t4i6pw/3_years_into_building_a_startup_heres_what_no_one/)\n- 原标题：3 years into building a startup. Here’s what no one warns you about (I will not promote).\n- 总分：69 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：6\n- 评分：ERRC 19 / JTBD 18 / OPC 18 / RICE 14\n- 结论：Monitor\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：3 years into building a startup. Here’s what no one warns you about (I will not promote). My co-founder and I went through YC in 2023. We started as a team o...\n- 命中规则：slow, hard to\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n"
 }

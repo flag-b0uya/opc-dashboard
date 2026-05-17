@@ -56,16 +56,47 @@ class SnapshotExporterTest(unittest.TestCase):
             summary=summary,
             history_summary=history_summary,
             markdown_report="# Report",
+            opportunity_clusters=[
+                {
+                    "cluster_id": "cluster-invoice",
+                    "title": "发票报表自动化",
+                    "category": "运营/内部流程",
+                    "decision_verdict": "Build Now",
+                    "decision_score": 88,
+                    "count_7d": 3,
+                    "source_count": 2,
+                }
+            ],
+            decision_summary={"total_clusters": 1, "build_now_count": 1, "monitor_count": 0, "discard_count": 0},
+            source_health={"status": "ok", "raw_count": 10, "error_count": 0},
         )
 
         self.assertEqual(snapshot["generated_at"], "2026-05-17 20:00:00")
+        self.assertEqual(snapshot["schema_version"], 2)
         self.assertEqual(snapshot["summary"]["candidate_count"], 1)
         self.assertEqual(snapshot["top_ideas"][0]["category"], "运营/内部流程")
         self.assertEqual(snapshot["category_counts"]["运营/内部流程"], 4)
         self.assertEqual(snapshot["repeated_signals_7d"][0]["count"], 3)
         self.assertEqual(snapshot["label_counts"]["好信号"], 1)
         self.assertEqual(snapshot["label_counts"]["非研发需求"], 1)
+        self.assertEqual(snapshot["opportunity_clusters"][0]["cluster_id"], "cluster-invoice")
+        self.assertEqual(snapshot["decision_summary"]["build_now_count"], 1)
+        self.assertEqual(snapshot["source_health"]["status"], "ok")
         self.assertEqual(snapshot["markdown_report"], "# Report")
+
+    def test_build_dashboard_snapshot_keeps_new_fields_optional(self):
+        snapshot = build_dashboard_snapshot(
+            ideas=[],
+            summary={},
+            history_summary={},
+            markdown_report="",
+        )
+
+        self.assertEqual(snapshot["opportunity_clusters"], [])
+        self.assertEqual(snapshot["decision_summary"]["total_clusters"], 0)
+        self.assertEqual(snapshot["source_health"]["status"], "unknown")
+        self.assertIn("top_ideas", snapshot)
+        self.assertIn("category_counts", snapshot)
 
     def test_load_dashboard_snapshot_handles_missing_and_invalid_files(self):
         with tempfile.TemporaryDirectory() as tmpdir:

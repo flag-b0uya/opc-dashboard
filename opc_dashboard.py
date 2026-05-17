@@ -133,6 +133,51 @@ def render_styles() -> None:
             line-height: 1.6;
             margin: 7px 0;
         }
+        .cluster-card {
+            border: 1px solid #dfe4ea;
+            border-radius: 8px;
+            padding: 20px;
+            background: #ffffff;
+            margin-bottom: 16px;
+        }
+        .cluster-card h3 {
+            color: #101828;
+            font-size: 22px;
+            line-height: 1.32;
+            margin: 12px 0 10px;
+        }
+        .cluster-card p {
+            color: #475467;
+            line-height: 1.62;
+            margin: 8px 0;
+        }
+        .cluster-meta {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(96px, 1fr));
+            gap: 10px;
+            margin: 14px 0;
+        }
+        .cluster-meta div {
+            border: 1px solid #eef0f3;
+            border-radius: 8px;
+            padding: 10px;
+            background: #fbfcfd;
+        }
+        .cluster-meta span {
+            display: block;
+            color: #667085;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        .cluster-meta strong {
+            color: #101828;
+            font-size: 18px;
+        }
+        .sample-link {
+            color: #475467;
+            font-size: 13px;
+            margin: 4px 0;
+        }
         .tag {
             display: inline-block;
             border: 1px solid #d0d5dd;
@@ -179,6 +224,9 @@ def render_styles() -> None:
             .radar-row {
                 grid-template-columns: 76px 1fr 34px;
             }
+            .cluster-meta {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
         </style>
         """,
@@ -213,10 +261,10 @@ def render_empty_state() -> None:
     st.info("还没有找到 `data/dashboard_snapshot.json`。请在本地运行：`python3 local_runner.py`。")
 
 
-def render_radar_panel(summary: dict, repeated_count: int) -> None:
+def render_radar_panel(summary: dict, decision_summary: dict, repeated_count: int) -> None:
     candidate_count = int(summary.get("candidate_count", 0) or 0)
-    monitor_count = int(summary.get("monitor_count", 0) or 0)
-    build_now_count = int(summary.get("build_now_count", 0) or 0)
+    monitor_count = int(decision_summary.get("monitor_count", summary.get("monitor_count", 0)) or 0)
+    build_now_count = int(decision_summary.get("build_now_count", summary.get("build_now_count", 0)) or 0)
     raw_count = max(int(summary.get("raw_count", 0) or 0), 1)
 
     candidate_pct = min(100, round(candidate_count / raw_count * 100))
@@ -267,6 +315,42 @@ def render_idea_card(idea: dict) -> None:
         st.markdown(f"[来源：{esc(idea.get('source', ''))} - {esc(idea.get('title', ''))}]({idea.get('source_url')})")
 
 
+def render_cluster_card(cluster: dict) -> None:
+    verdict = cluster.get("decision_verdict", "Monitor")
+    verdict_class = "tag-strong" if verdict == "Build Now" else "tag-warm" if verdict == "Monitor" else ""
+    st.markdown(
+        f"""
+        <div class="cluster-card">
+            <span class="tag">{esc(cluster.get("category", "其他/待判定"))}</span>
+            <span class="tag {verdict_class}">{esc(verdict)}</span>
+            <span class="tag">Decision {esc(cluster.get("decision_score", 0))}</span>
+            <h3>{esc(cluster.get("title", "待验证机会"))}</h3>
+            <div class="cluster-meta">
+                <div><span>7天重复</span><strong>{esc(cluster.get("count_7d", 0))}</strong></div>
+                <div><span>来源数</span><strong>{esc(cluster.get("source_count", 0))}</strong></div>
+                <div><span>最高原始分</span><strong>{esc(cluster.get("top_score", 0))}</strong></div>
+                <div><span>平均分</span><strong>{esc(cluster.get("avg_score", 0))}</strong></div>
+            </div>
+            <p>{esc(cluster.get("evidence_summary", ""))}</p>
+            <p><strong>判断：</strong>{esc(cluster.get("decision_reason", ""))}</p>
+            <p><strong>下一步：</strong>{esc(cluster.get("recommended_action", ""))}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    samples = cluster.get("sample_ideas", []) or []
+    if samples:
+        with st.expander("代表样本", expanded=False):
+            for sample in samples:
+                title = esc(sample.get("title", "Untitled"))
+                source = esc(sample.get("source", ""))
+                score = esc(sample.get("total_score", 0))
+                if sample.get("source_url"):
+                    st.markdown(f"- [{title}]({sample.get('source_url')}) · {source} · Score {score}")
+                else:
+                    st.markdown(f"- {title} · {source} · Score {score}")
+
+
 def render_counts_table(title: str, counts: dict, key_name: str) -> None:
     st.subheader(title)
     if counts:
@@ -274,7 +358,7 @@ def render_counts_table(title: str, counts: dict, key_name: str) -> None:
             {key_name: key, "数量": value}
             for key, value in sorted(counts.items(), key=lambda item: item[1], reverse=True)
         ]
-        st.dataframe(rows, use_container_width=True, hide_index=True)
+        st.dataframe(rows, width="stretch", hide_index=True)
     else:
         st.info(f"暂无{title}。")
 
@@ -287,6 +371,9 @@ if snapshot is None:
     st.stop()
 
 summary = snapshot.get("summary", {})
+decision_summary = snapshot.get("decision_summary", {})
+source_health = snapshot.get("source_health", {})
+opportunity_clusters = snapshot.get("opportunity_clusters", [])
 top_ideas = snapshot.get("top_ideas", [])
 repeated = snapshot.get("repeated_signals_7d", [])
 generated_at = snapshot.get("generated_at", "未生成")
@@ -304,17 +391,17 @@ with hero_left:
         unsafe_allow_html=True,
     )
 with hero_right:
-    render_radar_panel(summary, len(repeated))
+    render_radar_panel(summary, decision_summary, len(repeated))
 
 metric_cols = st.columns(4)
 with metric_cols[0]:
     render_metric("候选机会", summary.get("candidate_count", 0), f"原始信号 {summary.get('raw_count', 0)}")
 with metric_cols[1]:
-    render_metric("Build Now", summary.get("build_now_count", 0), "可立即验证")
+    render_metric("Build Now", decision_summary.get("build_now_count", summary.get("build_now_count", 0)), "按需求簇判断")
 with metric_cols[2]:
-    render_metric("Monitor", summary.get("monitor_count", 0), "继续观察")
+    render_metric("Monitor", decision_summary.get("monitor_count", summary.get("monitor_count", 0)), "继续观察")
 with metric_cols[3]:
-    render_metric("7天重复信号", len(repeated), "出现 2 次以上")
+    render_metric("需求簇", decision_summary.get("total_clusters", len(opportunity_clusters)), f"重复信号 {len(repeated)}")
 
 if summary.get("errors"):
     with st.expander("本地扫描记录的抓取错误", expanded=False):
@@ -325,15 +412,34 @@ st.divider()
 left, right = st.columns([1.15, 0.85], gap="large")
 
 with left:
-    st.subheader("Top 机会")
-    if not top_ideas:
-        st.info("当前快照没有候选机会。")
-    for idea in top_ideas:
-        render_idea_card(idea)
+    if opportunity_clusters:
+        st.subheader("Top 需求簇")
+        for cluster in opportunity_clusters:
+            render_cluster_card(cluster)
+    else:
+        st.subheader("Top 机会")
+        if not top_ideas:
+            st.info("当前快照没有候选机会。")
+        for idea in top_ideas:
+            render_idea_card(idea)
 
 with right:
     render_counts_table("分类分布", snapshot.get("category_counts", {}), "分类")
     render_counts_table("人工标注", snapshot.get("label_counts", {}), "标注")
+    if source_health:
+        st.subheader("数据源健康")
+        st.markdown(
+            f"""
+            <div class="quiet-box">
+                <h3>{esc(source_health.get("status", "unknown"))} · 错误 {esc(source_health.get("error_count", 0))}</h3>
+                <p>原始 {esc(source_health.get("raw_count", 0))} · 去重 {esc(source_health.get("unique_count", 0))} · 候选 {esc(source_health.get("candidate_count", 0))}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        counts = source_health.get("source_counts", {})
+        if counts:
+            render_counts_table("候选来源", counts, "来源")
 
 st.subheader("7 天重复信号")
 if repeated:
@@ -360,7 +466,7 @@ if report:
         data=report,
         file_name=f"demand-report-{generated_at.split(' ')[0]}.md",
         mime="text/markdown",
-        use_container_width=True,
+        width="stretch",
     )
     with st.expander("预览日报", expanded=False):
         st.code(report, language="markdown")
