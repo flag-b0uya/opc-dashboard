@@ -15,6 +15,13 @@ sys.path.append(os.path.dirname(__file__))
 from idea_status import load_status, update_idea_status, DEFAULT_STATUSES
 from execution_log import load_logs, get_execution_summary
 from validation_generator import generate_validation_experiments
+from demand_engine import (
+    DEFAULT_HN_QUERIES,
+    DEFAULT_SUBREDDITS,
+    format_markdown_report,
+    ideas_to_dicts,
+    run_demand_scan,
+)
 
 st.set_page_config(page_title="One-Person OPC", page_icon="🚀", layout="wide")
 st.title("🚀 One-Person OPC Dashboard")
@@ -77,7 +84,7 @@ def parse_backlog(content):
 
 # 侧边栏
 st.sidebar.header("功能导航")
-page = st.sidebar.radio("选择页面", ["今日 Backlog", "验证实验", "执行记录", "状态管理"])
+page = st.sidebar.radio("选择页面", ["今日 Backlog", "蓝海需求引擎 V0", "验证实验", "执行记录", "状态管理"])
 
 if page == "今日 Backlog":
     st.header("📅 最新 Backlog")
@@ -111,6 +118,120 @@ if page == "今日 Backlog":
                     col3.metric("一人可行性", item.get('solo', 0))
                     col4.caption(item.get('resource', ''))
                     st.divider()
+
+elif page == "蓝海需求引擎 V0":
+    st.header("🌊 蓝海需求引擎 V0")
+    st.caption("公开数据源 + 规则过滤 + ERRC/JTBD/OPC/RICE 启发式评分。先验证信号质量，再升级复杂架构。")
+
+    with st.expander("扫描配置", expanded=True):
+        col1, col2 = st.columns(2)
+        with col1:
+            hn_queries_text = st.text_area(
+                "Hacker News 关键词（每行一个）",
+                value="\n".join(DEFAULT_HN_QUERIES),
+                height=140,
+            )
+            reddit_query = st.text_input(
+                "Reddit 搜索词",
+                value="alternative OR expensive OR manual OR missing feature",
+            )
+        with col2:
+            subreddits_text = st.text_area(
+                "Reddit 子版块（每行一个）",
+                value="\n".join(DEFAULT_SUBREDDITS),
+                height=140,
+            )
+            app_ids_text = st.text_input(
+                "App Store App IDs（逗号分隔，可留空）",
+                value="",
+                placeholder="例如：310633997, 1232780281",
+            )
+
+        col3, col4, col5 = st.columns([1, 1, 2])
+        with col3:
+            app_store_country = st.text_input("App Store 国家", value="us", max_chars=2)
+        with col4:
+            limit_per_source = st.slider("每个源抓取上限", min_value=5, max_value=25, value=10, step=5)
+        with col5:
+            st.write("")
+            run_scan = st.button("开始扫描", type="primary", use_container_width=True)
+
+    if run_scan:
+        hn_queries = [line.strip() for line in hn_queries_text.splitlines() if line.strip()]
+        subreddits = [line.strip() for line in subreddits_text.splitlines() if line.strip()]
+        app_ids = [item.strip() for item in app_ids_text.split(",") if item.strip()]
+
+        with st.spinner("正在抓取公开信号并评分..."):
+            ideas, summary = run_demand_scan(
+                hn_queries=hn_queries,
+                subreddits=subreddits,
+                reddit_query=reddit_query,
+                app_ids=app_ids,
+                app_store_country=app_store_country,
+                limit_per_source=limit_per_source,
+            )
+        st.session_state["demand_ideas"] = ideas
+        st.session_state["demand_summary"] = summary
+
+    ideas = st.session_state.get("demand_ideas", [])
+    summary = st.session_state.get("demand_summary")
+
+    if not summary:
+        st.info("点击“开始扫描”后，会生成候选痛点、评分和 Markdown 日报。V0 不存储数据，刷新页面后需要重新扫描。")
+    else:
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric("原始数据", summary.get("raw_count", 0))
+        col2.metric("候选痛点", summary.get("candidate_count", 0))
+        col3.metric("Build Now", summary.get("build_now_count", 0))
+        col4.metric("Monitor", summary.get("monitor_count", 0))
+
+        if summary.get("errors"):
+            with st.expander("抓取错误与限制", expanded=False):
+                for error in summary["errors"]:
+                    st.warning(error)
+
+        if not ideas:
+            st.warning("这次没有命中高价值痛点规则。建议换关键词、扩大 Reddit 子版块，或输入竞品 App Store ID。")
+        else:
+            report = format_markdown_report(ideas, summary)
+            tab1, tab2, tab3 = st.tabs(["Top 机会", "数据表", "Markdown 日报"])
+
+            with tab1:
+                for index, idea in enumerate(ideas[:10], 1):
+                    with st.container():
+                        title = idea.mvp_concept
+                        st.subheader(f"{index}. {title}")
+                        col_a, col_b, col_c, col_d, col_e = st.columns([1, 1, 1, 1, 1.2])
+                        col_a.metric("总分", idea.total_score)
+                        col_b.metric("ERRC", idea.errc_score)
+                        col_c.metric("JTBD", idea.jtbd_score)
+                        col_d.metric("OPC", idea.opc_score)
+                        col_e.metric("RICE", idea.rice_score)
+                        st.progress(idea.total_score / 100)
+                        st.write(f"**结论**：{idea.verdict}")
+                        st.write(f"**目标用户**：{idea.target_audience}")
+                        st.write(f"**痛点摘要**：{idea.pain_summary}")
+                        st.write(f"**命中规则**：{', '.join(idea.matched_rules)}")
+                        st.write(f"**下一步验证**：{idea.validation_step}")
+                        if idea.raw_item.source_url:
+                            st.markdown(f"**来源**：[{idea.raw_item.source} - {idea.raw_item.title}]({idea.raw_item.source_url})")
+                        else:
+                            st.write(f"**来源**：{idea.raw_item.source} - {idea.raw_item.title}")
+                        st.divider()
+
+            with tab2:
+                rows = ideas_to_dicts(ideas)
+                st.dataframe(rows, use_container_width=True)
+
+            with tab3:
+                st.download_button(
+                    "下载 Markdown 日报",
+                    data=report,
+                    file_name=f"demand-report-{summary.get('generated_at', '').split(' ')[0]}.md",
+                    mime="text/markdown",
+                    use_container_width=True,
+                )
+                st.code(report, language="markdown")
 
 elif page == "验证实验":
     st.header("🧪 验证实验生成器")
