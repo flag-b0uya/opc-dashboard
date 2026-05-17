@@ -14,11 +14,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, asdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Iterable, List, Optional, Tuple
 
 
@@ -133,6 +134,137 @@ HARD_TO_BUILD_PATTERNS = [
     "合规认证",
 ]
 
+LABEL_OPTIONS = [
+    "未标注",
+    "好信号",
+    "噪音",
+    "太宽泛",
+    "太难做",
+    "已有产品太强",
+    "非研发需求",
+]
+
+CATEGORY_RULES = {
+    "研发/产品功能": [
+        "api",
+        "bug",
+        "feature",
+        "github",
+        "code",
+        "developer",
+        "sdk",
+        "integration",
+        "export",
+        "import",
+        "dashboard",
+        "automation",
+        "missing",
+        "doesn't support",
+        "开发",
+        "接口",
+        "插件",
+        "自动化",
+        "导出",
+        "功能",
+        "缺少",
+    ],
+    "营销/内容增长": [
+        "seo",
+        "content",
+        "newsletter",
+        "copywriting",
+        "social media",
+        "ugc",
+        "distribution",
+        "product hunt",
+        "traffic",
+        "营销",
+        "内容",
+        "获客",
+        "流量",
+        "小红书",
+        "公众号",
+    ],
+    "销售/线索转化": [
+        "lead",
+        "sales",
+        "crm",
+        "demo",
+        "outreach",
+        "cold email",
+        "pipeline",
+        "prospect",
+        "客户",
+        "销售",
+        "线索",
+        "转化",
+        "私信",
+        "成交",
+    ],
+    "运营/内部流程": [
+        "workflow",
+        "manual",
+        "spreadsheet",
+        "report",
+        "invoice",
+        "admin",
+        "ops",
+        "back office",
+        "流程",
+        "手动",
+        "表格",
+        "报表",
+        "财务",
+        "运营",
+        "对账",
+    ],
+    "客服/成功/留存": [
+        "support",
+        "ticket",
+        "customer success",
+        "churn",
+        "onboarding",
+        "helpdesk",
+        "docs",
+        "客服",
+        "工单",
+        "留存",
+        "流失",
+        "帮助文档",
+        "用户成功",
+    ],
+    "定价/商业模式": [
+        "pricing",
+        "too expensive",
+        "subscription",
+        "paywall",
+        "billing",
+        "free plan",
+        "太贵",
+        "订阅",
+        "收费",
+        "定价",
+        "免费版",
+        "付费",
+    ],
+    "竞品/市场情报": [
+        "alternative to",
+        "competitor",
+        "vs",
+        "switch from",
+        "replace",
+        "migration",
+        "替代",
+        "竞品",
+        "迁移",
+        "平替",
+    ],
+}
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+HISTORY_FILE = os.path.join(DATA_DIR, "demand_history.json")
+LABELS_FILE = os.path.join(DATA_DIR, "demand_labels.json")
+
 
 @dataclass
 class RawItem:
@@ -148,15 +280,19 @@ class RawItem:
 @dataclass
 class ScoredIdea:
     raw_item: RawItem
+    category: str
+    signal_key: str
     mvp_concept: str
     target_audience: str
     pain_summary: str
     matched_rules: List[str]
+    category_signals: List[str]
     errc_score: int
     jtbd_score: int
     opc_score: int
     rice_score: int
     total_score: int
+    repeat_7d: int
     verdict: str
     why: str
     validation_step: str
@@ -200,6 +336,22 @@ def _app_store_entry_link(entry: Dict, fallback_url: str) -> str:
     if isinstance(link, dict):
         return link.get("attributes", {}).get("href", fallback_url)
     return fallback_url
+
+
+def _safe_read_json(path: str, fallback):
+    if not os.path.exists(path):
+        return fallback
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return fallback
+
+
+def _safe_write_json(path: str, data) -> None:
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
 
 def fetch_hn_items(queries: Iterable[str], limit_per_query: int = 10) -> Tuple[List[RawItem], List[str]]:
@@ -396,6 +548,30 @@ def _clamp(value: int, low: int, high: int) -> int:
     return max(low, min(value, high))
 
 
+def classify_text(text: str) -> Tuple[str, List[str]]:
+    lowered = text.lower()
+    scores = []
+    for category, patterns in CATEGORY_RULES.items():
+        matched = [pattern for pattern in patterns if pattern in lowered]
+        if matched:
+            scores.append((category, len(matched), matched))
+    if not scores:
+        return "其他/待判定", []
+    scores.sort(key=lambda item: item[1], reverse=True)
+    return scores[0][0], scores[0][2]
+
+
+def make_signal_key(category: str, text: str, rules: List[str]) -> str:
+    lowered = re.sub(r"[^a-z0-9\u4e00-\u9fff\s]", " ", text.lower())
+    tokens = [
+        token
+        for token in lowered.split()
+        if len(token) >= 4 and token not in {"with", "that", "this", "from", "have", "need", "tool"}
+    ]
+    anchors = sorted(set(tokens[:8] + [rule.replace(" ", "_") for rule in rules[:4]]))
+    return _make_id(category, " ".join(anchors))
+
+
 def infer_target_audience(item: RawItem, text: str) -> str:
     lowered = text.lower()
     if "reddit r/" in item.source.lower():
@@ -434,9 +610,29 @@ def generate_mvp_concept(item: RawItem, text: str, audience: str) -> str:
     return f"为{audience}构建一个聚焦该痛点的微型 SaaS。"
 
 
+def make_validation_step(verdict: str, category: str) -> str:
+    if verdict == "Build Now":
+        if category == "营销/内容增长":
+            return "今天做 1 个落地页标题 + 3 条内容钩子，发到目标社区测试点击/回复。"
+        if category == "销售/线索转化":
+            return "今天找 20 个潜在线索，发送 2 版私信，记录回复率和具体 objections。"
+        if category == "运营/内部流程":
+            return "今天访谈 5 个有相同流程的人，确认他们每周浪费的时间和愿付价格。"
+        if category == "客服/成功/留存":
+            return "今天收集 5 条同类客服/流失案例，确认是否可用模板或自动化解决。"
+        if category == "定价/商业模式":
+            return "今天列出 5 个现有替代品价格，验证低价垂直版是否有足够差异化。"
+        return "今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。"
+    if verdict == "Monitor":
+        return "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。"
+    return "暂不投入开发，只保留为低优先级观察样本。"
+
+
 def score_candidate(item: RawItem, rules: List[str]) -> ScoredIdea:
     text = get_candidate_text(item)
     lowered = text.lower()
+    category, category_signals = classify_text(text)
+    signal_key = make_signal_key(category, text, rules)
 
     friction_count = _count_matches(text, PAIN_PATTERNS)
     b2b_count = _count_matches(text, B2B_PATTERNS)
@@ -484,12 +680,7 @@ def score_candidate(item: RawItem, rules: List[str]) -> ScoredIdea:
     pain_summary = summarize_pain(text)
     concept = generate_mvp_concept(item, text, audience)
 
-    if verdict == "Build Now":
-        validation_step = "今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。"
-    elif verdict == "Monitor":
-        validation_step = "继续收集同类信号，等出现 3 条以上相似抱怨后再做落地页。"
-    else:
-        validation_step = "暂不投入开发，只保留为低优先级观察样本。"
+    validation_step = make_validation_step(verdict, category)
 
     why = (
         f"命中 {len(rules)} 个痛点规则；"
@@ -499,15 +690,19 @@ def score_candidate(item: RawItem, rules: List[str]) -> ScoredIdea:
 
     return ScoredIdea(
         raw_item=item,
+        category=category,
+        signal_key=signal_key,
         mvp_concept=concept,
         target_audience=audience,
         pain_summary=pain_summary,
         matched_rules=rules,
+        category_signals=category_signals,
         errc_score=errc_score,
         jtbd_score=jtbd_score,
         opc_score=opc_score,
         rice_score=rice_score,
         total_score=total,
+        repeat_7d=1,
         verdict=verdict,
         why=why,
         validation_step=validation_step,
@@ -539,6 +734,9 @@ def run_demand_scan(
     unique_items = dedupe_items(all_items)
     candidates = filter_candidates(unique_items)
     scored = [score_candidate(item, rules) for item, rules in candidates]
+    repeat_counts = get_repeat_counts(scored, days=7)
+    for idea in scored:
+        idea.repeat_7d = repeat_counts.get(idea.signal_key, 1)
     scored.sort(key=lambda idea: idea.total_score, reverse=True)
 
     summary = {
@@ -554,13 +752,137 @@ def run_demand_scan(
     return scored, summary
 
 
+def load_history() -> List[Dict]:
+    return _safe_read_json(HISTORY_FILE, [])
+
+
+def save_history(records: List[Dict]) -> None:
+    _safe_write_json(HISTORY_FILE, records)
+
+
+def load_labels() -> Dict:
+    return _safe_read_json(LABELS_FILE, {})
+
+
+def save_labels(labels: Dict) -> None:
+    _safe_write_json(LABELS_FILE, labels)
+
+
+def update_label(idea_id: str, label: str, note: str = "") -> None:
+    labels = load_labels()
+    labels[idea_id] = {
+        "label": label,
+        "note": note,
+        "updated_at": datetime.now().isoformat(timespec="seconds"),
+    }
+    save_labels(labels)
+
+
+def history_record_from_idea(idea: ScoredIdea, scan_id: str, generated_at: str) -> Dict:
+    return {
+        "scan_id": scan_id,
+        "scanned_at": generated_at,
+        "idea_id": idea.raw_item.id,
+        "signal_key": idea.signal_key,
+        "category": idea.category,
+        "source": idea.raw_item.source,
+        "title": idea.raw_item.title,
+        "source_url": idea.raw_item.source_url,
+        "mvp_concept": idea.mvp_concept,
+        "pain_summary": idea.pain_summary,
+        "total_score": idea.total_score,
+        "verdict": idea.verdict,
+        "matched_rules": idea.matched_rules,
+        "category_signals": idea.category_signals,
+    }
+
+
+def save_scan_to_history(ideas: List[ScoredIdea], summary: Dict, max_records: int = 2000) -> int:
+    history = load_history()
+    scan_id = _make_id(summary.get("generated_at", ""), str(summary.get("raw_count", 0)), str(len(ideas)))
+    existing = {(record.get("scan_id"), record.get("idea_id")) for record in history}
+    new_records = []
+    for idea in ideas:
+        key = (scan_id, idea.raw_item.id)
+        if key in existing:
+            continue
+        new_records.append(history_record_from_idea(idea, scan_id, summary.get("generated_at", "")))
+    history.extend(new_records)
+    history = history[-max_records:]
+    save_history(history)
+    return len(new_records)
+
+
+def parse_history_time(value: str) -> Optional[datetime]:
+    if not value:
+        return None
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S"):
+        try:
+            return datetime.strptime(value[:19], fmt)
+        except ValueError:
+            continue
+    return None
+
+
+def recent_history(days: int = 7) -> List[Dict]:
+    cutoff = datetime.now() - timedelta(days=days)
+    records = []
+    for record in load_history():
+        scanned_at = parse_history_time(record.get("scanned_at", ""))
+        if scanned_at and scanned_at >= cutoff:
+            records.append(record)
+    return records
+
+
+def get_repeat_counts(ideas: Iterable[ScoredIdea], days: int = 7) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for record in recent_history(days):
+        key = record.get("signal_key")
+        if key:
+            counts[key] = counts.get(key, 0) + 1
+    for idea in ideas:
+        counts[idea.signal_key] = counts.get(idea.signal_key, 0) + 1
+    return counts
+
+
+def get_history_summary(days: int = 7) -> Dict:
+    records = recent_history(days)
+    category_counts: Dict[str, int] = {}
+    signal_counts: Dict[str, Dict] = {}
+    for record in records:
+        category = record.get("category", "其他/待判定")
+        category_counts[category] = category_counts.get(category, 0) + 1
+        key = record.get("signal_key")
+        if key:
+            item = signal_counts.setdefault(key, {
+                "signal_key": key,
+                "category": category,
+                "count": 0,
+                "top_score": 0,
+                "sample_title": record.get("title", ""),
+                "sample_url": record.get("source_url", ""),
+                "sample_concept": record.get("mvp_concept", ""),
+            })
+            item["count"] += 1
+            item["top_score"] = max(item["top_score"], record.get("total_score", 0))
+    repeated = sorted(signal_counts.values(), key=lambda item: (item["count"], item["top_score"]), reverse=True)
+    return {
+        "records": records,
+        "total": len(records),
+        "category_counts": category_counts,
+        "repeated_signals": [item for item in repeated if item["count"] >= 2],
+    }
+
+
 def ideas_to_dicts(ideas: Iterable[ScoredIdea]) -> List[Dict]:
     rows = []
+    labels = load_labels()
     for idea in ideas:
         row = asdict(idea)
         row["source"] = idea.raw_item.source
         row["title"] = idea.raw_item.title
         row["source_url"] = idea.raw_item.source_url
+        row["label"] = labels.get(idea.raw_item.id, {}).get("label", "未标注")
         row.pop("raw_item", None)
         rows.append(row)
     return rows
@@ -589,6 +911,8 @@ def format_markdown_report(ideas: List[ScoredIdea], summary: Dict, top_n: int = 
             f"- 来源：[{idea.raw_item.source}]({idea.raw_item.source_url})",
             f"- 原标题：{idea.raw_item.title}",
             f"- 总分：{idea.total_score} / 100",
+            f"- 分类：{idea.category}",
+            f"- 7 天重复信号：{idea.repeat_7d}",
             f"- 评分：ERRC {idea.errc_score} / JTBD {idea.jtbd_score} / OPC {idea.opc_score} / RICE {idea.rice_score}",
             f"- 结论：{idea.verdict}",
             f"- 目标用户：{idea.target_audience}",
