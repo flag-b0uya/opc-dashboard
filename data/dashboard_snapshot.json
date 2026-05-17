@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-17 20:36:32",
+  "summary": {
+    "raw_count": 10,
+    "unique_count": 10,
+    "candidate_count": 5,
+    "build_now_count": 0,
+    "monitor_count": 2,
+    "discard_count": 3,
+    "saved_count": 5,
+    "errors": []
+  },
+  "top_ideas": [
+    {
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 55,
+      "verdict": "Monitor",
+      "pain_summary": "Show HN: Flowdash – Build internal tools for your team’s manual workflows",
+      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
+      "source": "Hacker News",
+      "title": "Show HN: Flowdash – Build internal tools for your team’s manual workflows",
+      "source_url": "https://flowdash.com/",
+      "repeat_7d": 2,
+      "label": "未标注"
+    },
+    {
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 55,
+      "verdict": "Monitor",
+      "pain_summary": "Replacing manual marketing workflows with autonomous AI agents",
+      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
+      "source": "Hacker News",
+      "title": "Replacing manual marketing workflows with autonomous AI agents",
+      "source_url": "https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8",
+      "repeat_7d": 2,
+      "label": "未标注"
+    },
+    {
+      "mvp_concept": "为开发者、独立黑客或技术团队构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 52,
+      "verdict": "Discard",
+      "pain_summary": "Show HN: Phiona – Automate manual data workflows, no code required",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "Show HN: Phiona – Automate manual data workflows, no code required",
+      "source_url": "https://news.ycombinator.com/item?id=25126131",
+      "repeat_7d": 2,
+      "label": "未标注"
+    },
+    {
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 52,
+      "verdict": "Discard",
+      "pain_summary": "Show HN: The Cost of Manual Workflows",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "Show HN: The Cost of Manual Workflows",
+      "source_url": "https://news.ycombinator.com/item?id=47459627",
+      "repeat_7d": 2,
+      "label": "未标注"
+    },
+    {
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 52,
+      "verdict": "Discard",
+      "pain_summary": "A manual workflow to fix the \"muffled\" audio of AI music models",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "A manual workflow to fix the \"muffled\" audio of AI music models",
+      "source_url": "https://news.ycombinator.com/item?id=46884442",
+      "repeat_7d": 2,
+      "label": "未标注"
+    }
+  ],
+  "category_counts": {
+    "运营/内部流程": 10
+  },
+  "repeated_signals_7d": [
+    {
+      "signal_key": "825c766f7a08ddf8",
+      "category": "运营/内部流程",
+      "count": 2,
+      "top_score": 55,
+      "sample_title": "Show HN: Flowdash – Build internal tools for your team’s manual workflows",
+      "sample_url": "https://flowdash.com/",
+      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
+    },
+    {
+      "signal_key": "0b1fb6e769fb83e7",
+      "category": "运营/内部流程",
+      "count": 2,
+      "top_score": 55,
+      "sample_title": "Replacing manual marketing workflows with autonomous AI agents",
+      "sample_url": "https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8",
+      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
+    },
+    {
+      "signal_key": "082b4645338d27e4",
+      "category": "运营/内部流程",
+      "count": 2,
+      "top_score": 52,
+      "sample_title": "Show HN: Phiona – Automate manual data workflows, no code required",
+      "sample_url": "https://news.ycombinator.com/item?id=25126131",
+      "sample_concept": "为开发者、独立黑客或技术团队构建一个自动化工具，消除重复手动流程。"
+    },
+    {
+      "signal_key": "52f097b44a19bb11",
+      "category": "运营/内部流程",
+      "count": 2,
+      "top_score": 52,
+      "sample_title": "Show HN: The Cost of Manual Workflows",
+      "sample_url": "https://news.ycombinator.com/item?id=47459627",
+      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
+    },
+    {
+      "signal_key": "a56274ed7ce1d183",
+      "category": "运营/内部流程",
+      "count": 2,
+      "top_score": 52,
+      "sample_title": "A manual workflow to fix the \"muffled\" audio of AI music models",
+      "sample_url": "https://news.ycombinator.com/item?id=46884442",
+      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
+    }
+  ],
+  "label_counts": {
+    "未标注": 5
+  },
+  "markdown_report": "# 蓝海需求扫描日报 - 2026-05-17 20:36:32\n\n## 概览\n\n- 原始数据：10 条\n- 去重后：10 条\n- 候选痛点：5 条\n- Build Now：0 条\n- Monitor：2 条\n\n## Top 机会\n\n### 1. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://flowdash.com/)\n- 原标题：Show HN: Flowdash – Build internal tools for your team’s manual workflows\n- 总分：55 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：2\n- 评分：ERRC 16 / JTBD 9 / OPC 24 / RICE 6\n- 结论：Monitor\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Show HN: Flowdash – Build internal tools for your team’s manual workflows\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 2. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8)\n- 原标题：Replacing manual marketing workflows with autonomous AI agents\n- 总分：55 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：2\n- 评分：ERRC 16 / JTBD 9 / OPC 24 / RICE 6\n- 结论：Monitor\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Replacing manual marketing workflows with autonomous AI agents\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 3. 为开发者、独立黑客或技术团队构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://news.ycombinator.com/item?id=25126131)\n- 原标题：Show HN: Phiona – Automate manual data workflows, no code required\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：2\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：开发者、独立黑客或技术团队\n- 痛点摘要：Show HN: Phiona – Automate manual data workflows, no code required\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 4. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://news.ycombinator.com/item?id=47459627)\n- 原标题：Show HN: The Cost of Manual Workflows\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：2\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Show HN: The Cost of Manual Workflows\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 5. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://news.ycombinator.com/item?id=46884442)\n- 原标题：A manual workflow to fix the \"muffled\" audio of AI music models\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：2\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：A manual workflow to fix the \"muffled\" audio of AI music models\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n"
+}
