@@ -44,7 +44,25 @@ python3 local_runner.py --hn-query "manual workflow" --subreddit SaaS --limit-pe
 - `app_ids`: App Store app ID 列表。
 - `app_store_country`: App Store 国家区码。
 - `limit_per_source`: 每个来源抓取数量。
+- `history_max_records`: 本地历史最多保留记录数，影响 7 天重复信号统计，默认 10000。
 - `output`: 快照输出路径，默认 `data/dashboard_snapshot.json`。
+
+默认样例按轻量雷达版配置：10 个 HN 关键词、8 个 Reddit 社区、10 个 App Store app、每源 25 条。理论原始量约数百条/天，实际数量会受来源返回量、去重和筛选影响。
+
+## 数据源检查
+
+本地可以单独检查数据源适配状态：
+
+```bash
+python3 source_health_check.py --config dashboard_config.example.json --limit 3
+```
+
+检查脚本会分别请求 Hacker News、Reddit 和 App Store，并输出每类来源取回数量、样例标题和错误信息。
+需要检查配置里的全部来源时：
+
+```bash
+python3 source_health_check.py --config dashboard_config.example.json --limit 1 --all-configured
+```
 
 ## 本地文件
 
@@ -59,4 +77,6 @@ python3 local_runner.py --hn-query "manual workflow" --subreddit SaaS --limit-pe
 ```bash
 python3 -m unittest discover -v
 python3 -m compileall .
+python3 source_health_check.py --config dashboard_config.example.json --limit 3
+python3 source_health_check.py --config dashboard_config.example.json --limit 1 --all-configured
 ```
