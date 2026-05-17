@@ -3,8 +3,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from demand_engine import DEFAULT_APP_IDS, DEFAULT_HN_QUERIES, DEFAULT_SUBREDDITS
-from local_runner import parse_args, resolve_scan_options
+from local_runner import (
+    DEFAULT_RUNNER_APP_IDS,
+    DEFAULT_RUNNER_HN_QUERIES,
+    DEFAULT_RUNNER_SUBREDDITS,
+    parse_args,
+    resolve_scan_options,
+)
 
 
 class LocalRunnerConfigTest(unittest.TestCase):
@@ -13,10 +18,10 @@ class LocalRunnerConfigTest(unittest.TestCase):
 
         options = resolve_scan_options(args)
 
-        self.assertEqual(options["hn_queries"], DEFAULT_HN_QUERIES)
-        self.assertEqual(options["subreddits"], DEFAULT_SUBREDDITS)
+        self.assertEqual(options["hn_queries"], DEFAULT_RUNNER_HN_QUERIES)
+        self.assertEqual(options["subreddits"], DEFAULT_RUNNER_SUBREDDITS)
         self.assertEqual(options["reddit_query"], "alternative OR expensive OR manual OR missing feature")
-        self.assertEqual(options["app_ids"], DEFAULT_APP_IDS)
+        self.assertEqual(options["app_ids"], DEFAULT_RUNNER_APP_IDS)
         self.assertEqual(options["app_store_country"], "us")
         self.assertEqual(options["limit_per_source"], 10)
         self.assertEqual(options["history_max_records"], 10000)
