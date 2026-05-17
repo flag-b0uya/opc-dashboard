@@ -9,9 +9,6 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Union
 
 from demand_engine import (
-    DEFAULT_APP_IDS,
-    DEFAULT_HN_QUERIES,
-    DEFAULT_SUBREDDITS,
     format_markdown_report,
     get_history_summary,
     ideas_to_dicts,
@@ -24,6 +21,40 @@ from snapshot_exporter import build_dashboard_snapshot, write_dashboard_snapshot
 DEFAULT_CONFIG_PATH = Path("dashboard_config.json")
 DEFAULT_OUTPUT_PATH = "data/dashboard_snapshot.json"
 DEFAULT_HISTORY_MAX_RECORDS = 10000
+DEFAULT_RUNNER_HN_QUERIES = [
+    "alternative to",
+    "too expensive",
+    "manual workflow",
+    "missing feature",
+    "developer tool",
+    "need a tool",
+    "looking for",
+    "doesn't support",
+    "takes too long",
+    "spreadsheet workflow",
+]
+DEFAULT_RUNNER_SUBREDDITS = [
+    "SaaS",
+    "Entrepreneur",
+    "indiehackers",
+    "smallbusiness",
+    "startups",
+    "ProductManagement",
+    "NoCode",
+    "freelance",
+]
+DEFAULT_RUNNER_APP_IDS = [
+    "1232780281",
+    "618783545",
+    "461504587",
+    "489969512",
+    "572688855",
+    "914172636",
+    "897446215",
+    "1278508951",
+    "842849113",
+    "1535098836",
+]
 
 
 def _split_csv(value: str) -> List[str]:
@@ -71,15 +102,15 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
 
 def resolve_scan_options(args: argparse.Namespace) -> Dict[str, Any]:
     config = load_runner_config(args.config)
-    hn_queries = args.hn_queries or _as_list(config.get("hn_queries")) or DEFAULT_HN_QUERIES
-    subreddits = args.subreddits or _as_list(config.get("subreddits")) or DEFAULT_SUBREDDITS
+    hn_queries = args.hn_queries or _as_list(config.get("hn_queries")) or DEFAULT_RUNNER_HN_QUERIES
+    subreddits = args.subreddits or _as_list(config.get("subreddits")) or DEFAULT_RUNNER_SUBREDDITS
 
     if args.app_ids is not None:
         app_ids = _split_csv(args.app_ids)
     elif "app_ids" in config:
         app_ids = _as_list(config.get("app_ids"))
     else:
-        app_ids = DEFAULT_APP_IDS
+        app_ids = DEFAULT_RUNNER_APP_IDS
 
     return {
         "hn_queries": hn_queries,
