@@ -14,7 +14,7 @@ st.set_page_config(page_title="蓝海机会雷达", page_icon="🌊", layout="wi
 
 
 def esc(value) -> str:
-    return html.escape(str(value or ""))
+    return html.escape("" if value is None else str(value))
 
 
 def render_styles() -> None:
@@ -115,6 +115,24 @@ def render_styles() -> None:
             font-size: 12px;
             margin-top: 8px;
         }
+        .summary-box {
+            border: 1px solid #dfe4ea;
+            border-radius: 8px;
+            background: #ffffff;
+            padding: 20px;
+            margin: 8px 0 20px;
+        }
+        .summary-box h2 {
+            color: #101828;
+            font-size: 24px;
+            line-height: 1.35;
+            margin: 0 0 10px;
+        }
+        .summary-box p {
+            color: #475467;
+            line-height: 1.7;
+            margin: 7px 0;
+        }
         .idea-card {
             border: 1px solid #e6e8eb;
             border-radius: 8px;
@@ -177,6 +195,35 @@ def render_styles() -> None:
             color: #475467;
             font-size: 13px;
             margin: 4px 0;
+        }
+        .source-row {
+            display: grid;
+            grid-template-columns: minmax(120px, 1fr) 46px;
+            gap: 10px;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .source-name {
+            color: #344054;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        .source-bar {
+            height: 8px;
+            border-radius: 999px;
+            background: #edf2f7;
+            overflow: hidden;
+        }
+        .source-bar span {
+            display: block;
+            height: 8px;
+            border-radius: 999px;
+            background: #0f766e;
+        }
+        .source-count {
+            color: #667085;
+            font-size: 13px;
+            text-align: right;
         }
         .tag {
             display: inline-block;
@@ -241,6 +288,46 @@ def render_metric(label: str, value, note: str = "") -> None:
             <div class="metric-label">{esc(label)}</div>
             <div class="metric-value">{esc(value)}</div>
             <div class="metric-note">{esc(note)}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def decision_label(verdict: str) -> str:
+    if verdict == "Build Now":
+        return "立即验证"
+    if verdict == "Monitor":
+        return "继续观察"
+    return "暂不投入"
+
+
+def render_executive_summary(summary: dict, decision_summary: dict, source_stats: dict) -> None:
+    build_now = int(decision_summary.get("build_now_count", 0) or 0)
+    monitor = int(decision_summary.get("monitor_count", 0) or 0)
+    discard = int(decision_summary.get("discard_count", 0) or 0)
+    total_clusters = int(decision_summary.get("total_clusters", 0) or 0)
+    raw_count = int(summary.get("raw_count", 0) or 0)
+    candidate_count = int(summary.get("candidate_count", 0) or 0)
+    top_platform = ""
+    platforms = source_stats.get("platforms", []) if source_stats else []
+    if platforms:
+        top_platform = f"主要来源是 {platforms[0].get('name')}，贡献 {platforms[0].get('percent', 0)}% 候选信号。"
+
+    if build_now:
+        headline = f"今天有 {build_now} 个需求簇值得立即验证"
+        detail = "这些机会同时满足高分、重复信号、明确场景和可执行验证动作。"
+    else:
+        headline = "今天没有足够可信的立即开工机会"
+        detail = "当前信号更适合继续观察：有讨论热度，但证据链还不够完整，或带有明显泛创业/自推噪音。"
+
+    st.markdown(
+        f"""
+        <div class="summary-box">
+            <h2>{esc(headline)}</h2>
+            <p>{esc(detail)}</p>
+            <p>本次扫描 {esc(raw_count)} 条原始信号，筛出 {esc(candidate_count)} 条候选，合并为 {esc(total_clusters)} 个需求簇：
+            {esc(build_now)} 个立即验证，{esc(monitor)} 个继续观察，{esc(discard)} 个暂不投入。{esc(top_platform)}</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -318,12 +405,13 @@ def render_idea_card(idea: dict) -> None:
 def render_cluster_card(cluster: dict) -> None:
     verdict = cluster.get("decision_verdict", "Monitor")
     verdict_class = "tag-strong" if verdict == "Build Now" else "tag-warm" if verdict == "Monitor" else ""
+    label = decision_label(verdict)
     st.markdown(
         f"""
         <div class="cluster-card">
             <span class="tag">{esc(cluster.get("category", "其他/待判定"))}</span>
-            <span class="tag {verdict_class}">{esc(verdict)}</span>
-            <span class="tag">Decision {esc(cluster.get("decision_score", 0))}</span>
+            <span class="tag {verdict_class}">{esc(label)}</span>
+            <span class="tag">判断分 {esc(cluster.get("decision_score", 0))}</span>
             <h3>{esc(cluster.get("title", "待验证机会"))}</h3>
             <div class="cluster-meta">
                 <div><span>7天重复</span><strong>{esc(cluster.get("count_7d", 0))}</strong></div>
@@ -332,7 +420,7 @@ def render_cluster_card(cluster: dict) -> None:
                 <div><span>平均分</span><strong>{esc(cluster.get("avg_score", 0))}</strong></div>
             </div>
             <p>{esc(cluster.get("evidence_summary", ""))}</p>
-            <p><strong>判断：</strong>{esc(cluster.get("decision_reason", ""))}</p>
+            <p><strong>为什么这样判断：</strong>{esc(cluster.get("decision_reason", ""))}</p>
             <p><strong>下一步：</strong>{esc(cluster.get("recommended_action", ""))}</p>
         </div>
         """,
@@ -349,6 +437,42 @@ def render_cluster_card(cluster: dict) -> None:
                     st.markdown(f"- [{title}]({sample.get('source_url')}) · {source} · Score {score}")
                 else:
                     st.markdown(f"- {title} · {source} · Score {score}")
+
+
+def render_source_stats(source_stats: dict) -> None:
+    st.subheader("来源统计")
+    if not source_stats or not source_stats.get("total_candidates"):
+        st.info("暂无来源统计。")
+        return
+
+    st.caption(f"按候选信号统计，共 {source_stats.get('total_candidates', 0)} 条。")
+    for platform in source_stats.get("platforms", []):
+        percent = int(platform.get("percent", 0) or 0)
+        st.markdown(
+            f"""
+            <div class="source-row">
+                <div>
+                    <div class="source-name">{esc(platform.get("name", ""))}</div>
+                    <div class="source-bar"><span style="width:{percent}%"></span></div>
+                </div>
+                <div class="source-count">{esc(platform.get("count", 0))} · {esc(percent)}%</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    top_sources = source_stats.get("top_sources", [])
+    if top_sources:
+        with st.expander("具体来源排行", expanded=False):
+            rows = [
+                {
+                    "来源": item.get("source", ""),
+                    "候选数": item.get("count", 0),
+                    "占比": f"{item.get('percent', 0)}%",
+                }
+                for item in top_sources
+            ]
+            st.dataframe(rows, width="stretch", hide_index=True)
 
 
 def render_counts_table(title: str, counts: dict, key_name: str) -> None:
@@ -373,6 +497,7 @@ if snapshot is None:
 summary = snapshot.get("summary", {})
 decision_summary = snapshot.get("decision_summary", {})
 source_health = snapshot.get("source_health", {})
+source_stats = snapshot.get("source_stats", {})
 opportunity_clusters = snapshot.get("opportunity_clusters", [])
 top_ideas = snapshot.get("top_ideas", [])
 repeated = snapshot.get("repeated_signals_7d", [])
@@ -393,13 +518,15 @@ with hero_left:
 with hero_right:
     render_radar_panel(summary, decision_summary, len(repeated))
 
+render_executive_summary(summary, decision_summary, source_stats)
+
 metric_cols = st.columns(4)
 with metric_cols[0]:
     render_metric("候选机会", summary.get("candidate_count", 0), f"原始信号 {summary.get('raw_count', 0)}")
 with metric_cols[1]:
-    render_metric("Build Now", decision_summary.get("build_now_count", summary.get("build_now_count", 0)), "按需求簇判断")
+    render_metric("立即验证", decision_summary.get("build_now_count", summary.get("build_now_count", 0)), "证据链完整")
 with metric_cols[2]:
-    render_metric("Monitor", decision_summary.get("monitor_count", summary.get("monitor_count", 0)), "继续观察")
+    render_metric("继续观察", decision_summary.get("monitor_count", summary.get("monitor_count", 0)), "等待更多重复")
 with metric_cols[3]:
     render_metric("需求簇", decision_summary.get("total_clusters", len(opportunity_clusters)), f"重复信号 {len(repeated)}")
 
@@ -413,7 +540,7 @@ left, right = st.columns([1.15, 0.85], gap="large")
 
 with left:
     if opportunity_clusters:
-        st.subheader("Top 需求簇")
+        st.subheader("优先关注的需求簇")
         for cluster in opportunity_clusters:
             render_cluster_card(cluster)
     else:
@@ -424,6 +551,7 @@ with left:
             render_idea_card(idea)
 
 with right:
+    render_source_stats(source_stats)
     render_counts_table("分类分布", snapshot.get("category_counts", {}), "分类")
     render_counts_table("人工标注", snapshot.get("label_counts", {}), "标注")
     if source_health:
