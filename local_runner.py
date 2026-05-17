@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Union
 
 from demand_engine import (
+    DEFAULT_APP_IDS,
     DEFAULT_HN_QUERIES,
     DEFAULT_SUBREDDITS,
     format_markdown_report,
@@ -22,6 +23,7 @@ from snapshot_exporter import build_dashboard_snapshot, write_dashboard_snapshot
 
 DEFAULT_CONFIG_PATH = Path("dashboard_config.json")
 DEFAULT_OUTPUT_PATH = "data/dashboard_snapshot.json"
+DEFAULT_HISTORY_MAX_RECORDS = 10000
 
 
 def _split_csv(value: str) -> List[str]:
@@ -62,6 +64,7 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser.add_argument("--app-ids", help="Comma-separated App Store app IDs.")
     parser.add_argument("--app-store-country")
     parser.add_argument("--limit-per-source", type=int)
+    parser.add_argument("--history-max-records", type=int)
     parser.add_argument("--output")
     return parser.parse_args(argv)
 
@@ -73,8 +76,10 @@ def resolve_scan_options(args: argparse.Namespace) -> Dict[str, Any]:
 
     if args.app_ids is not None:
         app_ids = _split_csv(args.app_ids)
-    else:
+    elif "app_ids" in config:
         app_ids = _as_list(config.get("app_ids"))
+    else:
+        app_ids = DEFAULT_APP_IDS
 
     return {
         "hn_queries": hn_queries,
@@ -85,6 +90,8 @@ def resolve_scan_options(args: argparse.Namespace) -> Dict[str, Any]:
         "app_ids": app_ids,
         "app_store_country": args.app_store_country or config.get("app_store_country") or "us",
         "limit_per_source": args.limit_per_source or int(config.get("limit_per_source", 10)),
+        "history_max_records": args.history_max_records
+        or int(config.get("history_max_records", DEFAULT_HISTORY_MAX_RECORDS)),
         "output": args.output or config.get("output") or DEFAULT_OUTPUT_PATH,
     }
 
@@ -101,7 +108,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         app_store_country=options["app_store_country"],
         limit_per_source=options["limit_per_source"],
     )
-    saved_count = save_scan_to_history(ideas, summary)
+    saved_count = save_scan_to_history(ideas, summary, max_records=options["history_max_records"])
     summary["saved_count"] = saved_count
 
     report = format_markdown_report(ideas, summary)
