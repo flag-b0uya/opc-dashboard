@@ -264,6 +264,8 @@ CATEGORY_RULES = {
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 HISTORY_FILE = os.path.join(DATA_DIR, "demand_history.json")
 LABELS_FILE = os.path.join(DATA_DIR, "demand_labels.json")
+SUPABASE_HISTORY_TABLE = os.environ.get("SUPABASE_HISTORY_TABLE", "opc_demand_history")
+SUPABASE_LABELS_TABLE = os.environ.get("SUPABASE_LABELS_TABLE", "opc_demand_labels")
 
 
 @dataclass
@@ -352,6 +354,66 @@ def _safe_write_json(path: str, data) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def _supabase_config() -> Dict[str, str]:
+    key = (
+        os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+        or os.environ.get("SUPABASE_ANON_KEY")
+        or os.environ.get("SUPABASE_KEY")
+        or ""
+    )
+    return {
+        "url": os.environ.get("SUPABASE_URL", "").rstrip("/"),
+        "key": key,
+        "history_table": SUPABASE_HISTORY_TABLE,
+        "labels_table": SUPABASE_LABELS_TABLE,
+    }
+
+
+def is_supabase_enabled() -> bool:
+    config = _supabase_config()
+    return bool(config["url"] and config["key"])
+
+
+def get_storage_status() -> Dict:
+    config = _supabase_config()
+    if is_supabase_enabled():
+        return {
+            "backend": "Supabase",
+            "detail": f"{config['history_table']} / {config['labels_table']}",
+            "persistent": True,
+        }
+    return {
+        "backend": "本地 JSON",
+        "detail": "Streamlit Cloud 重启或重部署后可能丢失",
+        "persistent": False,
+    }
+
+
+def _supabase_request(method: str, table: str, query: str = "", payload=None):
+    config = _supabase_config()
+    if not config["url"] or not config["key"]:
+        raise RuntimeError("Supabase is not configured")
+
+    url = f"{config['url']}/rest/v1/{table}{query}"
+    body = None
+    headers = {
+        "apikey": config["key"],
+        "Authorization": f"Bearer {config['key']}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
+    if payload is not None:
+        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        headers["Prefer"] = "resolution=merge-duplicates,return=representation"
+
+    request = urllib.request.Request(url, data=body, headers=headers, method=method)
+    with urllib.request.urlopen(request, timeout=20) as response:
+        text = response.read().decode("utf-8")
+        if not text:
+            return None
+        return json.loads(text)
 
 
 def fetch_hn_items(queries: Iterable[str], limit_per_query: int = 10) -> Tuple[List[RawItem], List[str]]:
@@ -753,19 +815,88 @@ def run_demand_scan(
 
 
 def load_history() -> List[Dict]:
+    if is_supabase_enabled():
+        try:
+            rows = _supabase_request(
+                "GET",
+                SUPABASE_HISTORY_TABLE,
+                "?select=payload&order=scanned_at.desc&limit=2000",
+            )
+            return [row.get("payload", {}) for row in rows or [] if row.get("payload")]
+        except Exception:
+            pass
     return _safe_read_json(HISTORY_FILE, [])
 
 
 def save_history(records: List[Dict]) -> None:
     _safe_write_json(HISTORY_FILE, records)
+    if is_supabase_enabled() and records:
+        rows = []
+        for record in records:
+            record_id = _make_id(record.get("scan_id", ""), record.get("idea_id", ""), record.get("signal_key", ""))
+            rows.append({
+                "record_id": record_id,
+                "scan_id": record.get("scan_id", ""),
+                "idea_id": record.get("idea_id", ""),
+                "signal_key": record.get("signal_key", ""),
+                "category": record.get("category", ""),
+                "scanned_at": record.get("scanned_at", ""),
+                "payload": record,
+            })
+        try:
+            _supabase_request(
+                "POST",
+                SUPABASE_HISTORY_TABLE,
+                "?on_conflict=record_id",
+                payload=rows,
+            )
+        except Exception:
+            pass
 
 
 def load_labels() -> Dict:
+    if is_supabase_enabled():
+        try:
+            rows = _supabase_request(
+                "GET",
+                SUPABASE_LABELS_TABLE,
+                "?select=idea_id,label,note,updated_at&limit=5000",
+            )
+            return {
+                row["idea_id"]: {
+                    "label": row.get("label", "未标注"),
+                    "note": row.get("note", ""),
+                    "updated_at": row.get("updated_at", ""),
+                }
+                for row in rows or []
+                if row.get("idea_id")
+            }
+        except Exception:
+            pass
     return _safe_read_json(LABELS_FILE, {})
 
 
 def save_labels(labels: Dict) -> None:
     _safe_write_json(LABELS_FILE, labels)
+    if is_supabase_enabled() and labels:
+        rows = [
+            {
+                "idea_id": idea_id,
+                "label": info.get("label", "未标注"),
+                "note": info.get("note", ""),
+                "updated_at": info.get("updated_at", ""),
+            }
+            for idea_id, info in labels.items()
+        ]
+        try:
+            _supabase_request(
+                "POST",
+                SUPABASE_LABELS_TABLE,
+                "?on_conflict=idea_id",
+                payload=rows,
+            )
+        except Exception:
+            pass
 
 
 def update_label(idea_id: str, label: str, note: str = "") -> None:
