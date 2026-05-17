@@ -1,4 +1,5 @@
 __pycache__/
 .venv/
+dashboard_config.json
 data/demand_history.json
 data/demand_labels.json
