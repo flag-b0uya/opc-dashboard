@@ -66,7 +66,7 @@ def build_dashboard_snapshot(
         "top_ideas": top_ideas,
         "category_counts": dict(history_summary.get("category_counts", {})),
         "repeated_signals_7d": list(history_summary.get("repeated_signals", []))[:12],
-        "label_counts": count_labels(top_ideas),
+        "label_counts": count_labels(ideas),
         "markdown_report": markdown_report,
     }
 
