@@ -4,17 +4,38 @@
     "too expensive",
     "manual workflow",
     "missing feature",
-    "developer tool"
+    "developer tool",
+    "need a tool",
+    "looking for",
+    "doesn't support",
+    "takes too long",
+    "spreadsheet workflow"
   ],
   "subreddits": [
     "SaaS",
     "Entrepreneur",
     "indiehackers",
-    "smallbusiness"
+    "smallbusiness",
+    "startups",
+    "ProductManagement",
+    "NoCode",
+    "freelance"
   ],
   "reddit_query": "alternative OR expensive OR manual OR missing feature",
-  "app_ids": [],
+  "app_ids": [
+    "1232780281",
+    "618783545",
+    "461504587",
+    "489969512",
+    "572688855",
+    "914172636",
+    "897446215",
+    "1278508951",
+    "842849113",
+    "1535098836"
+  ],
   "app_store_country": "us",
-  "limit_per_source": 10,
+  "limit_per_source": 25,
+  "history_max_records": 10000,
   "output": "data/dashboard_snapshot.json"
 }
