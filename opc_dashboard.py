@@ -18,9 +18,14 @@ from validation_generator import generate_validation_experiments
 from demand_engine import (
     DEFAULT_HN_QUERIES,
     DEFAULT_SUBREDDITS,
+    LABEL_OPTIONS,
     format_markdown_report,
+    get_history_summary,
     ideas_to_dicts,
+    load_labels,
     run_demand_scan,
+    save_scan_to_history,
+    update_label,
 )
 
 st.set_page_config(page_title="One-Person OPC", page_icon="🚀", layout="wide")
@@ -170,20 +175,24 @@ elif page == "蓝海需求引擎 V0":
                 app_store_country=app_store_country,
                 limit_per_source=limit_per_source,
             )
+            saved_count = save_scan_to_history(ideas, summary)
+            summary["saved_count"] = saved_count
         st.session_state["demand_ideas"] = ideas
         st.session_state["demand_summary"] = summary
 
     ideas = st.session_state.get("demand_ideas", [])
     summary = st.session_state.get("demand_summary")
+    history_summary = get_history_summary(days=7)
 
     if not summary:
         st.info("点击“开始扫描”后，会生成候选痛点、评分和 Markdown 日报。V0 不存储数据，刷新页面后需要重新扫描。")
     else:
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3, col4, col5 = st.columns(5)
         col1.metric("原始数据", summary.get("raw_count", 0))
         col2.metric("候选痛点", summary.get("candidate_count", 0))
         col3.metric("Build Now", summary.get("build_now_count", 0))
         col4.metric("Monitor", summary.get("monitor_count", 0))
+        col5.metric("已保存历史", summary.get("saved_count", 0))
 
         if summary.get("errors"):
             with st.expander("抓取错误与限制", expanded=False):
@@ -194,36 +203,97 @@ elif page == "蓝海需求引擎 V0":
             st.warning("这次没有命中高价值痛点规则。建议换关键词、扩大 Reddit 子版块，或输入竞品 App Store ID。")
         else:
             report = format_markdown_report(ideas, summary)
-            tab1, tab2, tab3 = st.tabs(["Top 机会", "数据表", "Markdown 日报"])
+            tab1, tab2, tab3, tab4 = st.tabs(["Top 机会", "分类与重复信号", "数据表", "Markdown 日报"])
 
             with tab1:
+                labels = load_labels()
                 for index, idea in enumerate(ideas[:10], 1):
                     with st.container():
                         title = idea.mvp_concept
                         st.subheader(f"{index}. {title}")
-                        col_a, col_b, col_c, col_d, col_e = st.columns([1, 1, 1, 1, 1.2])
+                        col_a, col_b, col_c, col_d, col_e, col_f = st.columns([1, 1, 1, 1, 1.2, 1.2])
                         col_a.metric("总分", idea.total_score)
                         col_b.metric("ERRC", idea.errc_score)
                         col_c.metric("JTBD", idea.jtbd_score)
                         col_d.metric("OPC", idea.opc_score)
                         col_e.metric("RICE", idea.rice_score)
+                        col_f.metric("7天重复", idea.repeat_7d)
                         st.progress(idea.total_score / 100)
+                        st.write(f"**分类**：{idea.category}")
                         st.write(f"**结论**：{idea.verdict}")
                         st.write(f"**目标用户**：{idea.target_audience}")
                         st.write(f"**痛点摘要**：{idea.pain_summary}")
                         st.write(f"**命中规则**：{', '.join(idea.matched_rules)}")
+                        if idea.category_signals:
+                            st.write(f"**分类信号**：{', '.join(idea.category_signals)}")
                         st.write(f"**下一步验证**：{idea.validation_step}")
                         if idea.raw_item.source_url:
                             st.markdown(f"**来源**：[{idea.raw_item.source} - {idea.raw_item.title}]({idea.raw_item.source_url})")
                         else:
                             st.write(f"**来源**：{idea.raw_item.source} - {idea.raw_item.title}")
+
+                        current_label = labels.get(idea.raw_item.id, {}).get("label", "未标注")
+                        current_note = labels.get(idea.raw_item.id, {}).get("note", "")
+                        label_col, note_col, save_col = st.columns([1.4, 3, 1])
+                        with label_col:
+                            selected_label = st.selectbox(
+                                "人工标注",
+                                LABEL_OPTIONS,
+                                index=LABEL_OPTIONS.index(current_label) if current_label in LABEL_OPTIONS else 0,
+                                key=f"label_{idea.raw_item.id}",
+                            )
+                        with note_col:
+                            label_note = st.text_input(
+                                "备注",
+                                value=current_note,
+                                key=f"note_{idea.raw_item.id}",
+                                placeholder="例如：适合做插件 / 更像营销需求 / 竞品太强",
+                            )
+                        with save_col:
+                            st.write("")
+                            if st.button("保存标注", key=f"save_label_{idea.raw_item.id}"):
+                                update_label(idea.raw_item.id, selected_label, label_note)
+                                st.success("已保存")
+                                st.rerun()
                         st.divider()
 
             with tab2:
+                st.subheader("当前扫描分类")
+                current_category_counts = {}
+                for idea in ideas:
+                    current_category_counts[idea.category] = current_category_counts.get(idea.category, 0) + 1
+                if current_category_counts:
+                    st.dataframe(
+                        [{"分类": key, "数量": value} for key, value in sorted(current_category_counts.items(), key=lambda item: item[1], reverse=True)],
+                        use_container_width=True,
+                    )
+
+                st.subheader("7 天重复信号")
+                if history_summary["repeated_signals"]:
+                    for signal in history_summary["repeated_signals"][:10]:
+                        with st.container():
+                            st.write(f"**{signal['category']}** · 出现 {signal['count']} 次 · 最高分 {signal['top_score']}")
+                            st.write(signal["sample_concept"])
+                            if signal["sample_url"]:
+                                st.markdown(f"[查看样本]({signal['sample_url']})")
+                            st.divider()
+                else:
+                    st.info("最近 7 天还没有出现 2 次以上的重复信号。多跑几次扫描后这里会更有价值。")
+
+                st.subheader("7 天历史分类")
+                if history_summary["category_counts"]:
+                    st.dataframe(
+                        [{"分类": key, "7天数量": value} for key, value in sorted(history_summary["category_counts"].items(), key=lambda item: item[1], reverse=True)],
+                        use_container_width=True,
+                    )
+                else:
+                    st.info("暂无历史记录。")
+
+            with tab3:
                 rows = ideas_to_dicts(ideas)
                 st.dataframe(rows, use_container_width=True)
 
-            with tab3:
+            with tab4:
                 st.download_button(
                     "下载 Markdown 日报",
                     data=report,
