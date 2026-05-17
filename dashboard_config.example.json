@@ -1,0 +1,20 @@
+{
+  "hn_queries": [
+    "alternative to",
+    "too expensive",
+    "manual workflow",
+    "missing feature",
+    "developer tool"
+  ],
+  "subreddits": [
+    "SaaS",
+    "Entrepreneur",
+    "indiehackers",
+    "smallbusiness"
+  ],
+  "reddit_query": "alternative OR expensive OR manual OR missing feature",
+  "app_ids": [],
+  "app_store_country": "us",
+  "limit_per_source": 10,
+  "output": "data/dashboard_snapshot.json"
+}
