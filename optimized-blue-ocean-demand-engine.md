@@ -295,6 +295,275 @@ blue-ocean-engine/
       daily.yml
 ```
 
+## V0 实现规格
+
+### CLI 入口
+
+V0 只需要 4 个命令，避免把早期系统拆成过多微小脚本。
+
+```text
+pnpm run fetch -- --source hn
+pnpm run fetch -- --source reddit
+pnpm run fetch -- --source app_store
+pnpm run daily
+```
+
+命令职责：
+
+| 命令 | 输入 | 输出 | 说明 |
+| --- | --- | --- | --- |
+| `pnpm run fetch -- --source hn` | HN 查询关键词、时间窗口 | `raw_items` | 拉取 HN stories/comments |
+| `pnpm run fetch -- --source reddit` | subreddit 列表、时间窗口 | `raw_items` | 拉取帖子和高价值评论 |
+| `pnpm run fetch -- --source app_store` | App ID 列表、国家/地区 | `raw_items` | 拉取竞品最新评论 |
+| `pnpm run daily` | 当日所有 raw items | `reports/YYYY-MM-DD.md` | 过滤、评分、入库、生成日报 |
+
+第一版不需要复杂任务编排。`pnpm run daily` 可以顺序执行：fetch -> filter -> score -> report。只要每一步有清晰日志和失败退出码，后续迁移到 GitHub Actions 或 cron 都很容易。
+
+### 配置文件
+
+使用一个简单的 `config/sources.json` 管理数据源，避免把关键词、subreddit、App ID 写死在代码里。
+
+```json
+{
+  "hn": {
+    "queries": ["alternative to", "too expensive", "I wish", "manual workflow"],
+    "lookback_hours": 24,
+    "max_items": 100
+  },
+  "reddit": {
+    "subreddits": ["SaaS", "Entrepreneur", "smallbusiness", "freelance", "webdev"],
+    "lookback_hours": 24,
+    "max_items_per_subreddit": 50
+  },
+  "app_store": {
+    "apps": [
+      { "name": "example_competitor", "id": "123456789", "country": "us" }
+    ],
+    "max_reviews_per_app": 50
+  }
+}
+```
+
+环境变量只放密钥和模型配置：
+
+```text
+OPENAI_API_KEY=
+SCORING_MODEL=
+DATABASE_URL=
+```
+
+如果没有配置 `DATABASE_URL`，默认使用 `data/demand_engine.db`。
+
+### Fetcher 输出契约
+
+三个 fetcher 必须返回同一种内部结构。这样过滤、去重、评分和报告层不需要理解平台差异。
+
+```ts
+type RawItemInput = {
+  source: "hn" | "reddit" | "app_store";
+  source_url: string;
+  title: string;
+  body: string;
+  author?: string;
+  published_at?: string;
+  metadata: Record<string, unknown>;
+};
+```
+
+规范：
+
+- `source_url` 必须稳定，优先使用原平台永久链接。
+- `title` 可以为空字符串，但不能缺字段。
+- `body` 是主要分析文本。评论源要把评论正文放入 `body`。
+- `metadata` 保留平台字段，例如 upvotes、comment_count、rating、app_name。
+- 入库前用 `source + source_url + title + body` 生成稳定 hash 作为 `raw_items.id`。
+
+### 规则过滤规格
+
+规则过滤器输出 `CandidateInput`：
+
+```ts
+type CandidateInput = {
+  raw_item_id: string;
+  normalized_text: string;
+  matched_rules: string[];
+  language: "en" | "zh" | "unknown";
+};
+```
+
+V0 规则分三类：
+
+| 类别 | 示例 | 处理 |
+| --- | --- | --- |
+| 强痛点词 | `too expensive`, `manual`, `slow`, `broken`, `missing` | 任一命中即可入选 |
+| 替代品信号 | `alternative to`, `switching from`, `looking for a tool` | 提高优先级 |
+| 购买/预算信号 | `pay for`, `budget`, `subscription`, `client work` | 提高评分优先级 |
+
+排除规则：
+
+- `normalized_text` 少于 30 个字符。
+- 只表达情绪，没有任务、产品、流程或对象。
+- 已存在相同 `raw_item_id`。
+- 与最近 30 天候选项正文 hash 完全相同。
+
+V0 不做语义去重。只有当日报中重复明显影响阅读时，再引入 embedding。
+
+### LLM 评分校验
+
+评分层必须把模型输出当作不可信输入处理：
+
+1. 要求模型返回 strict JSON。
+2. 用 schema 校验字段是否完整。
+3. 校验四个分数范围：ERRC 0-25、JTBD 0-25、OPC 0-30、RICE 0-20。
+4. 重新计算 `total_score`，不要直接相信模型给出的 total。
+5. JSON 解析失败时重试 1 次。
+6. 第二次仍失败时，把候选项标记为 `score_failed`，保留原始错误，不阻塞整份日报。
+
+建议 verdict 规则：
+
+| 条件 | verdict |
+| --- | --- |
+| `total_score >= 80` 且 `opc_score >= 22` | Build Now |
+| `total_score >= 60` | Monitor |
+| 其他 | Discard |
+
+模型的 `verdict` 可以作为参考，但最终 verdict 应由本地规则统一生成。
+
+### 日报模板
+
+日报要服务决策，而不是堆数据。推荐结构：
+
+```markdown
+# Blue Ocean Demand Report - YYYY-MM-DD
+
+## Executive Summary
+
+- Raw items collected:
+- Candidates after filtering:
+- Ideas scored:
+- Build Now:
+- Monitor:
+
+## Top Opportunities
+
+### 1. <MVP Concept>
+
+- Score:
+- Verdict:
+- Source:
+- Target audience:
+- Pain:
+- Why now:
+- Validation step:
+
+## Monitor List
+
+| Score | Concept | Source | Validation |
+| --- | --- | --- | --- |
+
+## Discarded Patterns
+
+- Low willingness to pay:
+- Too broad:
+- Too hard for one person:
+
+## Rule Notes
+
+- New useful phrases:
+- False positives:
+- Source quality notes:
+```
+
+每个 Top Opportunity 必须带原始来源链接。没有来源链接的想法不进入日报顶部。
+
+### GitHub Actions 运行方式
+
+V0 可以每天自动跑一次，也允许手动触发。
+
+```yaml
+name: Daily Demand Report
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run daily
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCORING_MODEL: ${{ vars.SCORING_MODEL }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: daily-report
+          path: reports/
+```
+
+如果希望日报自动提交回仓库，可以在 V0 稳定后再增加 commit 步骤。第一周先 artifact 下载即可，减少权限和 Git 冲突问题。
+
+## V0 验收标准
+
+第一版完成不以“功能多”为标准，而以能否稳定跑通闭环为标准。
+
+必须满足：
+
+- `pnpm run daily` 在本地可以从零生成数据库和当日日报。
+- 单个数据源失败不会导致其他数据源结果丢失。
+- 每条 Top Opportunity 都有来源链接、痛点摘要、目标用户、分数、verdict 和验证动作。
+- LLM 输出异常会被记录，不会让整次运行崩溃。
+- 同一条来源重复运行不会重复入库。
+- 日报中 `Build Now` 和 `Monitor` 分开展示。
+
+建议测试：
+
+- 用 fixture 测试 HN、Reddit、App Store 三种 RawItem 标准化。
+- 用固定样本文本测试规则过滤命中和排除。
+- 用模拟 LLM JSON 测试评分解析、分数范围和 total 重算。
+- 用临时 SQLite 数据库测试重复运行的幂等性。
+- 用 5-10 条 fixture 生成一份快照日报，确认 Markdown 结构稳定。
+
+## 第一批监控主题
+
+为了提高第一周命中率，V0 不应泛泛抓取所有创业社区，而应先围绕可被一人公司快速交付的软件机会。
+
+推荐主题：
+
+| 主题 | 典型用户 | 可能机会 |
+| --- | --- | --- |
+| 手工报表和表格搬运 | 运营、财务、独立顾问 | CSV 清洗、自动报告、表格转工作流 |
+| 小团队客户沟通 | agency、freelancer、B2B 服务商 | 客户门户、审批、状态同步 |
+| 开发者内部工具 | indie hacker、SaaS founder、工程团队 | 日志分析、部署辅助、文档同步 |
+| 垂直软件差评 | 使用 App Store/Google Play SaaS 的专业用户 | 更轻、更便宜、更专注的替代品 |
+| 合规和格式转换 | 跨境卖家、教育、医疗、法律助理 | 模板生成、文件检查、流程提醒 |
+
+第一周宁可选 5 个窄主题跑深一点，也不要抓 50 个宽泛主题。
+
+## 人工复盘表
+
+每天看完日报后，人工追加一小段复盘，比立刻训练模型更有效。
+
+```markdown
+## Human Review
+
+- Best signal today:
+- Worst false positive:
+- New phrase to add:
+- Phrase to downrank:
+- Source to increase:
+- Source to decrease:
+- One MVP worth validating tomorrow:
+```
+
+这些复盘内容是 Phase 1 few-shot prompt 和规则优化的原料。
+
 ## 最小可用结论
 
 最优路线不是直接建一个“全自动蓝海引擎”，而是先建一个“每天帮你发现 5 条真实痛点的窄口漏斗”。只要这个漏斗能连续两周产出可验证的 MVP 机会，再逐步加看板、向量聚类、本地模型和更复杂的数据源。

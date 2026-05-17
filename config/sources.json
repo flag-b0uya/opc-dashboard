@@ -1,0 +1,18 @@
+{
+  "hn": {
+    "queries": ["alternative to", "too expensive", "I wish", "manual workflow"],
+    "lookback_hours": 24,
+    "max_items": 100
+  },
+  "reddit": {
+    "subreddits": ["SaaS", "Entrepreneur", "smallbusiness", "freelance", "webdev"],
+    "lookback_hours": 24,
+    "max_items_per_subreddit": 50
+  },
+  "app_store": {
+    "apps": [
+      { "name": "example_competitor", "id": "123456789", "country": "us" }
+    ],
+    "max_reviews_per_app": 50
+  }
+}
