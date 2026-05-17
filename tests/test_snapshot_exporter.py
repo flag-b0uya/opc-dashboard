@@ -21,6 +21,13 @@ class SnapshotExporterTest(unittest.TestCase):
                 "source_url": "https://example.com/source",
                 "repeat_7d": 3,
                 "label": "好信号",
+            },
+            {
+                "mvp_concept": "为客服团队整理重复问题。",
+                "category": "客服/成功/留存",
+                "total_score": 50,
+                "verdict": "Monitor",
+                "label": "非研发需求",
             }
         ]
         summary = {
@@ -57,6 +64,7 @@ class SnapshotExporterTest(unittest.TestCase):
         self.assertEqual(snapshot["category_counts"]["运营/内部流程"], 4)
         self.assertEqual(snapshot["repeated_signals_7d"][0]["count"], 3)
         self.assertEqual(snapshot["label_counts"]["好信号"], 1)
+        self.assertEqual(snapshot["label_counts"]["非研发需求"], 1)
         self.assertEqual(snapshot["markdown_report"], "# Report")
 
     def test_load_dashboard_snapshot_handles_missing_and_invalid_files(self):
