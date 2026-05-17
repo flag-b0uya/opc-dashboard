@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Union
 
 from demand_engine import (
+    build_decision_summary,
+    build_opportunity_clusters,
     format_markdown_report,
     get_history_summary,
     ideas_to_dicts,
@@ -144,11 +146,16 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     report = format_markdown_report(ideas, summary)
     rows = ideas_to_dicts(ideas)
+    history_summary = get_history_summary(days=7)
+    opportunity_clusters = build_opportunity_clusters(rows, history_summary)
+    decision_summary = build_decision_summary(opportunity_clusters)
     snapshot = build_dashboard_snapshot(
         ideas=rows,
         summary=summary,
-        history_summary=get_history_summary(days=7),
+        history_summary=history_summary,
         markdown_report=report,
+        opportunity_clusters=opportunity_clusters,
+        decision_summary=decision_summary,
     )
     output_path = Path(options["output"])
     write_dashboard_snapshot(snapshot, output_path)

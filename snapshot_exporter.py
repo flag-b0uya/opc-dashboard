@@ -20,6 +20,7 @@ def _safe_int(value, default: int = 0) -> int:
 
 def _idea_to_snapshot_row(idea: Dict) -> Dict:
     return {
+        "idea_id": idea.get("idea_id", ""),
         "mvp_concept": idea.get("mvp_concept", ""),
         "category": idea.get("category", "其他/待判定"),
         "total_score": _safe_int(idea.get("total_score")),
@@ -42,16 +43,56 @@ def count_labels(ideas: Iterable[Dict]) -> Dict[str, int]:
     return counts
 
 
+def _default_decision_summary(opportunity_clusters: List[Dict]) -> Dict:
+    counts = {"Build Now": 0, "Monitor": 0, "Discard": 0}
+    for cluster in opportunity_clusters:
+        verdict = cluster.get("decision_verdict", "Monitor")
+        counts[verdict] = counts.get(verdict, 0) + 1
+    return {
+        "total_clusters": len(opportunity_clusters),
+        "build_now_count": counts.get("Build Now", 0),
+        "monitor_count": counts.get("Monitor", 0),
+        "discard_count": counts.get("Discard", 0),
+    }
+
+
+def _default_source_health(summary: Dict, ideas: List[Dict]) -> Dict:
+    errors = list(summary.get("errors", []))
+    source_counts: Dict[str, int] = {}
+    for idea in ideas:
+        source = idea.get("source") or "Unknown"
+        source_counts[source] = source_counts.get(source, 0) + 1
+    if not summary and not ideas:
+        status = "unknown"
+    elif errors:
+        status = "degraded"
+    else:
+        status = "ok"
+    return {
+        "status": status,
+        "raw_count": _safe_int(summary.get("raw_count")),
+        "unique_count": _safe_int(summary.get("unique_count")),
+        "candidate_count": _safe_int(summary.get("candidate_count")),
+        "error_count": len(errors),
+        "errors": errors,
+        "source_counts": source_counts,
+    }
+
+
 def build_dashboard_snapshot(
     ideas: List[Dict],
     summary: Dict,
     history_summary: Dict,
     markdown_report: str,
     top_n: int = 12,
+    opportunity_clusters: Optional[List[Dict]] = None,
+    decision_summary: Optional[Dict] = None,
+    source_health: Optional[Dict] = None,
 ) -> Dict:
     top_ideas = [_idea_to_snapshot_row(idea) for idea in ideas[:top_n]]
+    clusters = list(opportunity_clusters or [])
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "generated_at": summary.get("generated_at", ""),
         "summary": {
             "raw_count": _safe_int(summary.get("raw_count")),
@@ -66,6 +107,9 @@ def build_dashboard_snapshot(
         "top_ideas": top_ideas,
         "category_counts": dict(history_summary.get("category_counts", {})),
         "repeated_signals_7d": list(history_summary.get("repeated_signals", []))[:12],
+        "opportunity_clusters": clusters,
+        "decision_summary": dict(decision_summary or _default_decision_summary(clusters)),
+        "source_health": dict(source_health or _default_source_health(summary, ideas)),
         "label_counts": count_labels(ideas),
         "markdown_report": markdown_report,
     }

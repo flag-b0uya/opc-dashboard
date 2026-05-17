@@ -78,6 +78,108 @@ LOW_VALUE_PATTERNS = [
     "lol",
 ]
 
+GENERIC_CLUSTER_TOKENS = {
+    "about",
+    "after",
+    "again",
+    "also",
+    "automation",
+    "because",
+    "before",
+    "build",
+    "built",
+    "business",
+    "cannot",
+    "doesn",
+    "every",
+    "feature",
+    "from",
+    "have",
+    "into",
+    "looking",
+    "manual",
+    "missing",
+    "need",
+    "needs",
+    "people",
+    "problem",
+    "process",
+    "product",
+    "really",
+    "slow",
+    "startup",
+    "takes",
+    "that",
+    "their",
+    "there",
+    "this",
+    "tool",
+    "tools",
+    "using",
+    "with",
+    "workflow",
+    "would",
+}
+
+CLUSTER_CONTEXT_RULES = [
+    ("invoice", ["invoice", "invoices", "billing", "reconcile", "账单", "发票", "对账"]),
+    ("reporting", ["report", "reports", "reporting", "dashboard", "spreadsheet", "export", "报表", "看板", "导出"]),
+    ("support", ["support", "ticket", "tickets", "customer", "customers", "客服", "工单", "客诉"]),
+    ("sales", ["sales", "lead", "leads", "crm", "outreach", "pipeline", "销售", "线索", "私信"]),
+    ("content", ["content", "blog", "newsletter", "seo", "copy", "post", "内容", "文案", "文章"]),
+    ("developer", ["developer", "developers", "api", "github", "code", "devtool", "sdk", "开发者", "接口"]),
+    ("pricing", ["price", "pricing", "expensive", "subscription", "plan", "太贵", "定价", "订阅"]),
+    ("analytics", ["analytics", "tracking", "metric", "metrics", "insight", "分析", "指标"]),
+    ("mobile", ["app store", "mobile", "ios", "android", "app", "移动"]),
+]
+
+CLUSTER_CONTEXT_TITLES = {
+    "invoice": "发票/账单流程自动化",
+    "reporting": "报表与数据导出工作流",
+    "support": "客服工单与响应自动化",
+    "sales": "销售线索与转化流程",
+    "content": "内容生产与增长流程",
+    "developer": "开发者工具与集成缺口",
+    "pricing": "低成本替代与定价机会",
+    "analytics": "分析指标与可视化需求",
+    "mobile": "移动应用体验缺口",
+    "general": "待验证的垂直痛点",
+}
+
+LABEL_DECISION_WEIGHTS = {
+    "好信号": 10,
+    "噪音": -22,
+    "太宽泛": -16,
+    "已有产品太强": -14,
+    "非研发需求": -30,
+}
+
+NOISE_PATTERNS = [
+    "what no one warns",
+    "founder life",
+    "my reflection",
+    "why most ideas fail",
+    "startup advice",
+    "how i built",
+    "i built",
+    "we built",
+    "i made",
+    "launching my",
+    "show hn",
+    "ama",
+    "newsletter",
+    "course",
+    "subscribe",
+    "self promotion",
+    "promote",
+    "roast my",
+    "创业心得",
+    "创业复盘",
+    "反思",
+    "复盘",
+    "我做了",
+]
+
 B2B_PATTERNS = [
     "client",
     "customer",
@@ -634,6 +736,286 @@ def make_signal_key(category: str, text: str, rules: List[str]) -> str:
     return _make_id(category, " ".join(anchors))
 
 
+def _slug(value: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
+    return slug or "general"
+
+
+def _idea_text(idea: Dict) -> str:
+    parts = [
+        idea.get("title", ""),
+        idea.get("pain_summary", ""),
+        idea.get("mvp_concept", ""),
+        idea.get("target_audience", ""),
+        " ".join(idea.get("matched_rules", []) or []),
+        " ".join(idea.get("category_signals", []) or []),
+    ]
+    return " ".join(str(part) for part in parts if part).strip()
+
+
+def _cluster_context(text: str) -> str:
+    lowered = text.lower()
+    for context, patterns in CLUSTER_CONTEXT_RULES:
+        if any(pattern in lowered for pattern in patterns):
+            return context
+    return "general"
+
+
+def _cluster_tokens(text: str, limit: int = 6) -> List[str]:
+    lowered = re.sub(r"[^a-z0-9\u4e00-\u9fff\s]", " ", text.lower())
+    tokens: List[str] = []
+    for token in lowered.split():
+        if len(token) < 4 or token in GENERIC_CLUSTER_TOKENS:
+            continue
+        if token not in tokens:
+            tokens.append(token)
+    return tokens[:limit]
+
+
+def _cluster_key(idea: Dict) -> Tuple[str, str, str]:
+    category = idea.get("category") or "其他/待判定"
+    text = _idea_text(idea)
+    context = _cluster_context(text)
+    if context != "general":
+        return (category, context, context)
+    tokens = _cluster_tokens(text, limit=3)
+    rules = [str(rule).replace(" ", "_") for rule in (idea.get("matched_rules") or [])[:2]]
+    anchor = "-".join(tokens or rules or [str(idea.get("signal_key") or "general")[:8]])
+    return (category, context, anchor)
+
+
+def _cluster_id(category: str, context: str, anchor: str) -> str:
+    readable = _slug(context if context != "general" else anchor)[:36]
+    return f"cluster-{readable}-{_make_id(category, context, anchor)}"
+
+
+def _label_adjustment(ideas: List[Dict]) -> int:
+    adjustment = sum(LABEL_DECISION_WEIGHTS.get(idea.get("label", "未标注"), 0) for idea in ideas)
+    return _clamp(adjustment, -35, 25)
+
+
+def _noise_penalty(ideas: List[Dict]) -> int:
+    text = " ".join(_idea_text(idea) for idea in ideas).lower()
+    matches = sum(1 for pattern in NOISE_PATTERNS if pattern in text)
+    if not matches:
+        return 0
+    return min(35, 15 + matches * 5)
+
+
+def _has_explicit_user_or_scene(ideas: List[Dict]) -> bool:
+    text = " ".join(_idea_text(idea) for idea in ideas).lower()
+    scene_markers = [
+        "team",
+        "users",
+        "customer",
+        "customers",
+        "developer",
+        "developers",
+        "finance",
+        "support",
+        "sales",
+        "agency",
+        "freelancer",
+        "small business",
+        "b2b",
+        "团队",
+        "用户",
+        "客户",
+        "开发者",
+        "客服",
+        "销售",
+        "财务",
+        "小团队",
+    ]
+    return any(marker in text for marker in scene_markers)
+
+
+def _has_actionable_validation(ideas: List[Dict]) -> bool:
+    for idea in ideas:
+        step = str(idea.get("validation_step", ""))
+        if len(step) < 8:
+            continue
+        if any(pattern in step for pattern in ["继续观察", "暂不投入", "低优先级"]):
+            continue
+        return True
+    return False
+
+
+def _recommended_action(verdict: str, category: str, count_7d: int) -> str:
+    if verdict == "Build Now":
+        if category == "运营/内部流程":
+            return "本周访谈 5 个同类团队，量化每周节省时间和愿付价格。"
+        if category == "客服/成功/留存":
+            return "收集 5 条工单/流失样本，验证是否能用模板或自动化闭环。"
+        if category == "销售/线索转化":
+            return "手工跑 20 条线索触达，验证回复率和成交阻力。"
+        return "做 1 个极简落地页和 5 个目标用户私信访谈，验证愿付费意愿。"
+    if verdict == "Monitor":
+        return f"继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 {count_7d} 条。"
+    return "暂不投入开发，只保留为历史样本，等待更明确的用户场景或付费证据。"
+
+
+def _decision_for_cluster(
+    top_score: int,
+    count_7d: int,
+    source_count: int,
+    label_adjustment: int,
+    noise_penalty: int,
+    has_scene: bool,
+    has_action: bool,
+) -> Tuple[int, str, str]:
+    repeat_bonus = min(max(count_7d - 1, 0), 5) * 5
+    source_bonus = min(max(source_count - 1, 0), 3) * 4
+    decision_score = _clamp(top_score + repeat_bonus + source_bonus + label_adjustment - noise_penalty, 0, 100)
+    if noise_penalty >= 20:
+        decision_score = min(decision_score, 79)
+    if label_adjustment <= -25:
+        decision_score = min(decision_score, 54)
+
+    build_ready = (
+        decision_score >= 82
+        and top_score >= 70
+        and count_7d >= 2
+        and has_scene
+        and has_action
+        and noise_penalty < 20
+        and label_adjustment > -25
+    )
+    if build_ready:
+        verdict = "Build Now"
+    elif decision_score >= 55:
+        verdict = "Monitor"
+    else:
+        verdict = "Discard"
+
+    blockers = []
+    if count_7d < 2:
+        blockers.append("7 天重复信号不足")
+    if not has_scene:
+        blockers.append("用户/场景还不够明确")
+    if not has_action:
+        blockers.append("缺少可执行验证动作")
+    if noise_penalty:
+        blockers.append(f"噪音惩罚 -{noise_penalty}")
+    if label_adjustment:
+        blockers.append(f"人工标注调整 {label_adjustment:+d}")
+    if not blockers:
+        blockers.append("重复、场景和验证动作均达标")
+    reason = (
+        f"原始最高分 {top_score}，重复加分 +{repeat_bonus}，来源加分 +{source_bonus}，"
+        f"决策分 {decision_score}；" + "；".join(blockers)
+    )
+    return decision_score, verdict, reason
+
+
+def _sample_idea(idea: Dict) -> Dict:
+    return {
+        "idea_id": idea.get("idea_id", ""),
+        "title": idea.get("title", ""),
+        "source": idea.get("source", ""),
+        "source_url": idea.get("source_url", ""),
+        "total_score": _clamp(int(idea.get("total_score", 0) or 0), 0, 100),
+        "pain_summary": idea.get("pain_summary", ""),
+        "label": idea.get("label", "未标注"),
+    }
+
+
+def _history_cluster_counts(history_summary: Dict) -> Dict[Tuple[str, str, str], int]:
+    grouped: Dict[Tuple[str, str, str], set] = {}
+    for record in history_summary.get("records", []) or []:
+        if not isinstance(record, dict):
+            continue
+        key = _cluster_key(record)
+        unique_id = record.get("idea_id") or record.get("source_url") or record.get("title") or record.get("signal_key")
+        if not unique_id:
+            continue
+        grouped.setdefault(key, set()).add(str(unique_id))
+    return {key: len(unique_ids) for key, unique_ids in grouped.items()}
+
+
+def build_opportunity_clusters(
+    ideas: List[Dict],
+    history_summary: Dict,
+    top_n: int = 12,
+) -> List[Dict]:
+    grouped: Dict[Tuple[str, str, str], List[Dict]] = {}
+    for idea in ideas:
+        grouped.setdefault(_cluster_key(idea), []).append(idea)
+
+    history_counts = _history_cluster_counts(history_summary or {})
+    clusters: List[Dict] = []
+    for key, cluster_ideas in grouped.items():
+        category, context, anchor = key
+        sorted_ideas = sorted(cluster_ideas, key=lambda idea: int(idea.get("total_score", 0) or 0), reverse=True)
+        scores = [int(idea.get("total_score", 0) or 0) for idea in sorted_ideas]
+        source_names = sorted({idea.get("source", "") for idea in sorted_ideas if idea.get("source")})
+        count_7d = max(len(sorted_ideas), history_counts.get(key, 0))
+        source_count = len(source_names)
+        top_score = max(scores) if scores else 0
+        avg_score = round(sum(scores) / len(scores), 1) if scores else 0
+        label_adjustment = _label_adjustment(sorted_ideas)
+        noise_penalty = _noise_penalty(sorted_ideas)
+        has_scene = _has_explicit_user_or_scene(sorted_ideas)
+        has_action = _has_actionable_validation(sorted_ideas)
+        decision_score, decision_verdict, decision_reason = _decision_for_cluster(
+            top_score=top_score,
+            count_7d=count_7d,
+            source_count=source_count,
+            label_adjustment=label_adjustment,
+            noise_penalty=noise_penalty,
+            has_scene=has_scene,
+            has_action=has_action,
+        )
+        title = CLUSTER_CONTEXT_TITLES.get(context, "") or sorted_ideas[0].get("mvp_concept", "待验证机会")
+        evidence_summary = (
+            f"7 天内出现 {count_7d} 条同类信号，覆盖 {source_count} 个来源；"
+            f"最高原始分 {top_score}，平均分 {avg_score}。"
+        )
+        clusters.append({
+            "cluster_id": _cluster_id(category, context, anchor),
+            "title": title,
+            "category": category,
+            "count_7d": count_7d,
+            "source_count": source_count,
+            "source_names": source_names,
+            "top_score": top_score,
+            "avg_score": avg_score,
+            "decision_score": decision_score,
+            "decision_verdict": decision_verdict,
+            "decision_reason": decision_reason,
+            "label_adjustment": label_adjustment,
+            "noise_penalty": noise_penalty,
+            "sample_ideas": [_sample_idea(idea) for idea in sorted_ideas[:3]],
+            "evidence_summary": evidence_summary,
+            "recommended_action": _recommended_action(decision_verdict, category, count_7d),
+        })
+
+    clusters.sort(
+        key=lambda cluster: (
+            cluster["decision_verdict"] == "Build Now",
+            cluster["decision_score"] - cluster.get("noise_penalty", 0),
+            cluster["count_7d"],
+            cluster["source_count"],
+            cluster["top_score"],
+        ),
+        reverse=True,
+    )
+    return clusters[:top_n]
+
+
+def build_decision_summary(clusters: List[Dict]) -> Dict:
+    counts = {"Build Now": 0, "Monitor": 0, "Discard": 0}
+    for cluster in clusters:
+        verdict = cluster.get("decision_verdict", "Monitor")
+        counts[verdict] = counts.get(verdict, 0) + 1
+    return {
+        "total_clusters": len(clusters),
+        "build_now_count": counts.get("Build Now", 0),
+        "monitor_count": counts.get("Monitor", 0),
+        "discard_count": counts.get("Discard", 0),
+    }
+
+
 def infer_target_audience(item: RawItem, text: str) -> str:
     lowered = text.lower()
     if "reddit r/" in item.source.lower():
@@ -1010,6 +1392,7 @@ def ideas_to_dicts(ideas: Iterable[ScoredIdea]) -> List[Dict]:
     labels = load_labels()
     for idea in ideas:
         row = asdict(idea)
+        row["idea_id"] = idea.raw_item.id
         row["source"] = idea.raw_item.source
         row["title"] = idea.raw_item.title
         row["source_url"] = idea.raw_item.source_url
