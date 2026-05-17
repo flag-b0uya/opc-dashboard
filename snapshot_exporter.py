@@ -43,6 +43,44 @@ def count_labels(ideas: Iterable[Dict]) -> Dict[str, int]:
     return counts
 
 
+def _source_platform(source: str) -> str:
+    if source.startswith("Reddit "):
+        return "Reddit"
+    if source.startswith("App Store"):
+        return "App Store"
+    if source.startswith("Hacker News"):
+        return "Hacker News"
+    return source or "Unknown"
+
+
+def _rank_counts(counts: Dict[str, int], total: int, name_key: str, limit: int = 8) -> List[Dict]:
+    rows = []
+    for name, count in sorted(counts.items(), key=lambda item: item[1], reverse=True)[:limit]:
+        rows.append({
+            name_key: name,
+            "count": count,
+            "percent": round(count / max(total, 1) * 100),
+        })
+    return rows
+
+
+def build_source_stats(ideas: List[Dict]) -> Dict:
+    source_counts: Dict[str, int] = {}
+    platform_counts: Dict[str, int] = {}
+    for idea in ideas:
+        source = idea.get("source") or "Unknown"
+        platform = _source_platform(source)
+        source_counts[source] = source_counts.get(source, 0) + 1
+        platform_counts[platform] = platform_counts.get(platform, 0) + 1
+
+    total = sum(source_counts.values())
+    return {
+        "total_candidates": total,
+        "platforms": _rank_counts(platform_counts, total, "name"),
+        "top_sources": _rank_counts(source_counts, total, "source", limit=10),
+    }
+
+
 def _default_decision_summary(opportunity_clusters: List[Dict]) -> Dict:
     counts = {"Build Now": 0, "Monitor": 0, "Discard": 0}
     for cluster in opportunity_clusters:
@@ -110,6 +148,7 @@ def build_dashboard_snapshot(
         "opportunity_clusters": clusters,
         "decision_summary": dict(decision_summary or _default_decision_summary(clusters)),
         "source_health": dict(source_health or _default_source_health(summary, ideas)),
+        "source_stats": build_source_stats(ideas),
         "label_counts": count_labels(ideas),
         "markdown_report": markdown_report,
     }

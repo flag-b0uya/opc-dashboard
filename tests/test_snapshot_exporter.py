@@ -82,6 +82,9 @@ class SnapshotExporterTest(unittest.TestCase):
         self.assertEqual(snapshot["opportunity_clusters"][0]["cluster_id"], "cluster-invoice")
         self.assertEqual(snapshot["decision_summary"]["build_now_count"], 1)
         self.assertEqual(snapshot["source_health"]["status"], "ok")
+        self.assertEqual(snapshot["source_stats"]["total_candidates"], 2)
+        self.assertEqual(snapshot["source_stats"]["platforms"][0]["name"], "Hacker News")
+        self.assertEqual(snapshot["source_stats"]["top_sources"][0]["source"], "Hacker News")
         self.assertEqual(snapshot["markdown_report"], "# Report")
 
     def test_build_dashboard_snapshot_keeps_new_fields_optional(self):
@@ -95,8 +98,32 @@ class SnapshotExporterTest(unittest.TestCase):
         self.assertEqual(snapshot["opportunity_clusters"], [])
         self.assertEqual(snapshot["decision_summary"]["total_clusters"], 0)
         self.assertEqual(snapshot["source_health"]["status"], "unknown")
+        self.assertEqual(snapshot["source_stats"]["total_candidates"], 0)
         self.assertIn("top_ideas", snapshot)
         self.assertIn("category_counts", snapshot)
+
+    def test_source_stats_groups_platforms_and_top_sources(self):
+        ideas = [
+            {"source": "Hacker News"},
+            {"source": "Reddit r/SaaS"},
+            {"source": "Reddit r/SaaS"},
+            {"source": "Reddit r/startups"},
+            {"source": "App Store US"},
+        ]
+
+        snapshot = build_dashboard_snapshot(
+            ideas=ideas,
+            summary={"candidate_count": 5},
+            history_summary={},
+            markdown_report="",
+        )
+
+        platforms = {item["name"]: item["count"] for item in snapshot["source_stats"]["platforms"]}
+        self.assertEqual(platforms["Reddit"], 3)
+        self.assertEqual(platforms["Hacker News"], 1)
+        self.assertEqual(platforms["App Store"], 1)
+        self.assertEqual(snapshot["source_stats"]["top_sources"][0]["source"], "Reddit r/SaaS")
+        self.assertEqual(snapshot["source_stats"]["top_sources"][0]["percent"], 40)
 
     def test_load_dashboard_snapshot_handles_missing_and_invalid_files(self):
         with tempfile.TemporaryDirectory() as tmpdir:
