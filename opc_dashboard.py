@@ -21,6 +21,7 @@ from demand_engine import (
     LABEL_OPTIONS,
     format_markdown_report,
     get_history_summary,
+    get_storage_status,
     ideas_to_dicts,
     load_labels,
     run_demand_scan,
@@ -127,6 +128,45 @@ if page == "今日 Backlog":
 elif page == "蓝海需求引擎 V0":
     st.header("🌊 蓝海需求引擎 V0")
     st.caption("公开数据源 + 规则过滤 + ERRC/JTBD/OPC/RICE 启发式评分。先验证信号质量，再升级复杂架构。")
+    storage_status = get_storage_status()
+    if storage_status["persistent"]:
+        st.success(f"存储后端：{storage_status['backend']}（{storage_status['detail']}）")
+    else:
+        st.warning(f"存储后端：{storage_status['backend']}。{storage_status['detail']}。")
+        with st.expander("配置持久化 Supabase 存储", expanded=False):
+            st.markdown(
+                """
+在 Streamlit Secrets 中加入：
+
+```toml
+SUPABASE_URL = "https://your-project.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY = "your-service-role-key"
+SUPABASE_HISTORY_TABLE = "opc_demand_history"
+SUPABASE_LABELS_TABLE = "opc_demand_labels"
+```
+
+在 Supabase SQL Editor 中创建表：
+
+```sql
+create table if not exists opc_demand_history (
+  record_id text primary key,
+  scan_id text,
+  idea_id text,
+  signal_key text,
+  category text,
+  scanned_at text,
+  payload jsonb
+);
+
+create table if not exists opc_demand_labels (
+  idea_id text primary key,
+  label text,
+  note text,
+  updated_at text
+);
+```
+                """
+            )
 
     with st.expander("扫描配置", expanded=True):
         col1, col2 = st.columns(2)
