@@ -1,394 +1,366 @@
 #!/usr/bin/env python3
-"""
-opc_dashboard.py v6
-美化版 Backlog 展示
-"""
+"""Read-only Streamlit dashboard for locally generated OPC demand snapshots."""
+
+from __future__ import annotations
+
+import html
 
 import streamlit as st
-import os
-import glob
-import re
 
-import sys
-sys.path.append(os.path.dirname(__file__))
+from snapshot_exporter import load_dashboard_snapshot
 
-from idea_status import load_status, update_idea_status, DEFAULT_STATUSES
-from execution_log import load_logs, get_execution_summary
-from validation_generator import generate_validation_experiments
-from demand_engine import (
-    DEFAULT_HN_QUERIES,
-    DEFAULT_SUBREDDITS,
-    LABEL_OPTIONS,
-    format_markdown_report,
-    get_history_summary,
-    get_storage_status,
-    ideas_to_dicts,
-    load_labels,
-    run_demand_scan,
-    save_scan_to_history,
-    update_label,
-)
 
-st.set_page_config(page_title="One-Person OPC", page_icon="🚀", layout="wide")
-st.title("🚀 One-Person OPC Dashboard")
-st.caption("一人公司产品决策引擎 | 验证实验 + 一人评分 + 执行追踪")
+st.set_page_config(page_title="蓝海机会雷达", page_icon="🌊", layout="wide")
 
-# Backlog 路径
-BACKLOG_DIR = os.path.join(os.path.dirname(__file__), "backlogs")
-if not os.path.exists(BACKLOG_DIR):
-    BACKLOG_DIR = os.path.expanduser("~/.hermes/knowledge-wiki/one-person-company/")
 
-def load_latest_backlog():
-    files = sorted(glob.glob(os.path.join(BACKLOG_DIR, "backlog-*.md")), reverse=True)
-    if not files:
-        return None
-    with open(files[0], "r", encoding="utf-8") as f:
-        return f.read()
+def esc(value) -> str:
+    return html.escape(str(value or ""))
 
-def parse_backlog(content):
-    """简单解析 Backlog，提取 S-Tier 和 A-Tier"""
-    s_tier = []
-    a_tier = []
-    
-    current_tier = None
-    current_item = {}
-    
-    for line in content.split("\n"):
-        line = line.strip()
-        if line.startswith("## S-Tier"):
-            current_tier = "S"
-        elif line.startswith("## A-Tier"):
-            current_tier = "A"
-        elif line.startswith("### ") and current_tier:
-            if current_item:
-                if current_tier == "S":
-                    s_tier.append(current_item)
-                else:
-                    a_tier.append(current_item)
-            current_item = {"title": line.replace("### ", "").strip(), "tier": current_tier}
-        elif line.startswith("- ") and current_item:
-            if "得分" in line:
-                match = re.search(r"得分[:：]\s*([\d.]+)", line)
-                if match:
-                    current_item["score"] = float(match.group(1))
-            if "一人可行性" in line:
-                match = re.search(r"一人可行性[:：]\s*(\d+)", line)
-                if match:
-                    current_item["solo"] = int(match.group(1))
-            if "资源类型" in line:
-                match = re.search(r"资源类型[:：]\s*(.+)", line)
-                if match:
-                    current_item["resource"] = match.group(1).strip()
-    
-    if current_item:
-        if current_tier == "S":
-            s_tier.append(current_item)
-        else:
-            a_tier.append(current_item)
-    
-    return s_tier, a_tier
 
-# 侧边栏
-st.sidebar.header("功能导航")
-page = st.sidebar.radio("选择页面", ["今日 Backlog", "蓝海需求引擎 V0", "验证实验", "执行记录", "状态管理"])
+def render_styles() -> None:
+    st.markdown(
+        """
+        <style>
+        .block-container {
+            padding-top: 2.25rem;
+            padding-bottom: 4rem;
+            max-width: 1180px;
+        }
+        .hero {
+            padding: 34px 0 24px;
+        }
+        .eyebrow {
+            color: #0f766e;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0;
+            margin-bottom: 12px;
+        }
+        .hero h1 {
+            color: #111827;
+            font-size: 52px;
+            line-height: 1.06;
+            margin: 0 0 14px;
+        }
+        .hero p {
+            color: #54606f;
+            font-size: 18px;
+            line-height: 1.65;
+            margin: 0;
+            max-width: 780px;
+        }
+        .hero-grid {
+            align-items: stretch;
+        }
+        .radar-panel {
+            border: 1px solid #e6e8eb;
+            border-radius: 8px;
+            background: #ffffff;
+            padding: 20px;
+            min-height: 230px;
+        }
+        .radar-title {
+            color: #101828;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .radar-row {
+            display: grid;
+            grid-template-columns: 92px 1fr 42px;
+            gap: 10px;
+            align-items: center;
+            margin: 12px 0;
+            color: #475467;
+            font-size: 13px;
+        }
+        .bar {
+            height: 10px;
+            border-radius: 999px;
+            background: #edf2f7;
+            overflow: hidden;
+        }
+        .bar span {
+            display: block;
+            height: 10px;
+            border-radius: 999px;
+            background: #0f766e;
+        }
+        .bar .orange {
+            background: #f97316;
+        }
+        .bar .blue {
+            background: #2563eb;
+        }
+        .metric-card {
+            border: 1px solid #e6e8eb;
+            border-radius: 8px;
+            padding: 18px;
+            background: #ffffff;
+            min-height: 112px;
+        }
+        .metric-label {
+            color: #667085;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        .metric-value {
+            color: #101828;
+            font-size: 31px;
+            font-weight: 750;
+            line-height: 1.1;
+        }
+        .metric-note {
+            color: #98a2b3;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        .idea-card {
+            border: 1px solid #e6e8eb;
+            border-radius: 8px;
+            padding: 18px 18px 14px;
+            background: #ffffff;
+            margin-bottom: 14px;
+        }
+        .idea-card h3 {
+            color: #111827;
+            font-size: 20px;
+            line-height: 1.35;
+            margin: 12px 0 9px;
+        }
+        .idea-card p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin: 7px 0;
+        }
+        .tag {
+            display: inline-block;
+            border: 1px solid #d0d5dd;
+            border-radius: 999px;
+            padding: 3px 9px;
+            font-size: 12px;
+            color: #344054;
+            margin: 0 6px 6px 0;
+            background: #ffffff;
+        }
+        .tag-strong {
+            border-color: #99f6e4;
+            background: #ecfdf5;
+            color: #0f766e;
+        }
+        .tag-warm {
+            border-color: #fed7aa;
+            background: #fff7ed;
+            color: #c2410c;
+        }
+        .quiet-box {
+            border: 1px solid #e6e8eb;
+            border-radius: 8px;
+            padding: 18px;
+            background: #ffffff;
+            margin-bottom: 16px;
+        }
+        .quiet-box h3 {
+            font-size: 17px;
+            margin: 0 0 8px;
+        }
+        .quiet-box p {
+            color: #5b6472;
+            margin: 0;
+            line-height: 1.6;
+        }
+        @media (max-width: 760px) {
+            .hero h1 {
+                font-size: 38px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .radar-row {
+                grid-template-columns: 76px 1fr 34px;
+            }
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
-if page == "今日 Backlog":
-    st.header("📅 最新 Backlog")
-    
-    content = load_latest_backlog()
-    if not content:
-        st.warning("暂无 Backlog 数据")
+
+def render_metric(label: str, value, note: str = "") -> None:
+    st.markdown(
+        f"""
+        <div class="metric-card">
+            <div class="metric-label">{esc(label)}</div>
+            <div class="metric-value">{esc(value)}</div>
+            <div class="metric-note">{esc(note)}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_empty_state() -> None:
+    st.markdown(
+        """
+        <section class="hero">
+            <div class="eyebrow">LOCAL-FIRST DEMAND RADAR</div>
+            <h1>蓝海机会雷达</h1>
+            <p>线上页面只负责展示。本地扫描完成并提交快照后，这里会展示最新机会看板。</p>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.info("还没有找到 `data/dashboard_snapshot.json`。请在本地运行：`python3 local_runner.py`。")
+
+
+def render_radar_panel(summary: dict, repeated_count: int) -> None:
+    candidate_count = int(summary.get("candidate_count", 0) or 0)
+    monitor_count = int(summary.get("monitor_count", 0) or 0)
+    build_now_count = int(summary.get("build_now_count", 0) or 0)
+    raw_count = max(int(summary.get("raw_count", 0) or 0), 1)
+
+    candidate_pct = min(100, round(candidate_count / raw_count * 100))
+    monitor_pct = min(100, round(monitor_count / max(candidate_count, 1) * 100))
+    build_pct = min(100, round(build_now_count / max(candidate_count, 1) * 100))
+    repeat_pct = min(100, repeated_count * 20)
+
+    st.markdown(
+        f"""
+        <div class="radar-panel">
+            <div class="radar-title">机会雷达快照</div>
+            <div class="radar-row">
+                <span>候选率</span><div class="bar"><span style="width:{candidate_pct}%"></span></div><span>{candidate_pct}%</span>
+            </div>
+            <div class="radar-row">
+                <span>可观察</span><div class="bar"><span class="blue" style="width:{monitor_pct}%"></span></div><span>{monitor_pct}%</span>
+            </div>
+            <div class="radar-row">
+                <span>可行动</span><div class="bar"><span class="orange" style="width:{build_pct}%"></span></div><span>{build_pct}%</span>
+            </div>
+            <div class="radar-row">
+                <span>重复信号</span><div class="bar"><span style="width:{repeat_pct}%"></span></div><span>{repeated_count}</span>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_idea_card(idea: dict) -> None:
+    verdict = idea.get("verdict", "Monitor")
+    verdict_class = "tag-strong" if verdict == "Build Now" else "tag-warm" if verdict == "Monitor" else ""
+    st.markdown(
+        f"""
+        <div class="idea-card">
+            <span class="tag">{esc(idea.get("category", "其他/待判定"))}</span>
+            <span class="tag {verdict_class}">{esc(verdict)}</span>
+            <span class="tag">Score {esc(idea.get("total_score", 0))}</span>
+            <span class="tag">7天重复 {esc(idea.get("repeat_7d", 1))}</span>
+            <h3>{esc(idea.get("mvp_concept", ""))}</h3>
+            <p>{esc(idea.get("pain_summary", ""))}</p>
+            <p><strong>下一步：</strong>{esc(idea.get("validation_step", ""))}</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    if idea.get("source_url"):
+        st.markdown(f"[来源：{esc(idea.get('source', ''))} - {esc(idea.get('title', ''))}]({idea.get('source_url')})")
+
+
+def render_counts_table(title: str, counts: dict, key_name: str) -> None:
+    st.subheader(title)
+    if counts:
+        rows = [
+            {key_name: key, "数量": value}
+            for key, value in sorted(counts.items(), key=lambda item: item[1], reverse=True)
+        ]
+        st.dataframe(rows, use_container_width=True, hide_index=True)
     else:
-        s_tier, a_tier = parse_backlog(content)
-        
-        # S-Tier
-        if s_tier:
-            st.subheader("🔥 S-Tier（强烈推荐）")
-            for item in s_tier:
-                with st.container():
-                    col1, col2, col3, col4 = st.columns([4, 1.2, 1.2, 1.5])
-                    col1.markdown(f"**{item.get('title', '')}**")
-                    col2.metric("得分", item.get('score', 0))
-                    col3.metric("一人可行性", item.get('solo', 0))
-                    col4.caption(item.get('resource', ''))
-                    st.divider()
-        
-        # A-Tier
-        if a_tier:
-            st.subheader("⭐ A-Tier（值得关注）")
-            for item in a_tier:
-                with st.container():
-                    col1, col2, col3, col4 = st.columns([4, 1.2, 1.2, 1.5])
-                    col1.markdown(f"**{item.get('title', '')}**")
-                    col2.metric("得分", item.get('score', 0))
-                    col3.metric("一人可行性", item.get('solo', 0))
-                    col4.caption(item.get('resource', ''))
-                    st.divider()
+        st.info(f"暂无{title}。")
 
-elif page == "蓝海需求引擎 V0":
-    st.header("🌊 蓝海需求引擎 V0")
-    st.caption("公开数据源 + 规则过滤 + ERRC/JTBD/OPC/RICE 启发式评分。先验证信号质量，再升级复杂架构。")
-    storage_status = get_storage_status()
-    if storage_status["persistent"]:
-        st.success(f"存储后端：{storage_status['backend']}（{storage_status['detail']}）")
-    else:
-        st.warning(f"存储后端：{storage_status['backend']}。{storage_status['detail']}。")
-        with st.expander("配置持久化 Supabase 存储", expanded=False):
-            st.markdown(
-                """
-在 Streamlit Secrets 中加入：
 
-```toml
-SUPABASE_URL = "https://your-project.supabase.co"
-SUPABASE_SERVICE_ROLE_KEY = "your-service-role-key"
-SUPABASE_HISTORY_TABLE = "opc_demand_history"
-SUPABASE_LABELS_TABLE = "opc_demand_labels"
-```
+render_styles()
+snapshot = load_dashboard_snapshot()
 
-在 Supabase SQL Editor 中创建表：
+if snapshot is None:
+    render_empty_state()
+    st.stop()
 
-```sql
-create table if not exists opc_demand_history (
-  record_id text primary key,
-  scan_id text,
-  idea_id text,
-  signal_key text,
-  category text,
-  scanned_at text,
-  payload jsonb
-);
+summary = snapshot.get("summary", {})
+top_ideas = snapshot.get("top_ideas", [])
+repeated = snapshot.get("repeated_signals_7d", [])
+generated_at = snapshot.get("generated_at", "未生成")
 
-create table if not exists opc_demand_labels (
-  idea_id text primary key,
-  label text,
-  note text,
-  updated_at text
-);
-```
-                """
-            )
+hero_left, hero_right = st.columns([1.55, 1], gap="large")
+with hero_left:
+    st.markdown(
+        f"""
+        <section class="hero">
+            <div class="eyebrow">LOCAL-FIRST DEMAND RADAR</div>
+            <h1>蓝海机会雷达</h1>
+            <p>本地扫描公开信号，GitHub 保存结果快照，Streamlit 只展示机会看板。最近更新：{esc(generated_at)}</p>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+with hero_right:
+    render_radar_panel(summary, len(repeated))
 
-    with st.expander("扫描配置", expanded=True):
-        col1, col2 = st.columns(2)
-        with col1:
-            hn_queries_text = st.text_area(
-                "Hacker News 关键词（每行一个）",
-                value="\n".join(DEFAULT_HN_QUERIES),
-                height=140,
-            )
-            reddit_query = st.text_input(
-                "Reddit 搜索词",
-                value="alternative OR expensive OR manual OR missing feature",
-            )
-        with col2:
-            subreddits_text = st.text_area(
-                "Reddit 子版块（每行一个）",
-                value="\n".join(DEFAULT_SUBREDDITS),
-                height=140,
-            )
-            app_ids_text = st.text_input(
-                "App Store App IDs（逗号分隔，可留空）",
-                value="",
-                placeholder="例如：310633997, 1232780281",
-            )
+metric_cols = st.columns(4)
+with metric_cols[0]:
+    render_metric("候选机会", summary.get("candidate_count", 0), f"原始信号 {summary.get('raw_count', 0)}")
+with metric_cols[1]:
+    render_metric("Build Now", summary.get("build_now_count", 0), "可立即验证")
+with metric_cols[2]:
+    render_metric("Monitor", summary.get("monitor_count", 0), "继续观察")
+with metric_cols[3]:
+    render_metric("7天重复信号", len(repeated), "出现 2 次以上")
 
-        col3, col4, col5 = st.columns([1, 1, 2])
-        with col3:
-            app_store_country = st.text_input("App Store 国家", value="us", max_chars=2)
-        with col4:
-            limit_per_source = st.slider("每个源抓取上限", min_value=5, max_value=25, value=10, step=5)
-        with col5:
-            st.write("")
-            run_scan = st.button("开始扫描", type="primary", use_container_width=True)
+if summary.get("errors"):
+    with st.expander("本地扫描记录的抓取错误", expanded=False):
+        for error in summary.get("errors", []):
+            st.warning(error)
 
-    if run_scan:
-        hn_queries = [line.strip() for line in hn_queries_text.splitlines() if line.strip()]
-        subreddits = [line.strip() for line in subreddits_text.splitlines() if line.strip()]
-        app_ids = [item.strip() for item in app_ids_text.split(",") if item.strip()]
+st.divider()
+left, right = st.columns([1.15, 0.85], gap="large")
 
-        with st.spinner("正在抓取公开信号并评分..."):
-            ideas, summary = run_demand_scan(
-                hn_queries=hn_queries,
-                subreddits=subreddits,
-                reddit_query=reddit_query,
-                app_ids=app_ids,
-                app_store_country=app_store_country,
-                limit_per_source=limit_per_source,
-            )
-            saved_count = save_scan_to_history(ideas, summary)
-            summary["saved_count"] = saved_count
-        st.session_state["demand_ideas"] = ideas
-        st.session_state["demand_summary"] = summary
+with left:
+    st.subheader("Top 机会")
+    if not top_ideas:
+        st.info("当前快照没有候选机会。")
+    for idea in top_ideas:
+        render_idea_card(idea)
 
-    ideas = st.session_state.get("demand_ideas", [])
-    summary = st.session_state.get("demand_summary")
-    history_summary = get_history_summary(days=7)
+with right:
+    render_counts_table("分类分布", snapshot.get("category_counts", {}), "分类")
+    render_counts_table("人工标注", snapshot.get("label_counts", {}), "标注")
 
-    if not summary:
-        st.info("点击“开始扫描”后，会生成候选痛点、评分和 Markdown 日报。V0 不存储数据，刷新页面后需要重新扫描。")
-    else:
-        col1, col2, col3, col4, col5 = st.columns(5)
-        col1.metric("原始数据", summary.get("raw_count", 0))
-        col2.metric("候选痛点", summary.get("candidate_count", 0))
-        col3.metric("Build Now", summary.get("build_now_count", 0))
-        col4.metric("Monitor", summary.get("monitor_count", 0))
-        col5.metric("已保存历史", summary.get("saved_count", 0))
+st.subheader("7 天重复信号")
+if repeated:
+    for signal in repeated:
+        st.markdown(
+            f"""
+            <div class="quiet-box">
+                <h3>{esc(signal.get("category", "其他/待判定"))} · 出现 {esc(signal.get("count", 0))} 次 · 最高分 {esc(signal.get("top_score", 0))}</h3>
+                <p>{esc(signal.get("sample_concept", ""))}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if signal.get("sample_url"):
+            st.markdown(f"[查看样本]({signal.get('sample_url')})")
+else:
+    st.info("最近 7 天还没有出现 2 次以上的重复信号。")
 
-        if summary.get("errors"):
-            with st.expander("抓取错误与限制", expanded=False):
-                for error in summary["errors"]:
-                    st.warning(error)
-
-        if not ideas:
-            st.warning("这次没有命中高价值痛点规则。建议换关键词、扩大 Reddit 子版块，或输入竞品 App Store ID。")
-        else:
-            report = format_markdown_report(ideas, summary)
-            tab1, tab2, tab3, tab4 = st.tabs(["Top 机会", "分类与重复信号", "数据表", "Markdown 日报"])
-
-            with tab1:
-                labels = load_labels()
-                for index, idea in enumerate(ideas[:10], 1):
-                    with st.container():
-                        title = idea.mvp_concept
-                        st.subheader(f"{index}. {title}")
-                        col_a, col_b, col_c, col_d, col_e, col_f = st.columns([1, 1, 1, 1, 1.2, 1.2])
-                        col_a.metric("总分", idea.total_score)
-                        col_b.metric("ERRC", idea.errc_score)
-                        col_c.metric("JTBD", idea.jtbd_score)
-                        col_d.metric("OPC", idea.opc_score)
-                        col_e.metric("RICE", idea.rice_score)
-                        col_f.metric("7天重复", idea.repeat_7d)
-                        st.progress(idea.total_score / 100)
-                        st.write(f"**分类**：{idea.category}")
-                        st.write(f"**结论**：{idea.verdict}")
-                        st.write(f"**目标用户**：{idea.target_audience}")
-                        st.write(f"**痛点摘要**：{idea.pain_summary}")
-                        st.write(f"**命中规则**：{', '.join(idea.matched_rules)}")
-                        if idea.category_signals:
-                            st.write(f"**分类信号**：{', '.join(idea.category_signals)}")
-                        st.write(f"**下一步验证**：{idea.validation_step}")
-                        if idea.raw_item.source_url:
-                            st.markdown(f"**来源**：[{idea.raw_item.source} - {idea.raw_item.title}]({idea.raw_item.source_url})")
-                        else:
-                            st.write(f"**来源**：{idea.raw_item.source} - {idea.raw_item.title}")
-
-                        current_label = labels.get(idea.raw_item.id, {}).get("label", "未标注")
-                        current_note = labels.get(idea.raw_item.id, {}).get("note", "")
-                        label_col, note_col, save_col = st.columns([1.4, 3, 1])
-                        with label_col:
-                            selected_label = st.selectbox(
-                                "人工标注",
-                                LABEL_OPTIONS,
-                                index=LABEL_OPTIONS.index(current_label) if current_label in LABEL_OPTIONS else 0,
-                                key=f"label_{idea.raw_item.id}",
-                            )
-                        with note_col:
-                            label_note = st.text_input(
-                                "备注",
-                                value=current_note,
-                                key=f"note_{idea.raw_item.id}",
-                                placeholder="例如：适合做插件 / 更像营销需求 / 竞品太强",
-                            )
-                        with save_col:
-                            st.write("")
-                            if st.button("保存标注", key=f"save_label_{idea.raw_item.id}"):
-                                update_label(idea.raw_item.id, selected_label, label_note)
-                                st.success("已保存")
-                                st.rerun()
-                        st.divider()
-
-            with tab2:
-                st.subheader("当前扫描分类")
-                current_category_counts = {}
-                for idea in ideas:
-                    current_category_counts[idea.category] = current_category_counts.get(idea.category, 0) + 1
-                if current_category_counts:
-                    st.dataframe(
-                        [{"分类": key, "数量": value} for key, value in sorted(current_category_counts.items(), key=lambda item: item[1], reverse=True)],
-                        use_container_width=True,
-                    )
-
-                st.subheader("7 天重复信号")
-                if history_summary["repeated_signals"]:
-                    for signal in history_summary["repeated_signals"][:10]:
-                        with st.container():
-                            st.write(f"**{signal['category']}** · 出现 {signal['count']} 次 · 最高分 {signal['top_score']}")
-                            st.write(signal["sample_concept"])
-                            if signal["sample_url"]:
-                                st.markdown(f"[查看样本]({signal['sample_url']})")
-                            st.divider()
-                else:
-                    st.info("最近 7 天还没有出现 2 次以上的重复信号。多跑几次扫描后这里会更有价值。")
-
-                st.subheader("7 天历史分类")
-                if history_summary["category_counts"]:
-                    st.dataframe(
-                        [{"分类": key, "7天数量": value} for key, value in sorted(history_summary["category_counts"].items(), key=lambda item: item[1], reverse=True)],
-                        use_container_width=True,
-                    )
-                else:
-                    st.info("暂无历史记录。")
-
-            with tab3:
-                rows = ideas_to_dicts(ideas)
-                st.dataframe(rows, use_container_width=True)
-
-            with tab4:
-                st.download_button(
-                    "下载 Markdown 日报",
-                    data=report,
-                    file_name=f"demand-report-{summary.get('generated_at', '').split(' ')[0]}.md",
-                    mime="text/markdown",
-                    use_container_width=True,
-                )
-                st.code(report, language="markdown")
-
-elif page == "验证实验":
-    st.header("🧪 验证实验生成器")
-    idea_title = st.text_input("需求标题")
-    if st.button("生成验证方案") and idea_title:
-        experiments = generate_validation_experiments(idea_title)
-        for i, exp in enumerate(experiments, 1):
-            with st.expander(f"{i}. {exp.name}", expanded=True):
-                st.write(f"**描述**：{exp.description}")
-                st.write(f"**预计成本**：{exp.estimated_cost}")
-                st.write(f"**预计时间**：{exp.estimated_time}")
-                st.write(f"**成功标准**：{exp.success_criteria}")
-                st.write(f"**执行方法**：{exp.how_to_run}")
-
-elif page == "执行记录":
-    st.header("📋 执行反馈记录")
-    summary = get_execution_summary()
-    col1, col2, col3 = st.columns(3)
-    col1.metric("已执行想法", summary.get("total_executed", 0))
-    col2.metric("成功率", f"{summary.get('success_rate', 0)}%")
-    col3.metric("平均耗时", f"{summary.get('average_time_per_idea', 0)} 天")
-    
-    logs = load_logs()
-    if logs:
-        for log in logs[-5:]:
-            with st.expander(f"{log['idea_title']} ({log['executed_date']})"):
-                st.write(f"**结果**：{log['result']}")
-                st.write(f"**耗时**：{log['time_spent_days']} 天")
-                st.write(f"**关键洞察**：{log.get('key_learnings', '无')}")
-
-elif page == "状态管理":
-    st.header("📌 需求状态管理")
-    statuses = load_status()
-    if not statuses:
-        st.info("暂无已追踪的需求状态")
-    else:
-        for idea_id, info in statuses.items():
-            col1, col2, col3 = st.columns([3, 2, 2])
-            with col1:
-                st.write(f"**{idea_id}**")
-            with col2:
-                new_status = st.selectbox("状态", DEFAULT_STATUSES, index=DEFAULT_STATUSES.index(info["status"]), key=f"status_{idea_id}")
-            with col3:
-                if st.button("更新", key=f"btn_{idea_id}"):
-                    update_idea_status(idea_id, new_status)
-                    st.success(f"已更新为 {new_status}")
-                    st.rerun()
-
-st.sidebar.markdown("---")
-st.sidebar.caption("数据来源：requesthunt_local + opc_engine")
+report = snapshot.get("markdown_report", "")
+if report:
+    st.subheader("Markdown 日报")
+    st.download_button(
+        "下载 Markdown 日报",
+        data=report,
+        file_name=f"demand-report-{generated_at.split(' ')[0]}.md",
+        mime="text/markdown",
+        use_container_width=True,
+    )
+    with st.expander("预览日报", expanded=False):
+        st.code(report, language="markdown")
