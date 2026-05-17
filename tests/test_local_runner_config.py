@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from demand_engine import DEFAULT_HN_QUERIES, DEFAULT_SUBREDDITS
+from demand_engine import DEFAULT_APP_IDS, DEFAULT_HN_QUERIES, DEFAULT_SUBREDDITS
 from local_runner import parse_args, resolve_scan_options
 
 
@@ -16,9 +16,10 @@ class LocalRunnerConfigTest(unittest.TestCase):
         self.assertEqual(options["hn_queries"], DEFAULT_HN_QUERIES)
         self.assertEqual(options["subreddits"], DEFAULT_SUBREDDITS)
         self.assertEqual(options["reddit_query"], "alternative OR expensive OR manual OR missing feature")
-        self.assertEqual(options["app_ids"], [])
+        self.assertEqual(options["app_ids"], DEFAULT_APP_IDS)
         self.assertEqual(options["app_store_country"], "us")
         self.assertEqual(options["limit_per_source"], 10)
+        self.assertEqual(options["history_max_records"], 10000)
         self.assertEqual(options["output"], "data/dashboard_snapshot.json")
 
     def test_config_file_is_used_and_cli_overrides_it(self):
@@ -33,6 +34,7 @@ class LocalRunnerConfigTest(unittest.TestCase):
                         "app_ids": ["123", "456"],
                         "app_store_country": "cn",
                         "limit_per_source": 7,
+                        "history_max_records": 12000,
                         "output": "tmp/snapshot.json",
                     }
                 ),
@@ -57,6 +59,7 @@ class LocalRunnerConfigTest(unittest.TestCase):
         self.assertEqual(options["app_ids"], ["123", "456"])
         self.assertEqual(options["app_store_country"], "cn")
         self.assertEqual(options["limit_per_source"], 3)
+        self.assertEqual(options["history_max_records"], 12000)
         self.assertEqual(options["output"], "tmp/snapshot.json")
 
 
