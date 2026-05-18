@@ -9,6 +9,69 @@ def _idea_value(idea: Any, key: str, default: str = "") -> Any:
     return getattr(idea, key, default)
 
 
+def _idea_list(idea: Any, key: str) -> list[str]:
+    value = _idea_value(idea, key, [])
+    if not isinstance(value, list):
+        return []
+    return [str(item) for item in value if str(item).strip()]
+
+
+def _score_breakdown(idea: Any) -> str:
+    parts = []
+    for label, key in [
+        ("ERRC", "errc_score"),
+        ("JTBD", "jtbd_score"),
+        ("OPC", "opc_score"),
+        ("RICE", "rice_score"),
+    ]:
+        value = _idea_value(idea, key, None)
+        if value is not None:
+            parts.append(f"{label} {value}")
+    total = _idea_value(idea, "total_score")
+    return f"{total}" if not parts else f"{total} ({', '.join(parts)})"
+
+
+def _append_evidence_track(lines: list[str], index: int, idea: Any) -> None:
+    anti_signals = _idea_list(idea, "anti_signals")
+    if not anti_signals:
+        anti_signals = ["No anti-signal captured yet."]
+
+    lines.extend(
+        [
+            f"### {index}. {_idea_value(idea, 'mvp_concept')}",
+            "",
+            f"- Score: {_score_breakdown(idea)}",
+            f"- Verdict: {_idea_value(idea, 'verdict')}",
+            f"- Source: {_idea_value(idea, 'source_url', 'n/a')}",
+            "",
+            "#### Evidence",
+            "",
+            f"- Excerpt: {_idea_value(idea, 'source_excerpt', _idea_value(idea, 'pain_summary'))}",
+            f"- Existing workaround: {_idea_value(idea, 'existing_workaround', 'Unknown')}",
+            "",
+            "#### Why This Might Be Real",
+            "",
+            f"- Thesis: {_idea_value(idea, 'opportunity_thesis', _idea_value(idea, 'why'))}",
+            f"- Target audience: {_idea_value(idea, 'target_audience')}",
+            f"- Pain: {_idea_value(idea, 'pain_summary')}",
+            "",
+            "#### Why This Might Be Wrong",
+            "",
+        ]
+    )
+    lines.extend(f"- {signal}" for signal in anti_signals)
+    lines.extend(
+        [
+            f"- Confidence: {_idea_value(idea, 'confidence_note', 'Needs more validation.')}",
+            "",
+            "#### Next Validation Step",
+            "",
+            f"- {_idea_value(idea, 'validation_step')}",
+            "",
+        ]
+    )
+
+
 def render_daily_report(
     date: str,
     raw_count: int,
@@ -19,6 +82,7 @@ def render_daily_report(
     ideas = sorted(scored_ideas, key=lambda idea: int(_idea_value(idea, "total_score", 0)), reverse=True)
     build_now = [idea for idea in ideas if _idea_value(idea, "verdict") == "Build Now"]
     monitor = [idea for idea in ideas if _idea_value(idea, "verdict") == "Monitor"]
+    top_tracks = build_now if build_now else monitor[:3]
 
     lines = [
         f"# Blue Ocean Demand Report - {date}",
@@ -32,27 +96,14 @@ def render_daily_report(
         f"- Monitor: {len(monitor)}",
         f"- Score failures: {failed_scores}",
         "",
-        "## Top Opportunities",
+        "## Top Opportunity Tracks",
         "",
     ]
 
-    if not build_now:
-        lines.extend(["No Build Now opportunities today.", ""])
-    for index, idea in enumerate(build_now, start=1):
-        lines.extend(
-            [
-                f"### {index}. {_idea_value(idea, 'mvp_concept')}",
-                "",
-                f"- Score: {_idea_value(idea, 'total_score')}",
-                f"- Verdict: {_idea_value(idea, 'verdict')}",
-                f"- Source: {_idea_value(idea, 'source_url', 'n/a')}",
-                f"- Target audience: {_idea_value(idea, 'target_audience')}",
-                f"- Pain: {_idea_value(idea, 'pain_summary')}",
-                f"- Why now: {_idea_value(idea, 'why')}",
-                f"- Validation step: {_idea_value(idea, 'validation_step')}",
-                "",
-            ]
-        )
+    if not top_tracks:
+        lines.extend(["No opportunity tracks today.", ""])
+    for index, idea in enumerate(top_tracks, start=1):
+        _append_evidence_track(lines, index, idea)
 
     lines.extend(["## Monitor List", "", "| Score | Concept | Source | Validation |", "| --- | --- | --- | --- |"])
     for idea in monitor:

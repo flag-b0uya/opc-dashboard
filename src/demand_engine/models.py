@@ -72,9 +72,46 @@ class ScoredIdea:
     verdict: Verdict
     why: str
     validation_step: str
+    source_excerpt: str = ""
+    opportunity_thesis: str = ""
+    existing_workaround: str = ""
+    anti_signals: list[str] = field(default_factory=list)
+    confidence_note: str = ""
     scored_at: str = field(default_factory=utc_now_iso)
+
+    def evidence_payload(self) -> dict[str, Any]:
+        return {
+            "source_excerpt": self.source_excerpt,
+            "opportunity_thesis": self.opportunity_thesis,
+            "existing_workaround": self.existing_workaround,
+            "anti_signals": list(self.anti_signals),
+            "confidence_note": self.confidence_note,
+        }
+
+    @staticmethod
+    def from_evidence_payload(payload: dict[str, Any] | str | None) -> dict[str, Any]:
+        if isinstance(payload, str):
+            try:
+                raw = json.loads(payload) if payload else {}
+            except json.JSONDecodeError:
+                raw = {}
+        elif isinstance(payload, dict):
+            raw = payload
+        else:
+            raw = {}
+
+        anti_signals = raw.get("anti_signals", [])
+        if not isinstance(anti_signals, list):
+            anti_signals = []
+
+        return {
+            "source_excerpt": str(raw.get("source_excerpt", "")),
+            "opportunity_thesis": str(raw.get("opportunity_thesis", "")),
+            "existing_workaround": str(raw.get("existing_workaround", "")),
+            "anti_signals": [str(signal) for signal in anti_signals if str(signal).strip()],
+            "confidence_note": str(raw.get("confidence_note", "")),
+        }
 
 
 def normalize_text(value: str) -> str:
     return " ".join(value.strip().split())
-

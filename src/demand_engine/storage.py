@@ -58,11 +58,18 @@ class DemandStore:
                   verdict text not null,
                   why text not null,
                   validation_step text not null,
+                  evidence_json text not null default '{}',
                   scored_at text not null,
                   foreign key(candidate_id) references candidates(id)
                 );
                 """
             )
+            columns = {
+                str(row["name"])
+                for row in conn.execute("pragma table_info(scored_ideas)").fetchall()
+            }
+            if "evidence_json" not in columns:
+                conn.execute("alter table scored_ideas add column evidence_json text not null default '{}'")
             conn.commit()
 
     def upsert_raw_items(self, items: list[RawItemInput]) -> int:
@@ -129,8 +136,8 @@ class DemandStore:
                     insert or ignore into scored_ideas
                     (id, candidate_id, mvp_concept, target_audience, pain_summary,
                      errc_score, jtbd_score, opc_score, rice_score, total_score,
-                     verdict, why, validation_step, scored_at)
-                    values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     verdict, why, validation_step, evidence_json, scored_at)
+                    values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         idea.candidate_id,
@@ -146,6 +153,7 @@ class DemandStore:
                         idea.verdict,
                         idea.why,
                         idea.validation_step,
+                        stable_json(idea.evidence_payload()),
                         idea.scored_at,
                     ),
                 )

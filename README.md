@@ -2,12 +2,17 @@
 
 Small, stdlib-only implementation of the one-person company demand engine described in `optimized-blue-ocean-demand-engine.md`.
 
+The report format is evidence-pack first: each top track includes a source excerpt,
+the opportunity thesis, the current workaround, anti-signals, confidence notes, and
+the next validation step. The goal is to produce a short list of narrow SaaS/MVP
+tracks worth validating, not a generic pile of startup ideas.
+
 ## Local Commands
 
 Run tests:
 
 ```bash
-PYTHONPATH=src python3 -m unittest -v
+PYTHONPATH=src python3 -m unittest discover -s tests -v
 ```
 
 Run the full pipeline with deterministic offline fixture data:
