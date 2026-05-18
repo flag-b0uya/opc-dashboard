@@ -125,6 +125,18 @@ class SnapshotExporterTest(unittest.TestCase):
         self.assertEqual(snapshot["source_stats"]["top_sources"][0]["source"], "Reddit r/SaaS")
         self.assertEqual(snapshot["source_stats"]["top_sources"][0]["percent"], 40)
 
+    def test_snapshot_includes_analysis_metadata(self):
+        snapshot = build_dashboard_snapshot(
+            ideas=[],
+            summary={"generated_at": "2026-05-18 09:00:00"},
+            history_summary={},
+            markdown_report="",
+            analysis_metadata={"analysis_provider": "codex", "analysis_status": "ok"},
+        )
+
+        self.assertEqual(snapshot["analysis_metadata"]["analysis_provider"], "codex")
+        self.assertEqual(snapshot["analysis_metadata"]["analysis_status"], "ok")
+
     def test_load_dashboard_snapshot_handles_missing_and_invalid_files(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             missing_path = Path(tmpdir) / "missing.json"

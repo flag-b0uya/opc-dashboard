@@ -26,6 +26,7 @@ class LocalRunnerConfigTest(unittest.TestCase):
         self.assertEqual(options["limit_per_source"], 10)
         self.assertEqual(options["history_max_records"], 10000)
         self.assertEqual(options["output"], "data/dashboard_snapshot.json")
+        self.assertEqual(options["analysis_provider"], "heuristic")
 
     def test_config_file_is_used_and_cli_overrides_it(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -41,6 +42,7 @@ class LocalRunnerConfigTest(unittest.TestCase):
                         "limit_per_source": 7,
                         "history_max_records": 12000,
                         "output": "tmp/snapshot.json",
+                        "analysis_provider": "codex",
                     }
                 ),
                 encoding="utf-8",
@@ -66,6 +68,7 @@ class LocalRunnerConfigTest(unittest.TestCase):
         self.assertEqual(options["limit_per_source"], 3)
         self.assertEqual(options["history_max_records"], 12000)
         self.assertEqual(options["output"], "tmp/snapshot.json")
+        self.assertEqual(options["analysis_provider"], "codex")
 
 
 if __name__ == "__main__":

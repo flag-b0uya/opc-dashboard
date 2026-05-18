@@ -11,6 +11,14 @@
 python3 local_runner.py
 ```
 
+如果要让 Codex 参与需求簇深度分析：
+
+```bash
+python3 local_runner.py --analysis-provider codex
+```
+
+该模式会在规则聚类后调用当前环境里的 `codex exec`，把需求簇重写成更像研究员分析的机会判断。如果 Codex CLI 不可用，会回退到规则分析，并在快照的 `analysis_metadata` 和页面顶部显示 fallback 状态。
+
 3. 检查 `data/dashboard_snapshot.json`。
 4. 提交并同步到 GitHub：
 
@@ -63,6 +71,20 @@ python3 source_health_check.py --config dashboard_config.example.json --limit 3
 ```bash
 python3 source_health_check.py --config dashboard_config.example.json --limit 1 --all-configured
 ```
+
+## Codex 云端定时运行
+
+推荐把每日任务挂到 Codex 云端 worktree：
+
+```bash
+python3 local_runner.py --analysis-provider codex
+python3 -m unittest discover -v
+git add data/dashboard_snapshot.json
+git commit -m "Update dashboard snapshot"
+git push origin main
+```
+
+Streamlit Cloud 只读取 `data/dashboard_snapshot.json`，因此不需要在 Streamlit 配置模型密钥。
 
 ## 本地文件
 

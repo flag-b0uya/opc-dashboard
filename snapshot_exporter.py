@@ -126,6 +126,7 @@ def build_dashboard_snapshot(
     opportunity_clusters: Optional[List[Dict]] = None,
     decision_summary: Optional[Dict] = None,
     source_health: Optional[Dict] = None,
+    analysis_metadata: Optional[Dict] = None,
 ) -> Dict:
     top_ideas = [_idea_to_snapshot_row(idea) for idea in ideas[:top_n]]
     clusters = list(opportunity_clusters or [])
@@ -150,6 +151,7 @@ def build_dashboard_snapshot(
         "source_health": dict(source_health or _default_source_health(summary, ideas)),
         "source_stats": build_source_stats(ideas),
         "label_counts": count_labels(ideas),
+        "analysis_metadata": dict(analysis_metadata or {"analysis_provider": "heuristic", "analysis_status": "local"}),
         "markdown_report": markdown_report,
     }
 

@@ -502,6 +502,11 @@ opportunity_clusters = snapshot.get("opportunity_clusters", [])
 top_ideas = snapshot.get("top_ideas", [])
 repeated = snapshot.get("repeated_signals_7d", [])
 generated_at = snapshot.get("generated_at", "未生成")
+analysis_metadata = snapshot.get("analysis_metadata", {})
+analysis_label = (
+    f"{analysis_metadata.get('analysis_provider', 'heuristic')} / "
+    f"{analysis_metadata.get('analysis_status', 'local')}"
+)
 
 hero_left, hero_right = st.columns([1.55, 1], gap="large")
 with hero_left:
@@ -510,7 +515,7 @@ with hero_left:
         <section class="hero">
             <div class="eyebrow">LOCAL-FIRST DEMAND RADAR</div>
             <h1>蓝海机会雷达</h1>
-            <p>本地扫描公开信号，GitHub 保存结果快照，Streamlit 只展示机会看板。最近更新：{esc(generated_at)}</p>
+            <p>本地扫描公开信号，GitHub 保存结果快照，Streamlit 只展示机会看板。最近更新：{esc(generated_at)} · 分析：{esc(analysis_label)}</p>
         </section>
         """,
         unsafe_allow_html=True,

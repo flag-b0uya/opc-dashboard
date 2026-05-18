@@ -17,6 +17,7 @@ from demand_engine import (
     run_demand_scan,
     save_scan_to_history,
 )
+from codex_analysis import CodexAnalysisError, analyze_clusters_with_codex
 from snapshot_exporter import build_dashboard_snapshot, write_dashboard_snapshot
 
 
@@ -99,6 +100,7 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser.add_argument("--limit-per-source", type=int)
     parser.add_argument("--history-max-records", type=int)
     parser.add_argument("--output")
+    parser.add_argument("--analysis-provider", choices=["heuristic", "codex"], default=None)
     return parser.parse_args(argv)
 
 
@@ -126,6 +128,7 @@ def resolve_scan_options(args: argparse.Namespace) -> Dict[str, Any]:
         "history_max_records": args.history_max_records
         or int(config.get("history_max_records", DEFAULT_HISTORY_MAX_RECORDS)),
         "output": args.output or config.get("output") or DEFAULT_OUTPUT_PATH,
+        "analysis_provider": args.analysis_provider or config.get("analysis_provider") or "heuristic",
     }
 
 
@@ -148,6 +151,20 @@ def main(argv: Optional[List[str]] = None) -> int:
     rows = ideas_to_dicts(ideas)
     history_summary = get_history_summary(days=7)
     opportunity_clusters = build_opportunity_clusters(rows, history_summary)
+    analysis_metadata = {
+        "analysis_provider": options["analysis_provider"],
+        "analysis_status": "heuristic",
+    }
+    if options["analysis_provider"] == "codex" and opportunity_clusters:
+        try:
+            opportunity_clusters, analysis_metadata = analyze_clusters_with_codex(rows, opportunity_clusters)
+        except CodexAnalysisError as exc:
+            analysis_metadata = {
+                "analysis_provider": "codex",
+                "analysis_status": "fallback",
+                "analysis_error": str(exc),
+            }
+            summary.setdefault("errors", []).append(f"Codex analysis fallback: {exc}")
     decision_summary = build_decision_summary(opportunity_clusters)
     snapshot = build_dashboard_snapshot(
         ideas=rows,
@@ -156,6 +173,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         markdown_report=report,
         opportunity_clusters=opportunity_clusters,
         decision_summary=decision_summary,
+        analysis_metadata=analysis_metadata,
     )
     output_path = Path(options["output"])
     write_dashboard_snapshot(snapshot, output_path)
@@ -163,6 +181,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     print(f"Snapshot written: {output_path}")
     print(f"Candidates: {summary.get('candidate_count', 0)}")
     print(f"Build Now: {summary.get('build_now_count', 0)}")
+    print(f"Analysis: {analysis_metadata.get('analysis_provider')} / {analysis_metadata.get('analysis_status')}")
     print("Next:")
     print(f"  git add {output_path}")
     print('  git commit -m "Update dashboard snapshot"')
