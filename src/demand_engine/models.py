@@ -77,6 +77,7 @@ class ScoredIdea:
     existing_workaround: str = ""
     anti_signals: list[str] = field(default_factory=list)
     confidence_note: str = ""
+    source_urls: list[str] = field(default_factory=list)
     scored_at: str = field(default_factory=utc_now_iso)
 
     def evidence_payload(self) -> dict[str, Any]:
@@ -86,6 +87,7 @@ class ScoredIdea:
             "existing_workaround": self.existing_workaround,
             "anti_signals": list(self.anti_signals),
             "confidence_note": self.confidence_note,
+            "source_urls": list(self.source_urls),
         }
 
     @staticmethod
@@ -103,6 +105,9 @@ class ScoredIdea:
         anti_signals = raw.get("anti_signals", [])
         if not isinstance(anti_signals, list):
             anti_signals = []
+        source_urls = raw.get("source_urls", [])
+        if not isinstance(source_urls, list):
+            source_urls = []
 
         return {
             "source_excerpt": str(raw.get("source_excerpt", "")),
@@ -110,6 +115,7 @@ class ScoredIdea:
             "existing_workaround": str(raw.get("existing_workaround", "")),
             "anti_signals": [str(signal) for signal in anti_signals if str(signal).strip()],
             "confidence_note": str(raw.get("confidence_note", "")),
+            "source_urls": [str(url) for url in source_urls if str(url).strip()],
         }
 
 

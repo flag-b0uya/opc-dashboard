@@ -35,6 +35,10 @@ def _append_evidence_track(lines: list[str], index: int, idea: Any) -> None:
     anti_signals = _idea_list(idea, "anti_signals")
     if not anti_signals:
         anti_signals = ["No anti-signal captured yet."]
+    source_urls = _idea_list(idea, "source_urls")
+    if not source_urls:
+        source_url = _idea_value(idea, "source_url", "")
+        source_urls = [source_url] if source_url else []
 
     lines.extend(
         [
@@ -48,6 +52,12 @@ def _append_evidence_track(lines: list[str], index: int, idea: Any) -> None:
             "",
             f"- Excerpt: {_idea_value(idea, 'source_excerpt', _idea_value(idea, 'pain_summary'))}",
             f"- Existing workaround: {_idea_value(idea, 'existing_workaround', 'Unknown')}",
+        ]
+    )
+    if source_urls:
+        lines.append(f"- Sources: {', '.join(source_urls)}")
+    lines.extend(
+        [
             "",
             "#### Why This Might Be Real",
             "",

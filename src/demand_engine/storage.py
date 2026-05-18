@@ -133,11 +133,25 @@ class DemandStore:
             for idea in ideas:
                 cursor = conn.execute(
                     """
-                    insert or ignore into scored_ideas
+                    insert into scored_ideas
                     (id, candidate_id, mvp_concept, target_audience, pain_summary,
                      errc_score, jtbd_score, opc_score, rice_score, total_score,
                      verdict, why, validation_step, evidence_json, scored_at)
                     values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    on conflict(id) do update set
+                      mvp_concept = excluded.mvp_concept,
+                      target_audience = excluded.target_audience,
+                      pain_summary = excluded.pain_summary,
+                      errc_score = excluded.errc_score,
+                      jtbd_score = excluded.jtbd_score,
+                      opc_score = excluded.opc_score,
+                      rice_score = excluded.rice_score,
+                      total_score = excluded.total_score,
+                      verdict = excluded.verdict,
+                      why = excluded.why,
+                      validation_step = excluded.validation_step,
+                      evidence_json = excluded.evidence_json,
+                      scored_at = excluded.scored_at
                     """,
                     (
                         idea.candidate_id,

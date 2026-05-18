@@ -9,6 +9,13 @@ from typing import Any
 
 from .fetchers import fetch_all, fetch_source
 from .filters import filter_candidates
+from .llm_analysis import (
+    CodexCLIClient,
+    LLMClient,
+    OpenAIResponsesClient,
+    codex_cli_available,
+    synthesize_with_llm,
+)
 from .models import RawItemInput
 from .reports import render_daily_report
 from .scoring import heuristic_score
@@ -72,6 +79,9 @@ def offline_fixture_items() -> list[RawItemInput]:
 
 def _idea_with_source(idea: Any, candidates_by_id: dict[str, Any]) -> dict[str, Any]:
     candidate = candidates_by_id.get(idea.candidate_id)
+    source_urls = list(getattr(idea, "source_urls", []) or [])
+    if candidate and candidate.source_url and candidate.source_url not in source_urls:
+        source_urls.append(candidate.source_url)
     return {
         "mvp_concept": idea.mvp_concept,
         "target_audience": idea.target_audience,
@@ -86,7 +96,34 @@ def _idea_with_source(idea: Any, candidates_by_id: dict[str, Any]) -> dict[str, 
         "validation_step": idea.validation_step,
         **idea.evidence_payload(),
         "source_url": candidate.source_url if candidate else "n/a",
+        "source_urls": source_urls,
     }
+
+
+def _write_latest_artifact(
+    path: Path,
+    date: str,
+    result: dict[str, int | str],
+    report_ideas: list[dict[str, Any]],
+) -> None:
+    build_now_count = sum(1 for idea in report_ideas if idea.get("verdict") == "Build Now")
+    monitor_count = sum(1 for idea in report_ideas if idea.get("verdict") == "Monitor")
+    artifact = {
+        "date": date,
+        "analysis_mode": result["analysis_mode"],
+        "summary": {
+            "raw_count": result["raw_count"],
+            "raw_inserted": result["raw_inserted"],
+            "candidate_count": result["candidate_count"],
+            "candidate_inserted": result["candidate_inserted"],
+            "scored_count": result["scored_count"],
+            "failed_scores": result["failed_scores"],
+            "build_now_count": build_now_count,
+            "monitor_count": monitor_count,
+        },
+        "tracks": sorted(report_ideas, key=lambda idea: int(idea.get("total_score", 0)), reverse=True),
+    }
+    path.write_text(json.dumps(artifact, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def run_daily(
@@ -95,6 +132,11 @@ def run_daily(
     db_path: Path,
     offline_items: list[RawItemInput] | None = None,
     report_date: str | None = None,
+    no_llm: bool = False,
+    max_llm_candidates: int = 40,
+    llm_client: LLMClient | None = None,
+    llm_provider: str = "auto",
+    llm_client_factory: Any | None = None,
 ) -> dict[str, int | str]:
     config = load_config(config_path)
     store = DemandStore(db_path)
@@ -106,33 +148,67 @@ def run_daily(
     candidates = filter_candidates(raw_items, existing_body_hashes=set())
     candidate_inserted = store.insert_candidates(candidates)
 
-    scored = [heuristic_score(candidate) for candidate in candidates]
+    failed_scores = 0
+    analysis_mode = "heuristic"
+    provider = "heuristic" if no_llm else llm_provider
+    client: LLMClient | None = llm_client
+    if client is not None and provider == "auto":
+        provider = "llm"
+    if client is None and provider != "heuristic":
+        if llm_client_factory is not None:
+            client = llm_client_factory(provider)
+        elif provider == "codex" or (provider == "auto" and codex_cli_available()):
+            client = CodexCLIClient(cwd=root_dir)
+            provider = "codex"
+        elif provider == "openai" or (provider == "auto" and os.environ.get("OPENAI_API_KEY")):
+            client = OpenAIResponsesClient()
+            provider = "openai"
+    should_use_llm = client is not None and provider != "heuristic"
+    if should_use_llm and candidates:
+        try:
+            analysis = synthesize_with_llm(candidates, client, max_candidates=max_llm_candidates)
+            scored = analysis.scored_ideas
+            failed_scores = analysis.failed_scores
+            analysis_mode = provider
+            if not scored:
+                scored = [heuristic_score(candidate) for candidate in candidates]
+                analysis_mode = "heuristic_fallback"
+                failed_scores = max(failed_scores, 1)
+        except Exception:
+            scored = [heuristic_score(candidate) for candidate in candidates]
+            analysis_mode = "heuristic_fallback"
+            failed_scores = 1
+    else:
+        scored = [heuristic_score(candidate) for candidate in candidates]
     store.insert_scored_ideas(scored)
 
     candidates_by_id = {candidate.id: candidate for candidate in candidates}
     report_ideas = [_idea_with_source(idea, candidates_by_id) for idea in scored]
     date = report_date or datetime.now().date().isoformat()
+    result = {
+        "raw_count": len(raw_items),
+        "raw_inserted": raw_inserted,
+        "candidate_count": len(candidates),
+        "candidate_inserted": candidate_inserted,
+        "scored_count": len(scored),
+        "failed_scores": failed_scores,
+        "analysis_mode": analysis_mode,
+    }
     report = render_daily_report(
         date=date,
         raw_count=len(raw_items),
         candidate_count=len(candidates),
         scored_ideas=report_ideas,
-        failed_scores=0,
+        failed_scores=failed_scores,
     )
 
     reports_dir = root_dir / "reports"
     reports_dir.mkdir(parents=True, exist_ok=True)
     report_path = reports_dir / f"{date}.md"
     report_path.write_text(report, encoding="utf-8")
+    _write_latest_artifact(reports_dir / "latest.json", date, result, report_ideas)
 
-    return {
-        "raw_count": len(raw_items),
-        "raw_inserted": raw_inserted,
-        "candidate_count": len(candidates),
-        "candidate_inserted": candidate_inserted,
-        "scored_count": len(scored),
-        "report_path": str(report_path),
-    }
+    return {**result, "report_path": str(report_path)}
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -148,6 +224,14 @@ def build_parser() -> argparse.ArgumentParser:
     daily_parser = subparsers.add_parser("daily", help="Run the full daily pipeline")
     daily_parser.add_argument("--offline-fixture", action="store_true")
     daily_parser.add_argument("--date", default=None)
+    daily_parser.add_argument("--no-llm", action="store_true", help="Force deterministic heuristic scoring")
+    daily_parser.add_argument(
+        "--llm-provider",
+        choices=["auto", "codex", "openai", "heuristic"],
+        default="auto",
+        help="Analysis provider. auto prefers local Codex CLI, then OpenAI API, then heuristic.",
+    )
+    daily_parser.add_argument("--max-llm-candidates", type=int, default=40)
 
     return parser
 
@@ -177,6 +261,9 @@ def main(argv: list[str] | None = None) -> int:
             db_path=db_path,
             offline_items=offline_items,
             report_date=args.date,
+            no_llm=args.no_llm,
+            llm_provider=args.llm_provider,
+            max_llm_candidates=args.max_llm_candidates,
         )
         print(json.dumps(result, ensure_ascii=False))
         return 0

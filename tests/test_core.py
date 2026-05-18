@@ -5,6 +5,12 @@ from contextlib import closing
 from pathlib import Path
 
 from demand_engine.filters import filter_candidates
+from demand_engine.llm_analysis import (
+    CodexCLIClient,
+    LLMAnalysisError,
+    parse_opportunity_tracks,
+    synthesize_with_llm,
+)
 from demand_engine.models import RawItemInput
 from demand_engine.reports import render_daily_report
 from demand_engine.scoring import ScoreParseError, heuristic_score, parse_score_response
@@ -264,6 +270,101 @@ class CoreTests(unittest.TestCase):
         self.assertIn("## Top Opportunity Tracks", report)
         self.assertIn("Client report cleanup", report)
         self.assertIn("- Verdict: Monitor", report)
+
+    def test_parse_opportunity_tracks_accepts_cluster_level_tracks(self):
+        raw_items = [
+            RawItemInput(
+                source="reddit",
+                source_url="https://reddit.com/r/smallbusiness/comments/a",
+                title="Agency owners moving off spreadsheets",
+                body="Our manual agency approvals are slow and stuck in spreadsheets and email.",
+            ),
+            RawItemInput(
+                source="reddit",
+                source_url="https://reddit.com/r/smallbusiness/comments/b",
+                title="Client approval workflow is slow",
+                body="I wish there was a simple client approval workflow for small agencies.",
+            ),
+        ]
+        candidates = filter_candidates(raw_items, existing_body_hashes=set())
+        payload = {
+            "tracks": [
+                {
+                    "candidate_ids": [candidate.id for candidate in candidates],
+                    "mvp_concept": "Client approval tracker for small agencies",
+                    "target_audience": "small agency owners",
+                    "pain_summary": "Client approvals are split across email and spreadsheets.",
+                    "source_excerpt": "Our agency approvals are stuck in spreadsheets and email.",
+                    "opportunity_thesis": "Small agencies need a lightweight approval trail before project management suites.",
+                    "existing_workaround": "Spreadsheets, email threads, and manual follow-up.",
+                    "anti_signals": ["Could be bundled into project management tools."],
+                    "confidence_note": "Two independent posts point at the same narrow workflow.",
+                    "scores": {"errc": 21, "jtbd": 22, "opc": 25, "rice": 16},
+                    "why": "Repeated workflow pain with visible manual workaround.",
+                    "validation_step": "Interview five agency owners with active approval delays this week.",
+                }
+            ],
+            "discarded_patterns": ["generic burnout posts"],
+            "source_quality_notes": ["reddit supplied the only matching cluster"],
+        }
+
+        result = parse_opportunity_tracks(payload, candidates)
+
+        self.assertEqual(result.failed_scores, 0)
+        self.assertEqual(len(result.scored_ideas), 1)
+        idea = result.scored_ideas[0]
+        self.assertEqual(idea.mvp_concept, "Client approval tracker for small agencies")
+        self.assertEqual(idea.verdict, "Build Now")
+        self.assertEqual(len(idea.source_urls), 2)
+        self.assertIn("https://reddit.com/r/smallbusiness/comments/a", idea.source_urls)
+
+    def test_parse_opportunity_tracks_counts_bad_tracks(self):
+        raw = RawItemInput(
+            source="hn",
+            source_url="https://news.ycombinator.com/item?id=1",
+            title="Manual reports are slow",
+            body="Manual reports are slow and frustrating.",
+        )
+        candidates = filter_candidates([raw], existing_body_hashes=set())
+
+        result = parse_opportunity_tracks({"tracks": [{"mvp_concept": "missing fields"}]}, candidates)
+
+        self.assertEqual(result.scored_ideas, [])
+        self.assertEqual(result.failed_scores, 1)
+
+    def test_synthesize_with_llm_rejects_non_json(self):
+        class BadClient:
+            def analyze(self, prompt, schema):
+                return "not json"
+
+        raw = RawItemInput(
+            source="hn",
+            source_url="https://news.ycombinator.com/item?id=2",
+            title="Manual reports are slow",
+            body="Manual reports are slow and frustrating.",
+        )
+        candidates = filter_candidates([raw], existing_body_hashes=set())
+
+        with self.assertRaises(LLMAnalysisError):
+            synthesize_with_llm(candidates, BadClient())
+
+    def test_codex_cli_client_extracts_json_from_stdout(self):
+        class Completed:
+            returncode = 0
+            stdout = 'analysis\n{"tracks":[],"discarded_patterns":[],"source_quality_notes":[]}\n'
+            stderr = ""
+
+        def runner(command, capture_output, text, timeout, cwd):
+            self.assertEqual(command[0], "codex")
+            self.assertEqual(command[1], "exec")
+            self.assertIn("Return only a JSON object", command[2])
+            return Completed()
+
+        client = CodexCLIClient(runner=runner)
+
+        response = client.analyze("Cluster candidates", {"type": "object"})
+
+        self.assertEqual(response["tracks"], [])
 
 
 if __name__ == "__main__":
