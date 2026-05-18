@@ -32,14 +32,15 @@ class CodexAnalysisTests(unittest.TestCase):
               "clusters": [
                 {
                   "cluster_id": "ops-reporting-manual",
-                  "title": "Client reporting approval workflow",
-                  "evidence_summary": "Two signals show agencies manually compile client reports.",
-                  "decision_reason": "Repeated manual workflow with clear B2B buyer.",
-                  "recommended_action": "Interview five agency operators this week.",
+                  "title": "客户报表审批工作流",
+                  "opportunity_hypothesis": "小型代理商需要一个轻量报表审批留痕工具。",
+                  "evidence": "两个信号都指向人工整理客户报表。",
+                  "anti_signals": ["项目管理工具可能已经覆盖导出。"],
+                  "not_build_now_reason": "虽然有重复工作流，但还需要确认预算 owner。",
+                  "seven_day_validation": "本周访谈 5 个代理商运营负责人，确认每周耗时和愿付价格。",
+                  "paid_signal": "出现客户报表场景，但付费意愿需要访谈确认。",
                   "decision_score": 86,
-                  "decision_verdict": "Build Now",
-                  "codex_opportunity_thesis": "Small agencies need a narrow report approval trail.",
-                  "codex_anti_signals": ["Could be covered by project management exports."]
+                  "decision_verdict": "Build Now"
                 }
               ]
             }
@@ -48,7 +49,8 @@ class CodexAnalysisTests(unittest.TestCase):
 
         def runner(command, capture_output, text, timeout, cwd):
             self.assertEqual(command[0], "codex")
-            self.assertIn("Return only JSON", command[2])
+            self.assertIn("只返回 JSON", command[2])
+            self.assertIn("机会假设", command[2])
             return Completed()
 
         enhanced, meta = analyze_clusters_with_codex(rows, clusters, runner=runner)
@@ -56,7 +58,10 @@ class CodexAnalysisTests(unittest.TestCase):
         self.assertEqual(meta["analysis_provider"], "codex")
         self.assertEqual(meta["analysis_status"], "ok")
         self.assertEqual(enhanced[0]["decision_verdict"], "Build Now")
-        self.assertEqual(enhanced[0]["title"], "Client reporting approval workflow")
+        self.assertEqual(enhanced[0]["title"], "客户报表审批工作流")
+        self.assertEqual(enhanced[0]["opportunity_hypothesis"], "小型代理商需要一个轻量报表审批留痕工具。")
+        self.assertEqual(enhanced[0]["evidence_summary"], "两个信号都指向人工整理客户报表。")
+        self.assertIn("anti_signals", enhanced[0])
         self.assertIn("codex_anti_signals", enhanced[0])
 
     def test_analyze_clusters_reports_bad_codex_json(self):

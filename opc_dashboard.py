@@ -191,6 +191,54 @@ def render_styles() -> None:
             color: #101828;
             font-size: 18px;
         }
+        .analysis-section {
+            margin: 12px 0;
+        }
+        .analysis-section strong {
+            color: #101828;
+        }
+        .anti-list {
+            color: #475467;
+            line-height: 1.58;
+            margin: 6px 0 10px 18px;
+            padding: 0;
+        }
+        .evidence-chain {
+            border-top: 1px solid #eef0f3;
+            border-bottom: 1px solid #eef0f3;
+            margin: 14px 0;
+            padding: 8px 0;
+        }
+        .evidence-chain h4 {
+            color: #101828;
+            font-size: 15px;
+            margin: 0 0 8px;
+        }
+        .evidence-row {
+            display: grid;
+            grid-template-columns: 64px 180px 1fr;
+            gap: 10px;
+            align-items: start;
+            padding: 7px 0;
+            color: #475467;
+            font-size: 13px;
+            border-top: 1px solid #f3f4f6;
+        }
+        .evidence-row:first-of-type {
+            border-top: none;
+        }
+        .evidence-pass {
+            color: #0f766e;
+            font-weight: 700;
+        }
+        .evidence-miss {
+            color: #b45309;
+            font-weight: 700;
+        }
+        .evidence-label {
+            color: #101828;
+            font-weight: 650;
+        }
         .sample-link {
             color: #475467;
             font-size: 13px;
@@ -402,10 +450,49 @@ def render_idea_card(idea: dict) -> None:
         st.markdown(f"[来源：{esc(idea.get('source', ''))} - {esc(idea.get('title', ''))}]({idea.get('source_url')})")
 
 
+def render_evidence_chain(chain: dict) -> str:
+    if not chain:
+        return ""
+    rows = []
+    for item in chain.get("items", []) or []:
+        passed = bool(item.get("passed"))
+        status_class = "evidence-pass" if passed else "evidence-miss"
+        status_text = "通过" if passed else "缺口"
+        rows.append(
+            f"""
+            <div class="evidence-row">
+                <div class="{status_class}">{status_text}</div>
+                <div class="evidence-label">{esc(item.get("label", ""))}</div>
+                <div>{esc(item.get("detail", ""))}</div>
+            </div>
+            """
+        )
+    score_text = f"{esc(chain.get('passed_count', 0))}/{esc(chain.get('total_count', 0))}"
+    return f"""
+        <div class="evidence-chain">
+            <h4>证据链完整度：{score_text}</h4>
+            {''.join(rows)}
+        </div>
+    """
+
+
 def render_cluster_card(cluster: dict) -> None:
     verdict = cluster.get("decision_verdict", "Monitor")
     verdict_class = "tag-strong" if verdict == "Build Now" else "tag-warm" if verdict == "Monitor" else ""
     label = decision_label(verdict)
+    anti_signals = cluster.get("anti_signals") or cluster.get("codex_anti_signals") or []
+    anti_items = "".join(f"<li>{esc(item)}</li>" for item in anti_signals if item)
+    anti_html = (
+        f'<div class="analysis-section"><strong>反信号：</strong><ul class="anti-list">{anti_items}</ul></div>'
+        if anti_items
+        else ""
+    )
+    evidence_chain = render_evidence_chain(cluster.get("evidence_chain", {}))
+    opportunity_hypothesis = cluster.get("opportunity_hypothesis") or cluster.get("codex_opportunity_thesis") or ""
+    evidence = cluster.get("evidence") or cluster.get("evidence_summary") or ""
+    not_build_now_reason = cluster.get("not_build_now_reason") or cluster.get("decision_reason") or ""
+    seven_day_validation = cluster.get("seven_day_validation") or cluster.get("recommended_action") or ""
+    paid_signal = cluster.get("paid_signal") or "尚未形成明确付费信号。"
     st.markdown(
         f"""
         <div class="cluster-card">
@@ -419,9 +506,13 @@ def render_cluster_card(cluster: dict) -> None:
                 <div><span>最高原始分</span><strong>{esc(cluster.get("top_score", 0))}</strong></div>
                 <div><span>平均分</span><strong>{esc(cluster.get("avg_score", 0))}</strong></div>
             </div>
-            <p>{esc(cluster.get("evidence_summary", ""))}</p>
-            <p><strong>为什么这样判断：</strong>{esc(cluster.get("decision_reason", ""))}</p>
-            <p><strong>下一步：</strong>{esc(cluster.get("recommended_action", ""))}</p>
+            {evidence_chain}
+            <p class="analysis-section"><strong>机会假设：</strong>{esc(opportunity_hypothesis)}</p>
+            <p class="analysis-section"><strong>证据：</strong>{esc(evidence)}</p>
+            <p class="analysis-section"><strong>付费信号：</strong>{esc(paid_signal)}</p>
+            <p class="analysis-section"><strong>为什么不是立即开工：</strong>{esc(not_build_now_reason)}</p>
+            {anti_html}
+            <p class="analysis-section"><strong>7天验证动作：</strong>{esc(seven_day_validation)}</p>
         </div>
         """,
         unsafe_allow_html=True,
