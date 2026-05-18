@@ -6,6 +6,8 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import glob
+import shutil
 import subprocess
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -106,6 +108,38 @@ def _merge_clusters(clusters: List[Dict[str, Any]], codex_payload: Dict[str, Any
     return enhanced
 
 
+def _candidate_codex_bins(codex_bin: Optional[str]) -> List[str]:
+    if codex_bin:
+        return [codex_bin]
+
+    candidates: List[str] = []
+    env_bin = os.environ.get("CODEX_BIN")
+    if env_bin:
+        candidates.append(env_bin)
+
+    # Keep the plain command first so cloud Codex environments can resolve their own CLI.
+    candidates.append("codex")
+    path_bin = shutil.which("codex")
+    if path_bin:
+        candidates.append(path_bin)
+
+    home = Path.home()
+    patterns = [
+        str(home / ".vscode/extensions/openai.chatgpt-*/bin/macos-aarch64/codex"),
+        str(home / ".cursor/extensions/openai.chatgpt-*/bin/macos-aarch64/codex"),
+    ]
+    for pattern in patterns:
+        candidates.extend(sorted(glob.glob(pattern), reverse=True))
+
+    unique: List[str] = []
+    seen = set()
+    for candidate in candidates:
+        if candidate and candidate not in seen:
+            unique.append(candidate)
+            seen.add(candidate)
+    return unique
+
+
 def analyze_clusters_with_codex(
     rows: List[Dict[str, Any]],
     clusters: List[Dict[str, Any]],
@@ -115,19 +149,23 @@ def analyze_clusters_with_codex(
     runner: Any = subprocess.run,
     cwd: Optional[Path] = None,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, str]]:
-    binary = codex_bin or os.environ.get("CODEX_BIN", "codex")
     prompt = build_codex_prompt(rows, clusters)
-    completed = runner(
-        [binary, "exec", prompt, "-C", str(cwd or Path.cwd()), "-s", "read-only"],
-        capture_output=True,
-        text=True,
-        timeout=timeout,
-        cwd=str(cwd or Path.cwd()),
-    )
-    if completed.returncode != 0:
-        raise CodexAnalysisError(completed.stderr.strip() or "codex exec failed")
-    payload = _extract_json_object(completed.stdout)
-    return _merge_clusters(clusters, payload), {
-        "analysis_provider": "codex",
-        "analysis_status": "ok",
-    }
+    errors: List[str] = []
+    for binary in _candidate_codex_bins(codex_bin):
+        completed = runner(
+            [binary, "exec", prompt, "-C", str(cwd or Path.cwd()), "-s", "read-only"],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            cwd=str(cwd or Path.cwd()),
+        )
+        if completed.returncode != 0:
+            errors.append(f"{binary}: {completed.stderr.strip() or 'codex exec failed'}")
+            continue
+        payload = _extract_json_object(completed.stdout)
+        return _merge_clusters(clusters, payload), {
+            "analysis_provider": "codex",
+            "analysis_status": "ok",
+            "analysis_binary": binary,
+        }
+    raise CodexAnalysisError("; ".join(errors) or "No Codex CLI candidates were available")

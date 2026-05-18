@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from codex_analysis import CodexAnalysisError, analyze_clusters_with_codex
 
@@ -69,6 +70,33 @@ class CodexAnalysisTests(unittest.TestCase):
 
         with self.assertRaises(CodexAnalysisError):
             analyze_clusters_with_codex([], [], runner=runner)
+
+    def test_analyze_clusters_falls_back_when_path_codex_is_broken(self):
+        class Failed:
+            returncode = 1
+            stdout = ""
+            stderr = "missing vendor binary"
+
+        class Completed:
+            returncode = 0
+            stdout = '{"clusters":[]}'
+            stderr = ""
+
+        calls = []
+
+        def runner(command, capture_output, text, timeout, cwd):
+            calls.append(command[0])
+            if command[0] == "codex":
+                return Failed()
+            return Completed()
+
+        with patch("codex_analysis._candidate_codex_bins", return_value=["codex", "/tmp/good-codex"]):
+            _enhanced, meta = analyze_clusters_with_codex([], [], runner=runner)
+
+        self.assertGreaterEqual(len(calls), 2)
+        self.assertEqual(calls[0], "codex")
+        self.assertEqual(meta["analysis_status"], "ok")
+        self.assertNotEqual(meta["analysis_binary"], "codex")
 
 
 if __name__ == "__main__":
