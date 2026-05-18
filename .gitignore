@@ -3,3 +3,6 @@ __pycache__/
 dashboard_config.json
 data/demand_history.json
 data/demand_labels.json
+data/demand_engine.db
+.gstack/
+reports/
