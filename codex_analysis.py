@@ -53,6 +53,7 @@ def _compact_cluster(cluster: Dict[str, Any]) -> Dict[str, Any]:
         "decision_verdict": cluster.get("decision_verdict", "Monitor"),
         "decision_reason": cluster.get("decision_reason", ""),
         "evidence_summary": cluster.get("evidence_summary", ""),
+        "evidence_chain": cluster.get("evidence_chain", {}),
         "recommended_action": cluster.get("recommended_action", ""),
         "sample_ideas": cluster.get("sample_ideas", []),
     }
@@ -64,13 +65,20 @@ def build_codex_prompt(rows: List[Dict[str, Any]], clusters: List[Dict[str, Any]
         "clusters": [_compact_cluster(cluster) for cluster in clusters[:12]],
     }
     return (
-        "You are improving a blue-ocean opportunity dashboard. Read the candidate ideas "
-        "and existing heuristic clusters. Return only JSON with this shape: "
-        '{"clusters":[{"cluster_id":"same id","title":"clear opportunity title",'
-        '"evidence_summary":"specific evidence synthesis","decision_reason":"why this verdict",'
-        '"recommended_action":"7-day validation action","decision_score":0,'
-        '"decision_verdict":"Build Now|Monitor|Discard","codex_opportunity_thesis":"thesis",'
-        '"codex_anti_signals":["risk"]}]}. Keep every cluster_id unchanged.\n\n'
+        "你正在改进一个蓝海机会雷达。请阅读候选信号和已有启发式需求簇，"
+        "把每个需求簇改写成中文、产品化、可执行的机会分析。"
+        "不要逐条复述帖子，要合成需求。只返回 JSON，不要 Markdown。"
+        "JSON 形状必须是："
+        '{"clusters":[{"cluster_id":"保持原 id","title":"中文机会标题",'
+        '"opportunity_hypothesis":"机会假设，1-2 句中文",'
+        '"evidence":"证据，说明哪些重复痛点或来源支持它",'
+        '"anti_signals":["反信号 1","反信号 2"],'
+        '"not_build_now_reason":"为什么不是立即开工；如果是 Build Now 也说明最强理由",'
+        '"seven_day_validation":"7 天验证动作，必须具体到触达人群、动作、通过标准",'
+        '"paid_signal":"付费信号；没有就写尚不明确，并说明要验证什么",'
+        '"decision_score":0,'
+        '"decision_verdict":"Build Now|Monitor|Discard"}]}. '
+        "每个 cluster_id 必须保持不变；所有面向用户的文字必须用中文。\n\n"
         f"Input JSON:\n{json.dumps(payload, ensure_ascii=False)}"
     )
 
@@ -93,6 +101,12 @@ def _merge_clusters(clusters: List[Dict[str, Any]], codex_payload: Dict[str, Any
         merged = dict(cluster)
         for key in [
             "title",
+            "opportunity_hypothesis",
+            "evidence",
+            "anti_signals",
+            "not_build_now_reason",
+            "seven_day_validation",
+            "paid_signal",
             "evidence_summary",
             "decision_reason",
             "recommended_action",
@@ -103,6 +117,16 @@ def _merge_clusters(clusters: List[Dict[str, Any]], codex_payload: Dict[str, Any
         ]:
             if key in update:
                 merged[key] = update[key]
+        if "opportunity_hypothesis" in update:
+            merged["codex_opportunity_thesis"] = update["opportunity_hypothesis"]
+        if "evidence" in update:
+            merged["evidence_summary"] = update["evidence"]
+        if "anti_signals" in update:
+            merged["codex_anti_signals"] = update["anti_signals"]
+        if "not_build_now_reason" in update:
+            merged["decision_reason"] = update["not_build_now_reason"]
+        if "seven_day_validation" in update:
+            merged["recommended_action"] = update["seven_day_validation"]
         merged["analysis_provider"] = "codex"
         enhanced.append(merged)
     return enhanced

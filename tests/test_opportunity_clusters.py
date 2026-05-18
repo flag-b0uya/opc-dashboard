@@ -57,6 +57,27 @@ class OpportunityClusterTest(unittest.TestCase):
         self.assertEqual(cluster["source_count"], 2)
         self.assertEqual(len(cluster["sample_ideas"]), 2)
         self.assertIn("invoice", cluster["cluster_id"])
+        chain = cluster["evidence_chain"]
+        self.assertEqual(chain["total_count"], 5)
+        self.assertGreaterEqual(chain["passed_count"], 4)
+        labels = {item["label"]: item["passed"] for item in chain["items"]}
+        self.assertTrue(labels["2 个以上独立来源"])
+        self.assertTrue(labels["具体工作流"])
+
+    def test_evidence_chain_marks_missing_payment_signal(self):
+        cluster = build_opportunity_clusters([
+            idea_row(
+                idea_id="generic-help",
+                title="Need help deciding what to build",
+                pain_summary="I am not sure what to build next.",
+                matched_rules=["looking for"],
+                total_score=58,
+            )
+        ], {"records": []})[0]
+
+        labels = {item["label"]: item for item in cluster["evidence_chain"]["items"]}
+        self.assertFalse(labels["明确付费/预算信号"]["passed"])
+        self.assertFalse(labels["2 个以上独立来源"]["passed"])
 
     def test_different_business_contexts_do_not_merge_on_generic_manual_terms(self):
         ideas = [

@@ -203,6 +203,67 @@ B2B_PATTERNS = [
     "客服",
 ]
 
+PAYMENT_SIGNAL_PATTERNS = [
+    "$",
+    "paid",
+    "paying",
+    "pay ",
+    "pay for",
+    "budget",
+    "price",
+    "pricing",
+    "expensive",
+    "subscription",
+    "invoice",
+    "bill",
+    "cost",
+    "spend",
+    "付费",
+    "预算",
+    "价格",
+    "太贵",
+    "订阅",
+    "账单",
+    "成本",
+]
+
+ALTERNATIVE_COMPLAINT_PATTERNS = [
+    "alternative to",
+    "tried",
+    "using",
+    "replacing",
+    "doesn't support",
+    "does not support",
+    "missing",
+    "broken",
+    "expensive",
+    "替代",
+    "缺少",
+    "不好用",
+    "太贵",
+]
+
+WORKFLOW_SIGNAL_PATTERNS = [
+    "manual",
+    "workflow",
+    "process",
+    "report",
+    "export",
+    "dashboard",
+    "approval",
+    "checklist",
+    "audit",
+    "integration",
+    "automation",
+    "手动",
+    "流程",
+    "报表",
+    "导出",
+    "看板",
+    "清单",
+    "自动化",
+]
+
 DISTRIBUTION_PATTERNS = [
     "seo",
     "template",
@@ -908,6 +969,59 @@ def _decision_for_cluster(
     return decision_score, verdict, reason
 
 
+def _cluster_text(ideas: List[Dict]) -> str:
+    parts: List[str] = []
+    for idea in ideas:
+        parts.extend([
+            str(idea.get("title", "")),
+            str(idea.get("pain_summary", "")),
+            str(idea.get("mvp_concept", "")),
+            " ".join(str(rule) for rule in idea.get("matched_rules", []) or []),
+        ])
+    return " ".join(parts).lower()
+
+
+def _evidence_item(label: str, passed: bool, detail: str) -> Dict:
+    return {
+        "label": label,
+        "passed": bool(passed),
+        "detail": detail,
+    }
+
+
+def build_evidence_chain(cluster_ideas: List[Dict], source_count: int, count_7d: int, context: str) -> Dict:
+    text = _cluster_text(cluster_ideas)
+    budget = any(pattern in text for pattern in PAYMENT_SIGNAL_PATTERNS)
+    alternatives = any(pattern in text for pattern in ALTERNATIVE_COMPLAINT_PATTERNS)
+    workflow = context != "general" or any(pattern in text for pattern in WORKFLOW_SIGNAL_PATTERNS)
+    reachable_sources = [
+        idea for idea in cluster_ideas
+        if idea.get("source_url") and (
+            str(idea.get("source", "")).startswith("Reddit")
+            or str(idea.get("source", "")).startswith("Hacker News")
+            or str(idea.get("source", "")).startswith("App Store")
+        )
+    ]
+    reachable = bool(reachable_sources)
+    independent_sources = source_count >= 2
+
+    items = [
+        _evidence_item("2 个以上独立来源", independent_sources, f"当前覆盖 {source_count} 个来源"),
+        _evidence_item("明确付费/预算信号", budget, "文本中出现价格、账单、预算、付费或成本线索" if budget else "尚未看到明确付费或预算表达"),
+        _evidence_item("现有替代方案抱怨", alternatives, "出现替代品、缺失能力、太贵或不好用等抱怨" if alternatives else "尚未看到对现有替代方案的明确抱怨"),
+        _evidence_item("具体工作流", workflow, "能落到具体流程、清单、报表、集成或自动化场景" if workflow else "仍偏泛，需要收窄到具体工作流"),
+        _evidence_item("7 天内可触达验证", reachable, "样本包含可回访的公开来源链接" if reachable else "缺少可直接回访的来源链接"),
+    ]
+    passed_count = sum(1 for item in items if item["passed"])
+    return {
+        "passed_count": passed_count,
+        "total_count": len(items),
+        "score": round(passed_count / len(items) * 100),
+        "status": "strong" if passed_count >= 4 and count_7d >= 3 else "medium" if passed_count >= 3 else "weak",
+        "items": items,
+    }
+
+
 def _sample_idea(idea: Dict) -> Dict:
     return {
         "idea_id": idea.get("idea_id", ""),
@@ -957,6 +1071,7 @@ def build_opportunity_clusters(
         noise_penalty = _noise_penalty(sorted_ideas)
         has_scene = _has_explicit_user_or_scene(sorted_ideas)
         has_action = _has_actionable_validation(sorted_ideas)
+        evidence_chain = build_evidence_chain(sorted_ideas, source_count, count_7d, context)
         decision_score, decision_verdict, decision_reason = _decision_for_cluster(
             top_score=top_score,
             count_7d=count_7d,
@@ -987,6 +1102,7 @@ def build_opportunity_clusters(
             "noise_penalty": noise_penalty,
             "sample_ideas": [_sample_idea(idea) for idea in sorted_ideas[:3]],
             "evidence_summary": evidence_summary,
+            "evidence_chain": evidence_chain,
             "recommended_action": _recommended_action(decision_verdict, category, count_7d),
         })
 
