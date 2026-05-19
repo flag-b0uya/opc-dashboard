@@ -47,15 +47,15 @@ python3 local_runner.py --hn-query "manual workflow" --subreddit SaaS --limit-pe
 常用配置项：
 
 - `hn_queries`: Hacker News 搜索词列表。
-- `subreddits`: Reddit subreddit 列表。
-- `reddit_query`: Reddit 搜索表达式。
+- `subreddits`: Reddit subreddit 列表。默认为空，因为 Reddit 公开 JSON endpoint 经常返回 403/429；只有在本地确认该来源可稳定访问时再显式开启。
+- `reddit_query`: Reddit 搜索表达式，仅在 `subreddits` 非空时使用。
 - `app_ids`: App Store app ID 列表。
 - `app_store_country`: App Store 国家区码。
 - `limit_per_source`: 每个来源抓取数量。
 - `history_max_records`: 本地历史最多保留记录数，影响 7 天重复信号统计，默认 10000。
 - `output`: 快照输出路径，默认 `data/dashboard_snapshot.json`。
 
-默认样例按轻量雷达版配置：10 个 HN 关键词、8 个 Reddit 社区、10 个 App Store app、每源 25 条。理论原始量约数百条/天，实际数量会受来源返回量、去重和筛选影响。
+默认样例按轻量雷达版配置：10 个 HN 关键词、0 个 Reddit 社区、10 个 App Store app、每源 25 条。Reddit 作为 opt-in 来源保留，避免公开接口限流污染每日看板。理论原始量约数百条/天，实际数量会受来源返回量、去重和筛选影响。
 
 ## 数据源检查
 

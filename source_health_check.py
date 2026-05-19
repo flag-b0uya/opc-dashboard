@@ -81,13 +81,15 @@ def run_checks(config_path: str = "", limit: int = 3, all_configured: bool = Fal
         app_errors.extend(errors)
         app_targets.append(_target_result(app_id, items, errors))
 
-    results = [
-        _source_result("Hacker News", hn_items, hn_errors, hn_targets),
-        _source_result("Reddit", reddit_items, reddit_errors, reddit_targets),
-        _source_result("App Store", app_items, app_errors, app_targets),
-    ]
+    results = []
+    if hn_queries:
+        results.append(_source_result("Hacker News", hn_items, hn_errors, hn_targets))
+    if subreddits:
+        results.append(_source_result("Reddit", reddit_items, reddit_errors, reddit_targets))
+    if app_ids:
+        results.append(_source_result("App Store", app_items, app_errors, app_targets))
     failed = [item for item in results if not item["ok"]]
-    return results, 1 if failed else 0
+    return results, 1 if failed or not results else 0
 
 
 def main() -> int:

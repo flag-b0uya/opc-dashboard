@@ -20,6 +20,7 @@ class LocalRunnerConfigTest(unittest.TestCase):
 
         self.assertEqual(options["hn_queries"], DEFAULT_RUNNER_HN_QUERIES)
         self.assertEqual(options["subreddits"], DEFAULT_RUNNER_SUBREDDITS)
+        self.assertEqual(options["subreddits"], [])
         self.assertEqual(options["reddit_query"], "alternative OR expensive OR manual OR missing feature")
         self.assertEqual(options["app_ids"], DEFAULT_RUNNER_APP_IDS)
         self.assertEqual(options["app_store_country"], "us")
@@ -69,6 +70,27 @@ class LocalRunnerConfigTest(unittest.TestCase):
         self.assertEqual(options["history_max_records"], 12000)
         self.assertEqual(options["output"], "tmp/snapshot.json")
         self.assertEqual(options["analysis_provider"], "codex")
+
+    def test_empty_lists_in_config_disable_sources(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_path = Path(tmpdir) / "dashboard_config.json"
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "hn_queries": [],
+                        "subreddits": [],
+                        "app_ids": [],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            args = parse_args(["--config", str(config_path)])
+            options = resolve_scan_options(args)
+
+        self.assertEqual(options["hn_queries"], [])
+        self.assertEqual(options["subreddits"], [])
+        self.assertEqual(options["app_ids"], [])
 
 
 if __name__ == "__main__":

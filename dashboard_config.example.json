@@ -11,16 +11,7 @@
     "takes too long",
     "spreadsheet workflow"
   ],
-  "subreddits": [
-    "SaaS",
-    "Entrepreneur",
-    "indiehackers",
-    "smallbusiness",
-    "startups",
-    "ProductManagement",
-    "NoCode",
-    "freelance"
-  ],
+  "subreddits": [],
   "reddit_query": "alternative OR expensive OR manual OR missing feature",
   "app_ids": [
     "1232780281",

@@ -82,6 +82,31 @@ class SourceHealthCheckTest(unittest.TestCase):
         self.assertGreater(hn.call_count, 2)
         self.assertGreater(reddit.call_count, 2)
 
+    @patch("source_health_check.fetch_app_store_reviews")
+    @patch("source_health_check.fetch_reddit_items")
+    @patch("source_health_check.fetch_hn_items")
+    def test_run_checks_skips_sources_disabled_by_empty_config(self, hn, reddit, app_store):
+        hn.return_value = ([make_item("Hacker News")], [])
+        app_store.return_value = ([make_item("App Store")], [])
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_path = Path(tmpdir) / "dashboard_config.json"
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "hn_queries": ["alternative to"],
+                        "subreddits": [],
+                        "app_ids": ["123"],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            results, exit_code = run_checks(config_path=str(config_path), limit=2)
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual([item["source"] for item in results], ["Hacker News", "App Store"])
+        reddit.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

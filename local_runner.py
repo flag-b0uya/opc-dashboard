@@ -37,14 +37,6 @@ DEFAULT_RUNNER_HN_QUERIES = [
     "spreadsheet workflow",
 ]
 DEFAULT_RUNNER_SUBREDDITS = [
-    "SaaS",
-    "Entrepreneur",
-    "indiehackers",
-    "smallbusiness",
-    "startups",
-    "ProductManagement",
-    "NoCode",
-    "freelance",
 ]
 DEFAULT_RUNNER_APP_IDS = [
     "1232780281",
@@ -106,8 +98,19 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
 
 def resolve_scan_options(args: argparse.Namespace) -> Dict[str, Any]:
     config = load_runner_config(args.config)
-    hn_queries = args.hn_queries or _as_list(config.get("hn_queries")) or DEFAULT_RUNNER_HN_QUERIES
-    subreddits = args.subreddits or _as_list(config.get("subreddits")) or DEFAULT_RUNNER_SUBREDDITS
+    if args.hn_queries is not None:
+        hn_queries = args.hn_queries
+    elif "hn_queries" in config:
+        hn_queries = _as_list(config.get("hn_queries"))
+    else:
+        hn_queries = DEFAULT_RUNNER_HN_QUERIES
+
+    if args.subreddits is not None:
+        subreddits = args.subreddits
+    elif "subreddits" in config:
+        subreddits = _as_list(config.get("subreddits"))
+    else:
+        subreddits = DEFAULT_RUNNER_SUBREDDITS
 
     if args.app_ids is not None:
         app_ids = _split_csv(args.app_ids)
