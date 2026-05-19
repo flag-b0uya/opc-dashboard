@@ -1,420 +1,221 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-05-18 14:11:58",
+  "generated_at": "2026-05-19 13:42:57",
   "summary": {
-    "raw_count": 280,
-    "unique_count": 188,
-    "candidate_count": 80,
-    "build_now_count": 1,
-    "monitor_count": 17,
-    "discard_count": 62,
-    "saved_count": 80,
-    "errors": []
+    "raw_count": 100,
+    "unique_count": 98,
+    "candidate_count": 51,
+    "build_now_count": 0,
+    "monitor_count": 2,
+    "discard_count": 49,
+    "saved_count": 51,
+    "errors": [
+      "Reddit `r/SaaS` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/Entrepreneur` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/indiehackers` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/smallbusiness` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/startups` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/ProductManagement` 抓取失败：HTTP Error 429: Too Many Requests",
+      "Reddit `r/NoCode` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/freelance` 抓取失败：HTTP Error 429: Too Many Requests"
+    ]
   },
   "top_ideas": [
     {
-      "idea_id": "c4cb0ca6024a5807",
-      "mvp_concept": "为r/startups 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。",
-      "category": "研发/产品功能",
-      "total_score": 76,
-      "verdict": "Build Now",
-      "pain_summary": "Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote) I’ve been thinking about a lot of common SaaS/startup advice lately.",
-      "validation_step": "今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。",
-      "source": "Reddit r/startups",
-      "title": "Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote)",
-      "source_url": "https://www.reddit.com/r/startups/comments/1tdot03/maybe_some_startup_advice_is_too_universal/",
-      "repeat_7d": 3,
+      "idea_id": "38a0b4cfa32f4473",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 55,
+      "verdict": "Monitor",
+      "pain_summary": "Show HN: Flowdash – Build internal tools for your team’s manual workflows",
+      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
+      "source": "Hacker News",
+      "title": "Show HN: Flowdash – Build internal tools for your team’s manual workflows",
+      "source_url": "https://flowdash.com/",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "7163865f4d9b0370",
-      "mvp_concept": "为r/indiehackers 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。",
-      "category": "研发/产品功能",
-      "total_score": 71,
+      "idea_id": "7a8061a1bb5ce4ac",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 55,
       "verdict": "Monitor",
-      "pain_summary": "My \"builder trap\" experience and how I try to learn from it Recently I've been a bit more active on Reddit, as I'm building another startup.",
+      "pain_summary": "Replacing manual marketing workflows with autonomous AI agents",
       "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/indiehackers",
-      "title": "My \"builder trap\" experience and how I try to learn from it",
-      "source_url": "https://www.reddit.com/r/indiehackers/comments/1t4k4su/my_builder_trap_experience_and_how_i_try_to_learn/",
-      "repeat_7d": 3,
+      "source": "Hacker News",
+      "title": "Replacing manual marketing workflows with autonomous AI agents",
+      "source_url": "https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "d2723fb3864f5488",
-      "mvp_concept": "为r/NoCode 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。",
-      "category": "研发/产品功能",
-      "total_score": 68,
-      "verdict": "Monitor",
-      "pain_summary": "Warning: Replit's autoscale has no spend cap by default.",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/NoCode",
-      "title": "Warning: Replit's autoscale has no spend cap by default. Got a $480 bill in one weekend after a TikTok hit a client's landing page.",
-      "source_url": "https://www.reddit.com/r/nocode/comments/1tfun8z/warning_replits_autoscale_has_no_spend_cap_by/",
-      "repeat_7d": 3,
+      "idea_id": "3f599ad17ca74501",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户提供一个定价更友好的垂直轻量版。",
+      "category": "定价/商业模式",
+      "total_score": 54,
+      "verdict": "Discard",
+      "pain_summary": "They tried Made in the USA – it was too expensive for their customers",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "They tried Made in the USA – it was too expensive for their customers",
+      "source_url": "https://www.reuters.com/business/they-tried-made-usa-it-was-too-expensive-their-customers-2025-07-02/",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "c3f7a8521c0810c6",
-      "mvp_concept": "为r/Entrepreneur 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。",
+      "idea_id": "79b19f6c34f80465",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。",
       "category": "研发/产品功能",
-      "total_score": 66,
-      "verdict": "Monitor",
-      "pain_summary": "Investor or sponsor? Looking for funding for game prizes - which fits? Building a project with web games and tournaments. Players compete, win credits, spend...",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/Entrepreneur",
-      "title": "Investor or sponsor? Looking for funding for game prizes - which fits?",
-      "source_url": "https://www.reddit.com/r/Entrepreneur/comments/1t839ve/investor_or_sponsor_looking_for_funding_for_game/",
-      "repeat_7d": 3,
+      "total_score": 53,
+      "verdict": "Discard",
+      "pain_summary": "How to handle division by zero in a language that doesn't support exceptions?",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "How to handle division by zero in a language that doesn't support exceptions?",
+      "source_url": "http://programmers.stackexchange.com/questions/208677/how-to-handle-divide-by-zero-in-a-language-that-doesnt-support-exceptions",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "ccd775a141cb0d90",
-      "mvp_concept": "为r/ProductManagement 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。",
+      "idea_id": "3c6d210d0b0d2498",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。",
       "category": "研发/产品功能",
-      "total_score": 65,
-      "verdict": "Monitor",
-      "pain_summary": "Where does Product Ops end and Product/Engineering workflow design begin?",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/ProductManagement",
-      "title": "Where does Product Ops end and Product/Engineering workflow design begin?",
-      "source_url": "https://www.reddit.com/r/ProductManagement/comments/1t8uwrf/where_does_product_ops_end_and_productengineering/",
-      "repeat_7d": 3,
+      "total_score": 53,
+      "verdict": "Discard",
+      "pain_summary": "Google's Dart doesn't support deserialising JSON (or anything) into Dart Types",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "Google's Dart doesn't support deserialising JSON (or anything) into Dart Types",
+      "source_url": "https://groups.google.com/a/dartlang.org/forum/#!topic/misc/0pv-Uaq8FGI",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "e3e4422920b3a549",
-      "mvp_concept": "为r/startups 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。",
-      "category": "销售/线索转化",
-      "total_score": 64,
-      "verdict": "Monitor",
-      "pain_summary": "Growing, from the perspective of a non-technical person (I will not promote) I thought I'd share my perspective as a non-technical person, since there's a lo...",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/startups",
-      "title": "Growing, from the perspective of a non-technical person (I will not promote)",
-      "source_url": "https://www.reddit.com/r/startups/comments/1tcrfvj/growing_from_the_perspective_of_a_nontechnical/",
-      "repeat_7d": 3,
+      "idea_id": "9d8113fe5f73b8e9",
+      "mvp_concept": "为有明确工具替代需求的利基用户提供一个更轻量、低成本的替代工具。",
+      "category": "客服/成功/留存",
+      "total_score": 52,
+      "verdict": "Discard",
+      "pain_summary": "Docs – Open source alternative to Notion or Outline",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "Docs – Open source alternative to Notion or Outline",
+      "source_url": "https://github.com/suitenumerique/docs",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "be4ddf9bb169ae75",
-      "mvp_concept": "为r/Entrepreneur 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。",
-      "category": "研发/产品功能",
-      "total_score": 63,
-      "verdict": "Monitor",
-      "pain_summary": "I literally tried Expensify, Ramp &amp; Brex for my travel expense management - My thoughts.",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/Entrepreneur",
-      "title": "I literally tried Expensify, Ramp &amp; Brex for my travel expense management - My thoughts.",
-      "source_url": "https://www.reddit.com/r/Entrepreneur/comments/1tc4p95/i_literally_tried_expensify_ramp_brex_for_my/",
-      "repeat_7d": 3,
+      "idea_id": "cc0c810a0aa32ab5",
+      "mvp_concept": "为开发者、独立黑客或技术团队构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 52,
+      "verdict": "Discard",
+      "pain_summary": "Show HN: Phiona – Automate manual data workflows, no code required",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "Show HN: Phiona – Automate manual data workflows, no code required",
+      "source_url": "https://news.ycombinator.com/item?id=25126131",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "eccd8d14a164bd02",
-      "mvp_concept": "为r/Entrepreneur 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。",
-      "category": "研发/产品功能",
-      "total_score": 60,
-      "verdict": "Monitor",
-      "pain_summary": "My co-founder uses Clay and AI agents for outreach.",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/Entrepreneur",
-      "title": "My co-founder uses Clay and AI agents for outreach. I send Instagram DMs manually. Mine worked better.",
-      "source_url": "https://www.reddit.com/r/Entrepreneur/comments/1t1bhxf/my_cofounder_uses_clay_and_ai_agents_for_outreach/",
-      "repeat_7d": 3,
+      "idea_id": "340c2e885cd4377b",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 52,
+      "verdict": "Discard",
+      "pain_summary": "Show HN: The Cost of Manual Workflows",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "Show HN: The Cost of Manual Workflows",
+      "source_url": "https://news.ycombinator.com/item?id=47459627",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "74df305dc15090a5",
-      "mvp_concept": "为r/NoCode 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。",
-      "category": "研发/产品功能",
-      "total_score": 60,
-      "verdict": "Monitor",
-      "pain_summary": "Not as fast as I would've thought but slowly but surely After 10 months I finally was able to launch my SaaS.",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/NoCode",
-      "title": "Not as fast as I would've thought but slowly but surely",
-      "source_url": "https://www.reddit.com/r/nocode/comments/1tfyb77/not_as_fast_as_i_wouldve_thought_but_slowly_but/",
-      "repeat_7d": 3,
+      "idea_id": "994eb03b6a48bd36",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 52,
+      "verdict": "Discard",
+      "pain_summary": "A manual workflow to fix the \"muffled\" audio of AI music models",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "A manual workflow to fix the \"muffled\" audio of AI music models",
+      "source_url": "https://news.ycombinator.com/item?id=46884442",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "936f46e7e9a9d85f",
-      "mvp_concept": "为r/SaaS 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。",
-      "category": "研发/产品功能",
-      "total_score": 59,
-      "verdict": "Monitor",
-      "pain_summary": "Top 15 Most Trusted Custom Mobile App Development Companies in the USA for 2026 As businesses continue investing in digital products, the demand for reliable...",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/SaaS",
-      "title": "Top 15 Most Trusted Custom Mobile App Development Companies in the USA for 2026",
-      "source_url": "https://www.reddit.com/r/SaaS/comments/1tfq5hi/top_15_most_trusted_custom_mobile_app_development/",
-      "repeat_7d": 3,
+      "idea_id": "00453cd656f16bb4",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 52,
+      "verdict": "Discard",
+      "pain_summary": "Why do VCs fund AI-native companies but still run on manual workflows?",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "Why do VCs fund AI-native companies but still run on manual workflows?",
+      "source_url": "https://or-levi.medium.com/the-cobblers-children-have-no-co-pilot-why-vcs-are-losing-the-ai-operational-race-6d6c3baafcc6",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "b34552076238cd2d",
-      "mvp_concept": "为r/startups 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。",
-      "category": "研发/产品功能",
-      "total_score": 59,
-      "verdict": "Monitor",
-      "pain_summary": "We built the wrong first version, and beta users told us immediately (I will not promote) We thought users wanted a more powerful workflow, so that's what we built first.",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/startups",
-      "title": "We built the wrong first version, and beta users told us immediately (I will not promote)",
-      "source_url": "https://www.reddit.com/r/startups/comments/1t9yrjd/we_built_the_wrong_first_version_and_beta_users/",
-      "repeat_7d": 3,
+      "idea_id": "c522370e5752ac31",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
+      "category": "运营/内部流程",
+      "total_score": 52,
+      "verdict": "Discard",
+      "pain_summary": "Turn Manual Excel Workflow into Automated Web App",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "Turn Manual Excel Workflow into Automated Web App",
+      "source_url": "https://keikai.io/blog/p/payroll-template",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "e4a674b9867d37a4",
-      "mvp_concept": "为r/SaaS 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。",
-      "category": "研发/产品功能",
-      "total_score": 58,
-      "verdict": "Monitor",
-      "pain_summary": "If there was a tool for $29/month that could automatically monitor competitor app ratings, reviews, and ranking changes, would you use it?",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Reddit r/SaaS",
-      "title": "If there was a tool for $29/month that could automatically monitor competitor app ratings, reviews, and ranking changes, would you use it?",
-      "source_url": "https://www.reddit.com/r/SaaS/comments/1tgbhks/if_there_was_a_tool_for_29month_that_could/",
-      "repeat_7d": 3,
+      "idea_id": "486ecc3e84e03e66",
+      "mvp_concept": "为有明确工具替代需求的利基用户提供一个定价更友好的垂直轻量版。",
+      "category": "定价/商业模式",
+      "total_score": 51,
+      "verdict": "Discard",
+      "pain_summary": "Insulin is way too expensive. California has a solution: Make its own",
+      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
+      "source": "Hacker News",
+      "title": "Insulin is way too expensive. California has a solution: Make its own",
+      "source_url": "https://www.vox.com/policy-and-politics/23574178/insulin-cost-california-biden-medicare-coverage",
+      "repeat_7d": 1,
       "label": "未标注"
     }
   ],
   "category_counts": {
-    "研发/产品功能": 107,
-    "销售/线索转化": 12,
-    "运营/内部流程": 21,
-    "定价/商业模式": 24,
-    "客服/成功/留存": 6,
-    "竞品/市场情报": 21,
-    "营销/内容增长": 6,
-    "其他/待判定": 45
+    "运营/内部流程": 7,
+    "定价/商业模式": 8,
+    "研发/产品功能": 10,
+    "客服/成功/留存": 2,
+    "竞品/市场情报": 7,
+    "营销/内容增长": 1,
+    "其他/待判定": 15,
+    "销售/线索转化": 1
   },
-  "repeated_signals_7d": [
-    {
-      "signal_key": "88e1a41883dacdea",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 76,
-      "sample_title": "Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote)",
-      "sample_url": "https://www.reddit.com/r/startups/comments/1tdot03/maybe_some_startup_advice_is_too_universal/",
-      "sample_concept": "为r/startups 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。"
-    },
-    {
-      "signal_key": "b7cb0d4cf09cca6f",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 71,
-      "sample_title": "My \"builder trap\" experience and how I try to learn from it",
-      "sample_url": "https://www.reddit.com/r/indiehackers/comments/1t4k4su/my_builder_trap_experience_and_how_i_try_to_learn/",
-      "sample_concept": "为r/indiehackers 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "559479c8ab03ebaa",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 68,
-      "sample_title": "Warning: Replit's autoscale has no spend cap by default. Got a $480 bill in one weekend after a TikTok hit a client's landing page.",
-      "sample_url": "https://www.reddit.com/r/nocode/comments/1tfun8z/warning_replits_autoscale_has_no_spend_cap_by/",
-      "sample_concept": "为r/NoCode 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "4f29a9c4aa91c3c6",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 66,
-      "sample_title": "Investor or sponsor? Looking for funding for game prizes - which fits?",
-      "sample_url": "https://www.reddit.com/r/Entrepreneur/comments/1t839ve/investor_or_sponsor_looking_for_funding_for_game/",
-      "sample_concept": "为r/Entrepreneur 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。"
-    },
-    {
-      "signal_key": "4cac4e180422e72d",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 65,
-      "sample_title": "Where does Product Ops end and Product/Engineering workflow design begin?",
-      "sample_url": "https://www.reddit.com/r/ProductManagement/comments/1t8uwrf/where_does_product_ops_end_and_productengineering/",
-      "sample_concept": "为r/ProductManagement 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "77b7fd95db4e6642",
-      "category": "销售/线索转化",
-      "count": 3,
-      "top_score": 64,
-      "sample_title": "Growing, from the perspective of a non-technical person (I will not promote)",
-      "sample_url": "https://www.reddit.com/r/startups/comments/1tcrfvj/growing_from_the_perspective_of_a_nontechnical/",
-      "sample_concept": "为r/startups 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "130ec486602bbe4c",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 63,
-      "sample_title": "I literally tried Expensify, Ramp &amp; Brex for my travel expense management - My thoughts.",
-      "sample_url": "https://www.reddit.com/r/Entrepreneur/comments/1tc4p95/i_literally_tried_expensify_ramp_brex_for_my/",
-      "sample_concept": "为r/Entrepreneur 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。"
-    },
-    {
-      "signal_key": "8625f4c785ce8374",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 60,
-      "sample_title": "My co-founder uses Clay and AI agents for outreach. I send Instagram DMs manually. Mine worked better.",
-      "sample_url": "https://www.reddit.com/r/Entrepreneur/comments/1t1bhxf/my_cofounder_uses_clay_and_ai_agents_for_outreach/",
-      "sample_concept": "为r/Entrepreneur 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "ff6ed927f192afdf",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 60,
-      "sample_title": "Not as fast as I would've thought but slowly but surely",
-      "sample_url": "https://www.reddit.com/r/nocode/comments/1tfyb77/not_as_fast_as_i_wouldve_thought_but_slowly_but/",
-      "sample_concept": "为r/NoCode 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。"
-    },
-    {
-      "signal_key": "bb381f1bf32253d0",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 59,
-      "sample_title": "Top 15 Most Trusted Custom Mobile App Development Companies in the USA for 2026",
-      "sample_url": "https://www.reddit.com/r/SaaS/comments/1tfq5hi/top_15_most_trusted_custom_mobile_app_development/",
-      "sample_concept": "为r/SaaS 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。"
-    },
-    {
-      "signal_key": "a78eb5138acef560",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 59,
-      "sample_title": "We built the wrong first version, and beta users told us immediately (I will not promote)",
-      "sample_url": "https://www.reddit.com/r/startups/comments/1t9yrjd/we_built_the_wrong_first_version_and_beta_users/",
-      "sample_concept": "为r/startups 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。"
-    },
-    {
-      "signal_key": "7899e02ca2392ead",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 58,
-      "sample_title": "If there was a tool for $29/month that could automatically monitor competitor app ratings, reviews, and ranking changes, would you use it?",
-      "sample_url": "https://www.reddit.com/r/SaaS/comments/1tgbhks/if_there_was_a_tool_for_29month_that_could/",
-      "sample_concept": "为r/SaaS 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。"
-    }
-  ],
+  "repeated_signals_7d": [],
   "opportunity_clusters": [
     {
-      "cluster_id": "cluster-reporting-3c80d460ab03aafd",
-      "title": "SaaS 发布前风险与运营检查台",
-      "category": "研发/产品功能",
-      "count_7d": 4,
-      "source_count": 4,
-      "source_names": [
-        "Reddit r/Entrepreneur",
-        "Reddit r/NoCode",
-        "Reddit r/ProductManagement",
-        "Reddit r/indiehackers"
-      ],
-      "top_score": 71,
-      "avg_score": 66.8,
-      "decision_score": 98,
-      "decision_verdict": "Build Now",
-      "decision_reason": "可以 Build Now，但只应先做“发布前风险审计”服务化 MVP；最强理由是已有明确账单损失和多来源重复痛点，且可通过人工审计快速验证。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "7163865f4d9b0370",
-          "title": "My \"builder trap\" experience and how I try to learn from it",
-          "source": "Reddit r/indiehackers",
-          "source_url": "https://www.reddit.com/r/indiehackers/comments/1t4k4su/my_builder_trap_experience_and_how_i_try_to_learn/",
-          "total_score": 71,
-          "pain_summary": "My \"builder trap\" experience and how I try to learn from it Recently I've been a bit more active on Reddit, as I'm building another startup.",
-          "label": "未标注"
-        },
-        {
-          "idea_id": "d2723fb3864f5488",
-          "title": "Warning: Replit's autoscale has no spend cap by default. Got a $480 bill in one weekend after a TikTok hit a client's landing page.",
-          "source": "Reddit r/NoCode",
-          "source_url": "https://www.reddit.com/r/nocode/comments/1tfun8z/warning_replits_autoscale_has_no_spend_cap_by/",
-          "total_score": 68,
-          "pain_summary": "Warning: Replit's autoscale has no spend cap by default.",
-          "label": "未标注"
-        },
-        {
-          "idea_id": "ccd775a141cb0d90",
-          "title": "Where does Product Ops end and Product/Engineering workflow design begin?",
-          "source": "Reddit r/ProductManagement",
-          "source_url": "https://www.reddit.com/r/ProductManagement/comments/1t8uwrf/where_does_product_ops_end_and_productengineering/",
-          "total_score": 65,
-          "pain_summary": "Where does Product Ops end and Product/Engineering workflow design begin?",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "同一批信号反复出现“先做错版本”“云资源账单失控”“产品运营与工程流程边界模糊”等痛点，来源覆盖 r/indiehackers、r/NoCode、r/ProductManagement、r/startups 等多个社区，说明这是早期产品上线前的复合风险场景。",
-      "evidence_chain": {
-        "passed_count": 5,
-        "total_count": 5,
-        "score": 100,
-        "status": "strong",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": true,
-            "detail": "当前覆盖 4 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": true,
-            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内触达 30 位 Replit、Bubble、Lovable、Vercel 或早期 SaaS 创始人，提供一次 30 分钟免费发布前风险审计；通过标准是至少 8 人接受审计、3 人愿意为月费 29-99 美元的持续检查或告警留下付款意向。",
-      "opportunity_hypothesis": "独立开发者、无代码创始人和产品团队需要一个在上线前暴露“验证不足、云成本失控、产品/工程流程不清”的检查工具。机会不是做通用报表，而是把发布前高风险项转成可执行清单、监控告警和修复建议。",
-      "evidence": "同一批信号反复出现“先做错版本”“云资源账单失控”“产品运营与工程流程边界模糊”等痛点，来源覆盖 r/indiehackers、r/NoCode、r/ProductManagement、r/startups 等多个社区，说明这是早期产品上线前的复合风险场景。",
-      "anti_signals": [
-        "样本里的痛点跨度较大，可能只是早期创业焦虑的集合，而不是单一强需求。",
-        "已有云成本监控、产品管理和发布清单工具，必须收窄到一个高频入口才能避免变成泛工具。"
-      ],
-      "not_build_now_reason": "可以 Build Now，但只应先做“发布前风险审计”服务化 MVP；最强理由是已有明确账单损失和多来源重复痛点，且可通过人工审计快速验证。",
-      "seven_day_validation": "7 天内触达 30 位 Replit、Bubble、Lovable、Vercel 或早期 SaaS 创始人，提供一次 30 分钟免费发布前风险审计；通过标准是至少 8 人接受审计、3 人愿意为月费 29-99 美元的持续检查或告警留下付款意向。",
-      "paid_signal": "已有 480 美元意外账单这类强成本信号；需要验证用户是否愿意为避免一次性损失而购买持续监控，而不只是事后抱怨。",
-      "codex_opportunity_thesis": "独立开发者、无代码创始人和产品团队需要一个在上线前暴露“验证不足、云成本失控、产品/工程流程不清”的检查工具。机会不是做通用报表，而是把发布前高风险项转成可执行清单、监控告警和修复建议。",
-      "codex_anti_signals": [
-        "样本里的痛点跨度较大，可能只是早期创业焦虑的集合，而不是单一强需求。",
-        "已有云成本监控、产品管理和发布清单工具，必须收窄到一个高频入口才能避免变成泛工具。"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
       "cluster_id": "cluster-support-6db8b74a0ad98bb7",
-      "title": "开发平台缺失能力的补丁型工具",
+      "title": "开发者缺失能力补丁工具",
       "category": "研发/产品功能",
-      "count_7d": 4,
+      "count_7d": 3,
       "source_count": 1,
       "source_names": [
         "Hacker News"
       ],
       "top_score": 53,
       "avg_score": 52.0,
-      "decision_score": 68,
+      "decision_score": 63,
       "decision_verdict": "Monitor",
-      "decision_reason": "不是立即开工，因为需求还没有收敛到具体技术栈和可付费工作流；应先监控近期 GitHub issue、Stack Overflow 和包下载趋势。",
+      "decision_reason": "暂不立即开工。虽然重复信号强，但需求还停留在“缺失功能”层面，没有明确到某个语言生态、团队角色和可付费场景。",
       "label_adjustment": 0,
       "noise_penalty": 0,
       "sample_ideas": [
@@ -446,7 +247,7 @@
           "label": "未标注"
         }
       ],
-      "evidence_summary": "样本集中在 Hacker News 技术讨论，反复出现“不支持某能力”“缺少语言特性”“需要规避运行时限制”等信号，说明开发者会围绕平台缺口寻找解决路径。",
+      "evidence_summary": "同一簇反复出现“不支持”“缺失功能”“需要绕路处理”的开发者痛点，样本覆盖语言异常处理、Dart JSON 反序列化、平台能力缺口等。它们共同说明开发者愿意为减少样板代码、规避运行时坑、补齐生态短板寻找替代方案。",
       "evidence_chain": {
         "passed_count": 4,
         "total_count": 5,
@@ -480,26 +281,26 @@
           }
         ]
       },
-      "recommended_action": "7 天内选定 1 个具体技术栈，例如 Dart JSON 类型映射或无异常语言的错误处理，联系 20 位近期在 GitHub issue、Stack Overflow 或社区发问的开发者；通过标准是至少 5 人确认仍在手工处理，2 人愿意试用命令行工具或库。",
-      "opportunity_hypothesis": "开发者在语言、框架或平台缺少关键能力时，会寻找错误处理、序列化、兼容层或替代方案。机会可能是面向特定技术栈的“小补丁工具包”，而不是泛客服自动化。",
-      "evidence": "样本集中在 Hacker News 技术讨论，反复出现“不支持某能力”“缺少语言特性”“需要规避运行时限制”等信号，说明开发者会围绕平台缺口寻找解决路径。",
+      "recommended_action": "7 天内触达 20 名正在使用 Dart、PostgreSQL、JVM 或其他相关生态的工程师，在 Reddit、HN 评论区、GitHub issue 和开发者 Slack 中发起访谈；给出 3 个候选补丁方向，让受访者排序。通过标准：至少 8 人确认过去 30 天遇到过该问题，至少 5 人愿意试用 CLI 或 SDK，至少 3 人愿意为团队版每月支付 20 美元以上。",
+      "opportunity_hypothesis": "面向使用特定语言、框架或平台的开发团队，提供“缺失能力”的轻量补丁工具包，例如异常处理模式、JSON 类型映射、兼容层或迁移辅助。机会不在做通用开发平台，而在高频、明确、可打包的单点缺口。",
+      "evidence": "同一簇反复出现“不支持”“缺失功能”“需要绕路处理”的开发者痛点，样本覆盖语言异常处理、Dart JSON 反序列化、平台能力缺口等。它们共同说明开发者愿意为减少样板代码、规避运行时坑、补齐生态短板寻找替代方案。",
       "anti_signals": [
-        "来源几乎集中在 Hacker News，缺少 Reddit、GitHub issue 或付费产品评论中的交叉验证。",
-        "很多问题可能已被语言生态或框架升级解决，历史信号不一定代表当前购买需求。"
+        "样本来源集中在 Hacker News，缺少企业采购或预算负责人信号",
+        "痛点跨度过大，可能只是讨论型抱怨，未收敛到一个可销售工作流"
       ],
-      "not_build_now_reason": "不是立即开工，因为需求还没有收敛到具体技术栈和可付费工作流；应先监控近期 GitHub issue、Stack Overflow 和包下载趋势。",
-      "seven_day_validation": "7 天内选定 1 个具体技术栈，例如 Dart JSON 类型映射或无异常语言的错误处理，联系 20 位近期在 GitHub issue、Stack Overflow 或社区发问的开发者；通过标准是至少 5 人确认仍在手工处理，2 人愿意试用命令行工具或库。",
-      "paid_signal": "尚不明确；需要验证开发者是否愿意为库、CLI 或团队版集成付费，而不只是复制免费代码片段。",
-      "codex_opportunity_thesis": "开发者在语言、框架或平台缺少关键能力时，会寻找错误处理、序列化、兼容层或替代方案。机会可能是面向特定技术栈的“小补丁工具包”，而不是泛客服自动化。",
+      "not_build_now_reason": "暂不立即开工。虽然重复信号强，但需求还停留在“缺失功能”层面，没有明确到某个语言生态、团队角色和可付费场景。",
+      "seven_day_validation": "7 天内触达 20 名正在使用 Dart、PostgreSQL、JVM 或其他相关生态的工程师，在 Reddit、HN 评论区、GitHub issue 和开发者 Slack 中发起访谈；给出 3 个候选补丁方向，让受访者排序。通过标准：至少 8 人确认过去 30 天遇到过该问题，至少 5 人愿意试用 CLI 或 SDK，至少 3 人愿意为团队版每月支付 20 美元以上。",
+      "paid_signal": "尚不明确；需要验证开发团队是否会为“减少绕路代码和维护成本”付费，而不是只期待开源库。",
+      "codex_opportunity_thesis": "面向使用特定语言、框架或平台的开发团队，提供“缺失能力”的轻量补丁工具包，例如异常处理模式、JSON 类型映射、兼容层或迁移辅助。机会不在做通用开发平台，而在高频、明确、可打包的单点缺口。",
       "codex_anti_signals": [
-        "来源几乎集中在 Hacker News，缺少 Reddit、GitHub issue 或付费产品评论中的交叉验证。",
-        "很多问题可能已被语言生态或框架升级解决，历史信号不一定代表当前购买需求。"
+        "样本来源集中在 Hacker News，缺少企业采购或预算负责人信号",
+        "痛点跨度过大，可能只是讨论型抱怨，未收敛到一个可销售工作流"
       ],
       "analysis_provider": "codex"
     },
     {
       "cluster_id": "cluster-replacing-marketing-workflows-1e6bd0dd2e90e860",
-      "title": "小团队营销执行代理",
+      "title": "营销运营 AI 代理工作台",
       "category": "运营/内部流程",
       "count_7d": 1,
       "source_count": 1,
@@ -510,7 +311,7 @@
       "avg_score": 55.0,
       "decision_score": 55,
       "decision_verdict": "Monitor",
-      "decision_reason": "不应立即开工；先把场景拆到一个明确岗位和流程，例如创始人每周手动整理潜在线索并发私信。",
+      "decision_reason": "不是立即开工。最强机会在于营销流程可量化 ROI，但当前还没有确认具体人群、流程频次和预算。",
       "label_adjustment": 0,
       "noise_penalty": 0,
       "sample_ideas": [
@@ -524,7 +325,7 @@
           "label": "未标注"
         }
       ],
-      "evidence_summary": "当前只有“用自主 AI 代理替代手动营销流程”的单点信号，痛点方向明确但样本数量不足，尚未看到多个来源反复描述同一流程瓶颈。",
+      "evidence_summary": "样本明确指向“用自主 AI 代理替代手动营销流程”，同时包含手动工作流、成本、替代方案等信号，说明营销团队存在效率和人力成本压力。",
       "evidence_chain": {
         "passed_count": 4,
         "total_count": 5,
@@ -558,203 +359,26 @@
           }
         ]
       },
-      "recommended_action": "7 天内触达 25 位 1-10 人 SaaS 或服务型公司创始人，询问他们最近一周手动做过的营销任务，并用表格代跑一次线索整理或私信草稿生成；通过标准是至少 6 人提交真实任务，2 人愿意为每周自动执行支付 49 美元以上。",
-      "opportunity_hypothesis": "小团队希望把重复的营销流程交给 AI 代理执行，例如线索整理、内容改写、渠道发布和跟进提醒。机会在于聚焦一个可衡量结果的营销流程，而不是泛泛宣称“自动化营销”。",
-      "evidence": "当前只有“用自主 AI 代理替代手动营销流程”的单点信号，痛点方向明确但样本数量不足，尚未看到多个来源反复描述同一流程瓶颈。",
+      "recommended_action": "7 天内联系 15 位 5-50 人 B2B SaaS 团队的创始人、增长负责人或营销运营人员，展示一个“从线索表到个性化跟进邮件和 CRM 更新”的手工演示。通过标准：至少 6 人提供自己的真实流程样本，至少 4 人愿意接入 HubSpot、Sheets 或 Apollo 试跑，至少 2 人愿意付费试点。",
+      "opportunity_hypothesis": "中小 B2B 团队的营销工作仍由人手动完成线索整理、内容分发、跟进提醒和报表汇总，可用受控 AI 代理替代一部分重复运营动作。产品切入点应是一个具体营销流程，而不是泛化“AI 自动化”。",
+      "evidence": "样本明确指向“用自主 AI 代理替代手动营销流程”，同时包含手动工作流、成本、替代方案等信号，说明营销团队存在效率和人力成本压力。",
       "anti_signals": [
-        "营销自动化和 AI 代理市场已经拥挤，泛化产品很难形成差异。",
-        "单条信号无法判断用户真正卡在获客、内容、投放还是跟进。"
+        "当前只有 1 条同类信号，重复性不足",
+        "营销自动化和 AI 代理赛道拥挤，容易落入同质化工具"
       ],
-      "not_build_now_reason": "不应立即开工；先把场景拆到一个明确岗位和流程，例如创始人每周手动整理潜在线索并发私信。",
-      "seven_day_validation": "7 天内触达 25 位 1-10 人 SaaS 或服务型公司创始人，询问他们最近一周手动做过的营销任务，并用表格代跑一次线索整理或私信草稿生成；通过标准是至少 6 人提交真实任务，2 人愿意为每周自动执行支付 49 美元以上。",
-      "paid_signal": "尚不明确；要验证用户是否为节省营销执行时间付费，还是只愿意尝试免费 AI 模板。",
-      "codex_opportunity_thesis": "小团队希望把重复的营销流程交给 AI 代理执行，例如线索整理、内容改写、渠道发布和跟进提醒。机会在于聚焦一个可衡量结果的营销流程，而不是泛泛宣称“自动化营销”。",
+      "not_build_now_reason": "不是立即开工。最强机会在于营销流程可量化 ROI，但当前还没有确认具体人群、流程频次和预算。",
+      "seven_day_validation": "7 天内联系 15 位 5-50 人 B2B SaaS 团队的创始人、增长负责人或营销运营人员，展示一个“从线索表到个性化跟进邮件和 CRM 更新”的手工演示。通过标准：至少 6 人提供自己的真实流程样本，至少 4 人愿意接入 HubSpot、Sheets 或 Apollo 试跑，至少 2 人愿意付费试点。",
+      "paid_signal": "可能存在，因为痛点直接关联人力成本和线索转化；需要验证客户是否愿意为每月节省的营销运营小时数付费。",
+      "codex_opportunity_thesis": "中小 B2B 团队的营销工作仍由人手动完成线索整理、内容分发、跟进提醒和报表汇总，可用受控 AI 代理替代一部分重复运营动作。产品切入点应是一个具体营销流程，而不是泛化“AI 自动化”。",
       "codex_anti_signals": [
-        "营销自动化和 AI 代理市场已经拥挤，泛化产品很难形成差异。",
-        "单条信号无法判断用户真正卡在获客、内容、投放还是跟进。"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-support-a3f053ce4a1600cd",
-      "title": "异常客户案例转营销定位工具",
-      "category": "销售/线索转化",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Reddit r/SaaS"
-      ],
-      "top_score": 55,
-      "avg_score": 55.0,
-      "decision_score": 55,
-      "decision_verdict": "Monitor",
-      "decision_reason": "不立即产品化；更适合先做手动定位冲刺，验证是否能从案例中稳定提炼出可转化信息。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "23882ffbaeb17e0d",
-          "title": "A customer found a crypto miner through my SaaS, I think I have good position but can't really find a good direction for marketing",
-          "source": "Reddit r/SaaS",
-          "source_url": "https://www.reddit.com/r/SaaS/comments/1tg4jwd/a_customer_found_a_crypto_miner_through_my_saas_i/",
-          "total_score": 55,
-          "pain_summary": "A customer found a crypto miner through my SaaS, I think I have good position but can't really find a good direction for marketing A customer found a crypto...",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本显示用户已有客户成功案例，例如客户通过产品发现加密挖矿，但创始人仍不知道如何选择营销方向；这类痛点属于“有产品信号但不会提炼市场”的转化问题。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": false,
-            "detail": "尚未看到明确付费或预算表达"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": true,
-            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内联系 20 位已有至少 1 个真实客户但增长停滞的 SaaS 创始人，免费把一个客户案例改写成 3 个定位方向、1 个落地页首屏和 20 个外联对象；通过标准是 5 人提供案例，2 人愿意为完整定位冲刺支付 200 美元以上。",
-      "opportunity_hypothesis": "早期 SaaS 创始人有时已经从客户案例中看到产品价值，却不知道如何把偶发成功转成可重复的市场定位和获客叙事。机会是把真实客户发现、使用场景和替代方案转成定位假设、落地页文案和外联清单。",
-      "evidence": "样本显示用户已有客户成功案例，例如客户通过产品发现加密挖矿，但创始人仍不知道如何选择营销方向；这类痛点属于“有产品信号但不会提炼市场”的转化问题。",
-      "anti_signals": [
-        "当前只有单一来源，不能证明这是高频需求簇。",
-        "创始人可能更需要人工顾问服务，而不是自助 SaaS。"
-      ],
-      "not_build_now_reason": "不立即产品化；更适合先做手动定位冲刺，验证是否能从案例中稳定提炼出可转化信息。",
-      "seven_day_validation": "7 天内联系 20 位已有至少 1 个真实客户但增长停滞的 SaaS 创始人，免费把一个客户案例改写成 3 个定位方向、1 个落地页首屏和 20 个外联对象；通过标准是 5 人提供案例，2 人愿意为完整定位冲刺支付 200 美元以上。",
-      "paid_signal": "尚不明确；已有业务价值信号，但需要验证创始人是否愿意为定位和获客转化付费。",
-      "codex_opportunity_thesis": "早期 SaaS 创始人有时已经从客户案例中看到产品价值，却不知道如何把偶发成功转成可重复的市场定位和获客叙事。机会是把真实客户发现、使用场景和替代方案转成定位假设、落地页文案和外联清单。",
-      "codex_anti_signals": [
-        "当前只有单一来源，不能证明这是高频需求簇。",
-        "创始人可能更需要人工顾问服务，而不是自助 SaaS。"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-developer-1104a3b52f2e656c",
-      "title": "创始人从想法到首版产品的决策教练",
-      "category": "研发/产品功能",
-      "count_7d": 9,
-      "source_count": 4,
-      "source_names": [
-        "Reddit r/Entrepreneur",
-        "Reddit r/NoCode",
-        "Reddit r/SaaS",
-        "Reddit r/startups"
-      ],
-      "top_score": 76,
-      "avg_score": 59.4,
-      "decision_score": 79,
-      "decision_verdict": "Monitor",
-      "decision_reason": "暂不做完整 SaaS；虽然信号多，但噪音也高，应先用服务化交付验证最窄场景，例如“7 天首版范围和验证计划”。",
-      "label_adjustment": 0,
-      "noise_penalty": 25,
-      "sample_ideas": [
-        {
-          "idea_id": "c4cb0ca6024a5807",
-          "title": "Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote)",
-          "source": "Reddit r/startups",
-          "source_url": "https://www.reddit.com/r/startups/comments/1tdot03/maybe_some_startup_advice_is_too_universal/",
-          "total_score": 76,
-          "pain_summary": "Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote) I’ve been thinking about a lot of common SaaS/startup advice lately.",
-          "label": "未标注"
-        },
-        {
-          "idea_id": "c3f7a8521c0810c6",
-          "title": "Investor or sponsor? Looking for funding for game prizes - which fits?",
-          "source": "Reddit r/Entrepreneur",
-          "source_url": "https://www.reddit.com/r/Entrepreneur/comments/1t839ve/investor_or_sponsor_looking_for_funding_for_game/",
-          "total_score": 66,
-          "pain_summary": "Investor or sponsor? Looking for funding for game prizes - which fits? Building a project with web games and tournaments. Players compete, win credits, spend...",
-          "label": "未标注"
-        },
-        {
-          "idea_id": "74df305dc15090a5",
-          "title": "Not as fast as I would've thought but slowly but surely",
-          "source": "Reddit r/NoCode",
-          "source_url": "https://www.reddit.com/r/nocode/comments/1tfyb77/not_as_fast_as_i_wouldve_thought_but_slowly_but/",
-          "total_score": 60,
-          "pain_summary": "Not as fast as I would've thought but slowly but surely After 10 months I finally was able to launch my SaaS.",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "多个社区出现“创业建议过于通用”“陷入 builder trap”“做了 10 个月才上线”“找不到用户兴趣”“奖品资金模式不清”等信号，说明早期产品决策、验证和商业化设计反复困扰创始人。",
-      "evidence_chain": {
-        "passed_count": 5,
-        "total_count": 5,
-        "score": 100,
-        "status": "strong",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": true,
-            "detail": "当前覆盖 4 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": true,
-            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内从 r/startups、r/indiehackers、r/NoCode 和小企业社区触达 40 位正在做首版产品的创始人，提供一次 45 分钟的 MVP 削减和验证计划；通过标准是 10 人接受访谈，4 人愿意为模板、陪跑或审查支付 49-199 美元。",
-      "opportunity_hypothesis": "早期创始人的重复痛点不是缺开发工具，而是不会判断何时该卖、何时该做、首版该砍掉什么、资金或赞助该怎么设计。机会是提供一个围绕“首版产品决策”的轻量工作台，帮助非技术和技术创始人把想法压缩成可验证版本。",
-      "evidence": "多个社区出现“创业建议过于通用”“陷入 builder trap”“做了 10 个月才上线”“找不到用户兴趣”“奖品资金模式不清”等信号，说明早期产品决策、验证和商业化设计反复困扰创始人。",
-      "anti_signals": [
-        "这类需求容易滑向内容、课程或咨询，软件形态未必自然。",
-        "痛点高度主观，若不能绑定具体产出，例如访谈脚本、MVP 范围和定价实验，很难形成留存。"
-      ],
-      "not_build_now_reason": "暂不做完整 SaaS；虽然信号多，但噪音也高，应先用服务化交付验证最窄场景，例如“7 天首版范围和验证计划”。",
-      "seven_day_validation": "7 天内从 r/startups、r/indiehackers、r/NoCode 和小企业社区触达 40 位正在做首版产品的创始人，提供一次 45 分钟的 MVP 削减和验证计划；通过标准是 10 人接受访谈，4 人愿意为模板、陪跑或审查支付 49-199 美元。",
-      "paid_signal": "部分信号包含资金、开发成本和时间浪费，但直接付费意愿尚不稳定；要验证他们是否愿意为减少错误首版和缩短上线周期付费。",
-      "codex_opportunity_thesis": "早期创始人的重复痛点不是缺开发工具，而是不会判断何时该卖、何时该做、首版该砍掉什么、资金或赞助该怎么设计。机会是提供一个围绕“首版产品决策”的轻量工作台，帮助非技术和技术创始人把想法压缩成可验证版本。",
-      "codex_anti_signals": [
-        "这类需求容易滑向内容、课程或咨询，软件形态未必自然。",
-        "痛点高度主观，若不能绑定具体产出，例如访谈脚本、MVP 范围和定价实验，很难形成留存。"
+        "当前只有 1 条同类信号，重复性不足",
+        "营销自动化和 AI 代理赛道拥挤，容易落入同质化工具"
       ],
       "analysis_provider": "codex"
     },
     {
       "cluster_id": "cluster-support-d569341940393085",
-      "title": "高成本替代方案观察池",
+      "title": "本土制造成本可行性评估工具",
       "category": "定价/商业模式",
       "count_7d": 1,
       "source_count": 1,
@@ -765,7 +389,7 @@
       "avg_score": 54.0,
       "decision_score": 54,
       "decision_verdict": "Discard",
-      "decision_reason": "应丢弃当前簇作为产品机会；它可以作为价格敏感度背景材料，但不足以驱动开发。",
+      "decision_reason": "应丢弃当前形态。它更像宏观商业案例，不是明确的软件采购痛点，除非后续出现大量小品牌在采购和定价上重复求助。",
       "label_adjustment": 0,
       "noise_penalty": 0,
       "sample_ideas": [
@@ -779,7 +403,7 @@
           "label": "未标注"
         }
       ],
-      "evidence_summary": "样本表达了客户无法承受更高成本的压力，说明价格敏感存在，但它更像宏观商业模式问题，而不是明确的软件购买需求。",
+      "evidence_summary": "样本围绕“Made in USA 太贵，客户不买单”，本质是供应链选择、定价和市场支付意愿之间的断裂。它支持一个成本模拟与定价验证工具，而不是泛泛的低价替代品。",
       "evidence_chain": {
         "passed_count": 4,
         "total_count": 5,
@@ -813,104 +437,26 @@
           }
         ]
       },
-      "recommended_action": "若保留观察，7 天内只做轻量验证：收集 20 条明确提到某个软件或服务“太贵所以寻找替代”的近期帖子；通过标准是至少 5 条指向同一细分工具类别，否则继续丢弃。",
-      "opportunity_hypothesis": "用户对“太贵”的抱怨可能指向低价替代品机会，但当前信号来自宏观制造成本案例，离可软件化产品较远。机会只有在能落到某个具体软件、工具或运营流程时才成立。",
-      "evidence": "样本表达了客户无法承受更高成本的压力，说明价格敏感存在，但它更像宏观商业模式问题，而不是明确的软件购买需求。",
+      "recommended_action": "7 天内访问 10 位消费品小品牌创始人或运营负责人，询问是否考虑过本土制造、卡在哪个成本环节，并用电子表格帮他们模拟 1 个 SKU 的本土制造定价。通过标准：至少 5 人提供真实成本数据，至少 3 人表示该工具会影响供应链决策，至少 1 人愿意为一次分析支付 200 美元以上。",
+      "opportunity_hypothesis": "品牌方想用本土制造作为差异化卖点，但最终常被消费者价格承受力打败。机会可能是帮助小品牌在换供应链前预测成本、定价、毛利和需求弹性的决策工具。",
+      "evidence": "样本围绕“Made in USA 太贵，客户不买单”，本质是供应链选择、定价和市场支付意愿之间的断裂。它支持一个成本模拟与定价验证工具，而不是泛泛的低价替代品。",
       "anti_signals": [
-        "场景是制造业和供应链成本，不是可快速验证的 SaaS 工作流。",
-        "没有明确用户画像、替代工具或购买动作。"
+        "只有单一新闻型样本，缺少大量品牌方主动求助信号",
+        "供应链和制造数据复杂，MVP 很难准确覆盖不同品类"
       ],
-      "not_build_now_reason": "应丢弃当前簇作为产品机会；它可以作为价格敏感度背景材料，但不足以驱动开发。",
-      "seven_day_validation": "若保留观察，7 天内只做轻量验证：收集 20 条明确提到某个软件或服务“太贵所以寻找替代”的近期帖子；通过标准是至少 5 条指向同一细分工具类别，否则继续丢弃。",
-      "paid_signal": "尚不明确；当前只有成本压力，没有可购买的软件预算信号。",
-      "codex_opportunity_thesis": "用户对“太贵”的抱怨可能指向低价替代品机会，但当前信号来自宏观制造成本案例，离可软件化产品较远。机会只有在能落到某个具体软件、工具或运营流程时才成立。",
+      "not_build_now_reason": "应丢弃当前形态。它更像宏观商业案例，不是明确的软件采购痛点，除非后续出现大量小品牌在采购和定价上重复求助。",
+      "seven_day_validation": "7 天内访问 10 位消费品小品牌创始人或运营负责人，询问是否考虑过本土制造、卡在哪个成本环节，并用电子表格帮他们模拟 1 个 SKU 的本土制造定价。通过标准：至少 5 人提供真实成本数据，至少 3 人表示该工具会影响供应链决策，至少 1 人愿意为一次分析支付 200 美元以上。",
+      "paid_signal": "尚不明确；需要验证品牌是否愿意为定价和供应链决策工具付费，而不是只向顾问或供应商索取免费报价。",
+      "codex_opportunity_thesis": "品牌方想用本土制造作为差异化卖点，但最终常被消费者价格承受力打败。机会可能是帮助小品牌在换供应链前预测成本、定价、毛利和需求弹性的决策工具。",
       "codex_anti_signals": [
-        "场景是制造业和供应链成本，不是可快速验证的 SaaS 工作流。",
-        "没有明确用户画像、替代工具或购买动作。"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-anyone-else-head-655e265c1ca44f02",
-      "title": "资深产品管理者重回产品手感的工作流",
-      "category": "研发/产品功能",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Reddit r/ProductManagement"
-      ],
-      "top_score": 53,
-      "avg_score": 53.0,
-      "decision_score": 53,
-      "decision_verdict": "Discard",
-      "decision_reason": "不应开工；只有在多个产品领导反复提到同一可执行任务，例如用户访谈复盘、需求质量评审或原型批注，才值得重开。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "e57d28a3ba434681",
-          "title": "Anyone else at head/director/vp level missing the product craft?",
-          "source": "Reddit r/ProductManagement",
-          "source_url": "https://www.reddit.com/r/ProductManagement/comments/1te2d5w/anyone_else_at_headdirectorvp_level_missing_the/",
-          "total_score": 53,
-          "pain_summary": "Anyone else at head/director/vp level missing the product craft?",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "信号来自产品管理社区，核心痛点是高阶产品角色远离实际产品工作；这说明存在身份和工作内容错位，但没有具体任务、预算或替代方案抱怨。",
-      "evidence_chain": {
-        "passed_count": 2,
-        "total_count": 5,
-        "score": 40,
-        "status": "weak",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": false,
-            "detail": "尚未看到明确付费或预算表达"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": false,
-            "detail": "仍偏泛，需要收窄到具体工作流"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内访谈 10 位 Head/Director/VP 级产品人，询问他们最近一次觉得“离产品太远”的具体场景；通过标准是至少 4 人指向同一任务，且 2 人愿意试用每周产品 craft 复盘模板。",
-      "opportunity_hypothesis": "产品负责人升到 Head、Director、VP 后，可能失去一线产品 craft，产生对用户洞察、原型、需求判断的脱节感。机会可能是面向产品领导的“保持产品手感”工作流，但当前更像职业情绪而非明确购买需求。",
-      "evidence": "信号来自产品管理社区，核心痛点是高阶产品角色远离实际产品工作；这说明存在身份和工作内容错位，但没有具体任务、预算或替代方案抱怨。",
-      "anti_signals": [
-        "更像职业困惑或社区讨论，不一定需要软件解决。",
-        "缺少重复样本和明确工作流，无法判断是培训、咨询、社区还是工具机会。"
-      ],
-      "not_build_now_reason": "不应开工；只有在多个产品领导反复提到同一可执行任务，例如用户访谈复盘、需求质量评审或原型批注，才值得重开。",
-      "seven_day_validation": "7 天内访谈 10 位 Head/Director/VP 级产品人，询问他们最近一次觉得“离产品太远”的具体场景；通过标准是至少 4 人指向同一任务，且 2 人愿意试用每周产品 craft 复盘模板。",
-      "paid_signal": "尚不明确；需要验证这是愿意付费的职业生产力问题，还是只适合内容和社群。",
-      "codex_opportunity_thesis": "产品负责人升到 Head、Director、VP 后，可能失去一线产品 craft，产生对用户洞察、原型、需求判断的脱节感。机会可能是面向产品领导的“保持产品手感”工作流，但当前更像职业情绪而非明确购买需求。",
-      "codex_anti_signals": [
-        "更像职业困惑或社区讨论，不一定需要软件解决。",
-        "缺少重复样本和明确工作流，无法判断是培训、咨询、社区还是工具机会。"
+        "只有单一新闻型样本，缺少大量品牌方主动求助信号",
+        "供应链和制造数据复杂，MVP 很难准确覆盖不同品类"
       ],
       "analysis_provider": "codex"
     },
     {
       "cluster_id": "cluster-docs-open-source-c159568bbc782cd4",
-      "title": "开源知识库替代品需求观察",
+      "title": "可自托管团队知识库",
       "category": "客服/成功/留存",
       "count_7d": 1,
       "source_count": 1,
@@ -921,7 +467,7 @@
       "avg_score": 52.0,
       "decision_score": 52,
       "decision_verdict": "Discard",
-      "decision_reason": "不应立即做新工具；更适合监控用户为什么从 Notion、Confluence 或 Outline 迁移，再决定是否做迁移、治理或托管服务。",
+      "decision_reason": "暂不立即开工。除非锁定强约束人群，例如不能使用 SaaS 的政府、医疗、金融或安全敏感团队，否则容易变成普通 Notion 克隆。",
       "label_adjustment": 0,
       "noise_penalty": 0,
       "sample_ideas": [
@@ -935,7 +481,7 @@
           "label": "未标注"
         }
       ],
-      "evidence_summary": "样本指向开源文档工具替代品，说明市场存在对主流知识库的替代需求，但目前只有单一产品展示信号，缺少用户抱怨链路。",
+      "evidence_summary": "样本明确出现“开源替代 Notion 或 Outline”，属于对现有知识库工具的替代需求。证据显示有替代方案动机，但尚未说明具体工作流，如审批、客户文档、内部 SOP 或知识沉淀。",
       "evidence_chain": {
         "passed_count": 3,
         "total_count": 5,
@@ -969,26 +515,26 @@
           }
         ]
       },
-      "recommended_action": "7 天内联系 20 位在 GitHub、HN 或 Reddit 讨论自托管知识库的团队成员，询问迁移原因和现有工具缺口；通过标准是至少 5 人有 30 天内迁移计划，2 人愿意为托管、迁移或权限治理付费。",
-      "opportunity_hypothesis": "部分团队会寻找 Notion 或 Outline 的开源替代品，潜在需求可能来自数据主权、自托管、成本或定制化。当前机会过于泛，需要定位到特定团队和迁移场景。",
-      "evidence": "样本指向开源文档工具替代品，说明市场存在对主流知识库的替代需求，但目前只有单一产品展示信号，缺少用户抱怨链路。",
+      "recommended_action": "7 天内联系 12 位 DevOps、安全负责人、政府数字化团队或开源项目维护者，询问他们为何不能用 Notion、Confluence 或 Google Docs；提供一个“自托管知识库迁移清单”。通过标准：至少 5 人明确有自托管或数据主权限制，至少 3 人愿意导入现有文档测试，至少 2 人愿意为托管版或支持服务付费。",
+      "opportunity_hypothesis": "部分团队需要 Notion 或 Outline 的替代方案，核心诉求不是更多编辑功能，而是开源、自托管、权限可控和长期数据所有权。适合从合规团队、公共部门或技术团队切入。",
+      "evidence": "样本明确出现“开源替代 Notion 或 Outline”，属于对现有知识库工具的替代需求。证据显示有替代方案动机，但尚未说明具体工作流，如审批、客户文档、内部 SOP 或知识沉淀。",
       "anti_signals": [
-        "知识库和文档工具市场极其拥挤，开源替代品已经很多。",
-        "没有看到具体迁移动机，例如合规、价格、权限、离线或协作痛点。"
+        "知识库工具市场非常拥挤，迁移成本高",
+        "单条信号不足以证明有强付费意愿"
       ],
-      "not_build_now_reason": "不应立即做新工具；更适合监控用户为什么从 Notion、Confluence 或 Outline 迁移，再决定是否做迁移、治理或托管服务。",
-      "seven_day_validation": "7 天内联系 20 位在 GitHub、HN 或 Reddit 讨论自托管知识库的团队成员，询问迁移原因和现有工具缺口；通过标准是至少 5 人有 30 天内迁移计划，2 人愿意为托管、迁移或权限治理付费。",
-      "paid_signal": "尚不明确；开源兴趣不等于付费意愿，需要验证托管、迁移和企业权限是否有预算。",
-      "codex_opportunity_thesis": "部分团队会寻找 Notion 或 Outline 的开源替代品，潜在需求可能来自数据主权、自托管、成本或定制化。当前机会过于泛，需要定位到特定团队和迁移场景。",
+      "not_build_now_reason": "暂不立即开工。除非锁定强约束人群，例如不能使用 SaaS 的政府、医疗、金融或安全敏感团队，否则容易变成普通 Notion 克隆。",
+      "seven_day_validation": "7 天内联系 12 位 DevOps、安全负责人、政府数字化团队或开源项目维护者，询问他们为何不能用 Notion、Confluence 或 Google Docs；提供一个“自托管知识库迁移清单”。通过标准：至少 5 人明确有自托管或数据主权限制，至少 3 人愿意导入现有文档测试，至少 2 人愿意为托管版或支持服务付费。",
+      "paid_signal": "尚不明确；需要验证客户更愿意为托管、权限、审计和迁移服务付费，而不只是使用免费开源版本。",
+      "codex_opportunity_thesis": "部分团队需要 Notion 或 Outline 的替代方案，核心诉求不是更多编辑功能，而是开源、自托管、权限可控和长期数据所有权。适合从合规团队、公共部门或技术团队切入。",
       "codex_anti_signals": [
-        "知识库和文档工具市场极其拥挤，开源替代品已经很多。",
-        "没有看到具体迁移动机，例如合规、价格、权限、离线或协作痛点。"
+        "知识库工具市场非常拥挤，迁移成本高",
+        "单条信号不足以证明有强付费意愿"
       ],
       "analysis_provider": "codex"
     },
     {
       "cluster_id": "cluster-muffled-audio-music-1e8580cc7348f609",
-      "title": "AI 音乐后期修复自动化",
+      "title": "AI 音乐后期修复插件",
       "category": "运营/内部流程",
       "count_7d": 1,
       "source_count": 1,
@@ -999,7 +545,7 @@
       "avg_score": 52.0,
       "decision_score": 52,
       "decision_verdict": "Discard",
-      "decision_reason": "不立即开工；先验证 AI 音乐创作者是否高频遇到该问题，以及是否愿意接受自动修复的音质结果。",
+      "decision_reason": "暂不立即开工。虽然场景具体，但需要确认 AI 音乐创作者是否频繁遇到同一音质问题，以及是否愿意为专门插件付费。",
       "label_adjustment": 0,
       "noise_penalty": 0,
       "sample_ideas": [
@@ -1013,7 +559,7 @@
           "label": "未标注"
         }
       ],
-      "evidence_summary": "样本明确描述了修复 AI 音乐模型“发闷”音频的手动流程，说明存在具体工作流和自动化可能，但目前只有单一来源。",
+      "evidence_summary": "样本直接描述“手动修复 AI 音乐模型闷声问题”，痛点具体、有可重复工作流，说明创作者在生成后仍需要后期处理。",
       "evidence_chain": {
         "passed_count": 3,
         "total_count": 5,
@@ -1047,26 +593,26 @@
           }
         ]
       },
-      "recommended_action": "7 天内触达 30 位 Suno、Udio、Stable Audio 或 YouTube AI 音乐创作者，收集 10 段他们认为发闷的音频，用现成插件链手动修复并回传对比；通过标准是 6 人认为结果可用，2 人愿意为每月批量处理支付 10-29 美元。",
-      "opportunity_hypothesis": "AI 音乐生成后常见音质发闷、混音不清等问题，创作者可能需要把手动后期流程自动化。机会在于提供一键修复链路，而不是通用音频编辑器。",
-      "evidence": "样本明确描述了修复 AI 音乐模型“发闷”音频的手动流程，说明存在具体工作流和自动化可能，但目前只有单一来源。",
+      "recommended_action": "7 天内触达 20 位 Suno、Udio、Stable Audio 或本地模型用户，在 Discord、Reddit 和音乐制作社群收集 30 首原始 AI 音频；手工处理其中 10 首并让用户盲评。通过标准：至少 60% 用户认为处理后明显更好，至少 5 人愿意上传批量音频试用，至少 3 人愿意为每月 10-20 美元订阅付费。",
+      "opportunity_hypothesis": "AI 音乐生成结果常出现闷、糊、动态不足等音质问题，创作者会用手动流程修复。机会是做一个针对 AI 音乐输出的快速母带、清晰度增强和批量修复插件。",
+      "evidence": "样本直接描述“手动修复 AI 音乐模型闷声问题”，痛点具体、有可重复工作流，说明创作者在生成后仍需要后期处理。",
       "anti_signals": [
-        "只有一条信号，无法证明大量 AI 音乐创作者有同样痛点。",
-        "音频质量修复可能需要专业 DSP 或模型能力，MVP 成本高于普通工作流工具。"
+        "当前只有单条信号，无法判断问题是否普遍",
+        "音乐制作用户可能已有成熟 DAW 插件和母带工具"
       ],
-      "not_build_now_reason": "不立即开工；先验证 AI 音乐创作者是否高频遇到该问题，以及是否愿意接受自动修复的音质结果。",
-      "seven_day_validation": "7 天内触达 30 位 Suno、Udio、Stable Audio 或 YouTube AI 音乐创作者，收集 10 段他们认为发闷的音频，用现成插件链手动修复并回传对比；通过标准是 6 人认为结果可用，2 人愿意为每月批量处理支付 10-29 美元。",
-      "paid_signal": "尚不明确；需要验证创作者是否愿意为音质提升付费，而不只是使用免费教程和插件。",
-      "codex_opportunity_thesis": "AI 音乐生成后常见音质发闷、混音不清等问题，创作者可能需要把手动后期流程自动化。机会在于提供一键修复链路，而不是通用音频编辑器。",
+      "not_build_now_reason": "暂不立即开工。虽然场景具体，但需要确认 AI 音乐创作者是否频繁遇到同一音质问题，以及是否愿意为专门插件付费。",
+      "seven_day_validation": "7 天内触达 20 位 Suno、Udio、Stable Audio 或本地模型用户，在 Discord、Reddit 和音乐制作社群收集 30 首原始 AI 音频；手工处理其中 10 首并让用户盲评。通过标准：至少 60% 用户认为处理后明显更好，至少 5 人愿意上传批量音频试用，至少 3 人愿意为每月 10-20 美元订阅付费。",
+      "paid_signal": "尚不明确；需要验证 AI 音乐创作者是否把音质修复视为付费问题，而不是一次性技巧教程。",
+      "codex_opportunity_thesis": "AI 音乐生成结果常出现闷、糊、动态不足等音质问题，创作者会用手动流程修复。机会是做一个针对 AI 音乐输出的快速母带、清晰度增强和批量修复插件。",
       "codex_anti_signals": [
-        "只有一条信号，无法证明大量 AI 音乐创作者有同样痛点。",
-        "音频质量修复可能需要专业 DSP 或模型能力，MVP 成本高于普通工作流工具。"
+        "当前只有单条信号，无法判断问题是否普遍",
+        "音乐制作用户可能已有成熟 DAW 插件和母带工具"
       ],
       "analysis_provider": "codex"
     },
     {
       "cluster_id": "cluster-fund-native-companies-06d8caa05c1bddee",
-      "title": "VC 内部投研流程 AI 化",
+      "title": "VC 基金运营自动化助手",
       "category": "运营/内部流程",
       "count_7d": 1,
       "source_count": 1,
@@ -1077,7 +623,7 @@
       "avg_score": 52.0,
       "decision_score": 52,
       "decision_verdict": "Discard",
-      "decision_reason": "不应立即产品化；应先做投研流程中的单点服务，例如自动生成公司 memo 或更新 CRM，再判断是否有付费拉力。",
+      "decision_reason": "不是立即开工。最强理由是 VC 客单价可能较高，但必须先证明流程重复且愿意接入敏感数据。",
       "label_adjustment": 0,
       "noise_penalty": 0,
       "sample_ideas": [
@@ -1091,7 +637,7 @@
           "label": "未标注"
         }
       ],
-      "evidence_summary": "样本指出 VC 内部运营与 AI 投资叙事不匹配，暗示投研和运营流程存在自动化空间；但证据来自单篇观点，缺少投资团队一线痛点重复。",
+      "evidence_summary": "样本指出 VC 公司仍运行在手动流程上，和其他手动工作流信号一致。痛点可能集中在 deal flow 整理、组合公司数据收集、会议纪要、LP 报告和跟进提醒。",
       "evidence_chain": {
         "passed_count": 3,
         "total_count": 5,
@@ -1125,26 +671,26 @@
           }
         ]
       },
-      "recommended_action": "7 天内触达 15 位 VC、天使基金或加速器运营人员，提供一次“从创始人资料到投资 memo 草稿”的人工加 AI 代跑；通过标准是 5 人愿意提供真实案例，2 人愿意为每席每月 99 美元以上或按 memo 付费。",
-      "opportunity_hypothesis": "投资机构一边投资 AI 公司，一边内部仍依赖手动流程，可能存在投研、尽调、会议纪要、CRM 更新的自动化机会。当前信号方向清楚，但还没有具体到一个高频付费流程。",
-      "evidence": "样本指出 VC 内部运营与 AI 投资叙事不匹配，暗示投研和运营流程存在自动化空间；但证据来自单篇观点，缺少投资团队一线痛点重复。",
+      "recommended_action": "7 天内联系 10 位微型基金 GP、平台负责人或投资助理，访谈他们每周最耗时的 3 个运营动作；用 Airtable、Notion 和邮件脚本手工搭一个 LP 更新或 portfolio tracking demo。通过标准：至少 5 家确认每周超过 5 小时手工整理，至少 3 家愿意提供脱敏模板，至少 1 家愿意付费试点。",
+      "opportunity_hypothesis": "投资机构虽然投资 AI-native 公司，但自身投后、投资组合跟踪、LP 更新和内部研究仍依赖手工表格和文档。机会是为小型 VC 或天使基金做基金运营工作流自动化。",
+      "evidence": "样本指出 VC 公司仍运行在手动流程上，和其他手动工作流信号一致。痛点可能集中在 deal flow 整理、组合公司数据收集、会议纪要、LP 报告和跟进提醒。",
       "anti_signals": [
-        "VC 数量有限且采购周期长，不适合未经验证就做 SaaS。",
-        "很多机构已有 Affinity、Notion、Airtable、Clay 或内部助手，替换成本不低。"
+        "只有 1 条样本，可能是观点文章而非真实采购需求",
+        "VC 数量有限，且许多基金有定制化流程，产品化难度高"
       ],
-      "not_build_now_reason": "不应立即产品化；应先做投研流程中的单点服务，例如自动生成公司 memo 或更新 CRM，再判断是否有付费拉力。",
-      "seven_day_validation": "7 天内触达 15 位 VC、天使基金或加速器运营人员，提供一次“从创始人资料到投资 memo 草稿”的人工加 AI 代跑；通过标准是 5 人愿意提供真实案例，2 人愿意为每席每月 99 美元以上或按 memo 付费。",
-      "paid_signal": "尚不明确；样本有成本和效率暗示，但没有直接预算，需要验证基金是否愿意为内部自动化付费。",
-      "codex_opportunity_thesis": "投资机构一边投资 AI 公司，一边内部仍依赖手动流程，可能存在投研、尽调、会议纪要、CRM 更新的自动化机会。当前信号方向清楚，但还没有具体到一个高频付费流程。",
+      "not_build_now_reason": "不是立即开工。最强理由是 VC 客单价可能较高，但必须先证明流程重复且愿意接入敏感数据。",
+      "seven_day_validation": "7 天内联系 10 位微型基金 GP、平台负责人或投资助理，访谈他们每周最耗时的 3 个运营动作；用 Airtable、Notion 和邮件脚本手工搭一个 LP 更新或 portfolio tracking demo。通过标准：至少 5 家确认每周超过 5 小时手工整理，至少 3 家愿意提供脱敏模板，至少 1 家愿意付费试点。",
+      "paid_signal": "可能存在，因为基金有预算且时间成本高；需要验证他们是否愿意为运营效率付费并授权接入邮件、CRM 和财务数据。",
+      "codex_opportunity_thesis": "投资机构虽然投资 AI-native 公司，但自身投后、投资组合跟踪、LP 更新和内部研究仍依赖手工表格和文档。机会是为小型 VC 或天使基金做基金运营工作流自动化。",
       "codex_anti_signals": [
-        "VC 数量有限且采购周期长，不适合未经验证就做 SaaS。",
-        "很多机构已有 Affinity、Notion、Airtable、Clay 或内部助手，替换成本不低。"
+        "只有 1 条样本，可能是观点文章而非真实采购需求",
+        "VC 数量有限，且许多基金有定制化流程，产品化难度高"
       ],
       "analysis_provider": "codex"
     },
     {
       "cluster_id": "cluster-mobile-443c8845320c755b",
-      "title": "Excel 手工流程转轻量 Web 应用",
+      "title": "Excel 流程转内部 Web 应用",
       "category": "运营/内部流程",
       "count_7d": 1,
       "source_count": 1,
@@ -1154,8 +700,8 @@
       "top_score": 52,
       "avg_score": 52.0,
       "decision_score": 52,
-      "decision_verdict": "Discard",
-      "decision_reason": "不立即开工；应先锁定一个高频表格场景，例如小企业工资、库存或项目成本表，再做模板化验证。",
+      "decision_verdict": "Monitor",
+      "decision_reason": "暂不立即完整开发平台。更适合先做服务化验证，确认哪些 Excel 流程最重复、最愿意付费。",
       "label_adjustment": 0,
       "noise_penalty": 0,
       "sample_ideas": [
@@ -1169,7 +715,7 @@
           "label": "未标注"
         }
       ],
-      "evidence_summary": "样本明确出现“把手工 Excel 流程转成自动化 Web App”，说明有具体流程自动化需求；但当前只有单一来源，缺少行业、角色和预算信息。",
+      "evidence_summary": "样本直接出现“将手动 Excel 工作流转成自动化 Web App”，说明痛点具体且流程可落地。它与手动流程自动化信号高度一致，适合从表格驱动的运营流程切入。",
       "evidence_chain": {
         "passed_count": 3,
         "total_count": 5,
@@ -1203,56 +749,56 @@
           }
         ]
       },
-      "recommended_action": "7 天内联系 20 位仍用 Excel 管理工资、库存或项目成本的小企业主或运营负责人，收集 5 个真实表格并手动做成可点击原型；通过标准是 3 人愿意继续试用，1 人愿意支付 300 美元以上的一次性转换费。",
-      "opportunity_hypothesis": "小团队仍把工资、运营或审批流程放在 Excel 中手动维护，可能需要把高频表格流程转成可访问、可校验、可自动化的 Web 应用。机会在于按行业模板交付，而不是做通用低代码平台。",
-      "evidence": "样本明确出现“把手工 Excel 流程转成自动化 Web App”，说明有具体流程自动化需求；但当前只有单一来源，缺少行业、角色和预算信息。",
+      "recommended_action": "7 天内触达 20 位运营、财务、人事或小企业负责人，收集 10 个仍在用 Excel 管的流程；选择 3 个用 Retool、AppSheet 或脚本手工转成可点击原型。通过标准：至少 5 人愿意提供真实表格，至少 3 人愿意试用迁移原型，至少 2 人愿意为一次迁移支付 500 美元以上。",
+      "opportunity_hypothesis": "很多团队把工资、审批、库存、排班等关键流程放在 Excel 模板里，随着协作和权限需求增长，需要快速转成可审计的 Web 应用。机会是提供“从现有 Excel 到轻量内部工具”的迁移服务和自动生成器。",
+      "evidence": "样本直接出现“将手动 Excel 工作流转成自动化 Web App”，说明痛点具体且流程可落地。它与手动流程自动化信号高度一致，适合从表格驱动的运营流程切入。",
       "anti_signals": [
-        "低代码、表格数据库和内部工具平台已经很多，通用方案差异化弱。",
-        "单条信号无法判断最痛的是权限、审批、数据录入、报表还是集成。"
+        "单条信号不足，且 Excel 转应用已有大量 no-code 竞品",
+        "不同公司的表格逻辑高度定制，自动化生成可能边界复杂"
       ],
-      "not_build_now_reason": "不立即开工；应先锁定一个高频表格场景，例如小企业工资、库存或项目成本表，再做模板化验证。",
-      "seven_day_validation": "7 天内联系 20 位仍用 Excel 管理工资、库存或项目成本的小企业主或运营负责人，收集 5 个真实表格并手动做成可点击原型；通过标准是 3 人愿意继续试用，1 人愿意支付 300 美元以上的一次性转换费。",
-      "paid_signal": "尚不明确；需要验证用户是否愿意为减少 Excel 手工维护支付实施费或月费。",
-      "codex_opportunity_thesis": "小团队仍把工资、运营或审批流程放在 Excel 中手动维护，可能需要把高频表格流程转成可访问、可校验、可自动化的 Web 应用。机会在于按行业模板交付，而不是做通用低代码平台。",
+      "not_build_now_reason": "暂不立即完整开发平台。更适合先做服务化验证，确认哪些 Excel 流程最重复、最愿意付费。",
+      "seven_day_validation": "7 天内触达 20 位运营、财务、人事或小企业负责人，收集 10 个仍在用 Excel 管的流程；选择 3 个用 Retool、AppSheet 或脚本手工转成可点击原型。通过标准：至少 5 人愿意提供真实表格，至少 3 人愿意试用迁移原型，至少 2 人愿意为一次迁移支付 500 美元以上。",
+      "paid_signal": "较可能存在，因为它替代人工维护和错误修正成本；需要验证一次性迁移费与持续托管费的接受度。",
+      "codex_opportunity_thesis": "很多团队把工资、审批、库存、排班等关键流程放在 Excel 模板里，随着协作和权限需求增长，需要快速转成可审计的 Web 应用。机会是提供“从现有 Excel 到轻量内部工具”的迁移服务和自动生成器。",
       "codex_anti_signals": [
-        "低代码、表格数据库和内部工具平台已经很多，通用方案差异化弱。",
-        "单条信号无法判断最痛的是权限、审批、数据录入、报表还是集成。"
+        "单条信号不足，且 Excel 转应用已有大量 no-code 竞品",
+        "不同公司的表格逻辑高度定制，自动化生成可能边界复杂"
       ],
       "analysis_provider": "codex"
     },
     {
-      "cluster_id": "cluster-massively-dropped-ball-901d8e7ea203e9cf",
-      "title": "产品路线图失误复盘与预警",
-      "category": "研发/产品功能",
+      "cluster_id": "cluster-firefox-alternative-chrome-69781e8051a7bfc5",
+      "title": "反浏览器垄断的隐私替代方案",
+      "category": "竞品/市场情报",
       "count_7d": 1,
       "source_count": 1,
       "source_names": [
-        "Reddit r/ProductManagement"
+        "Hacker News"
       ],
-      "top_score": 52,
-      "avg_score": 52.0,
-      "decision_score": 52,
+      "top_score": 50,
+      "avg_score": 50.0,
+      "decision_score": 50,
       "decision_verdict": "Discard",
-      "decision_reason": "应丢弃当前机会；除非后续出现多条关于“如何提前发现路线图风险”的具体请求，否则不值得投入。",
+      "decision_reason": "应丢弃当前形态。除非后续发现明确的企业管理、合规或开发者工具缺口，否则不适合作为创业 MVP。",
       "label_adjustment": 0,
       "noise_penalty": 0,
       "sample_ideas": [
         {
-          "idea_id": "ce9f8d689c928d38",
-          "title": "Massively dropped the ball on roadmap",
-          "source": "Reddit r/ProductManagement",
-          "source_url": "https://www.reddit.com/r/ProductManagement/comments/1tagp93/massively_dropped_the_ball_on_roadmap/",
-          "total_score": 52,
-          "pain_summary": "Massively dropped the ball on roadmap Not sure what I’m looking for - mostly sympathy.",
+          "idea_id": "9e206819f8bc5f7f",
+          "title": "Firefox is the alternative to a Chrome hegemony",
+          "source": "Hacker News",
+          "source_url": "https://batsov.com/articles/2021/11/28/firefox-is-the-only-alternative/",
+          "total_score": 50,
+          "pain_summary": "Firefox is the alternative to a Chrome hegemony",
           "label": "未标注"
         }
       ],
-      "evidence_summary": "样本来自产品管理社区，提到路线图严重失误，说明痛点真实存在；但没有重复来源，也没有描述具体流程、现有工具缺陷或预算。",
+      "evidence_summary": "样本表达“Firefox 是 Chrome 霸权的替代品”，属于明确替代方案信号，但没有落到具体工作流或付费场景。",
       "evidence_chain": {
-        "passed_count": 1,
+        "passed_count": 3,
         "total_count": 5,
-        "score": 20,
-        "status": "weak",
+        "score": 60,
+        "status": "medium",
         "items": [
           {
             "label": "2 个以上独立来源",
@@ -1261,13 +807,13 @@
           },
           {
             "label": "明确付费/预算信号",
-            "passed": false,
-            "detail": "尚未看到明确付费或预算表达"
+            "passed": true,
+            "detail": "文本中出现价格、账单、预算、付费或成本线索"
           },
           {
             "label": "现有替代方案抱怨",
-            "passed": false,
-            "detail": "尚未看到对现有替代方案的明确抱怨"
+            "passed": true,
+            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
           },
           {
             "label": "具体工作流",
@@ -1281,118 +827,386 @@
           }
         ]
       },
-      "recommended_action": "7 天内只做低成本验证：在产品管理社区收集 15 条近期路线图失败复盘，标注共同原因；通过标准是至少 5 条都指向同一可自动检测信号，例如依赖未确认、承诺无 owner 或客户影响未量化。",
-      "opportunity_hypothesis": "产品经理在路线图管理中可能因为优先级、沟通或依赖管理失误导致项目失控。机会可能是路线图风险复盘和预警工具，但当前信号更像一次性情绪求助。",
-      "evidence": "样本来自产品管理社区，提到路线图严重失误，说明痛点真实存在；但没有重复来源，也没有描述具体流程、现有工具缺陷或预算。",
+      "recommended_action": "7 天内访谈 10 位企业 IT 管理员和 10 位 Web 开发者，验证他们是否因 Chrome 政策、扩展限制或隐私合规产生实际成本。通过标准：至少 5 人描述具体迁移或管理痛点，至少 3 人愿意试用浏览器管理插件或策略工具，否则继续丢弃。",
+      "opportunity_hypothesis": "部分用户对 Chrome 生态垄断、隐私和平台控制有长期不满，但这更像市场情绪，不一定对应一个新产品机会。可观察是否存在企业级浏览器管理、开发者调试或隐私合规的窄切口。",
+      "evidence": "样本表达“Firefox 是 Chrome 霸权的替代品”，属于明确替代方案信号，但没有落到具体工作流或付费场景。",
       "anti_signals": [
-        "单条情绪型帖子不足以证明可产品化需求。",
-        "路线图工具市场成熟，若没有明确差异点，很难从 Jira、Aha、Productboard、Linear 中切入。"
+        "浏览器是资本和工程密集型赛道，新进入者很难竞争",
+        "用户抱怨垄断不等于愿意迁移或付费"
       ],
-      "not_build_now_reason": "应丢弃当前机会；除非后续出现多条关于“如何提前发现路线图风险”的具体请求，否则不值得投入。",
-      "seven_day_validation": "7 天内只做低成本验证：在产品管理社区收集 15 条近期路线图失败复盘，标注共同原因；通过标准是至少 5 条都指向同一可自动检测信号，例如依赖未确认、承诺无 owner 或客户影响未量化。",
-      "paid_signal": "尚不明确；需要验证团队是否愿意为路线图风险预警付费，而不是只在事后复盘。",
-      "codex_opportunity_thesis": "产品经理在路线图管理中可能因为优先级、沟通或依赖管理失误导致项目失控。机会可能是路线图风险复盘和预警工具，但当前信号更像一次性情绪求助。",
+      "not_build_now_reason": "应丢弃当前形态。除非后续发现明确的企业管理、合规或开发者工具缺口，否则不适合作为创业 MVP。",
+      "seven_day_validation": "7 天内访谈 10 位企业 IT 管理员和 10 位 Web 开发者，验证他们是否因 Chrome 政策、扩展限制或隐私合规产生实际成本。通过标准：至少 5 人描述具体迁移或管理痛点，至少 3 人愿意试用浏览器管理插件或策略工具，否则继续丢弃。",
+      "paid_signal": "尚不明确；消费者替代浏览器付费意愿弱，需验证企业是否愿意为管理、合规或安全功能付费。",
+      "codex_opportunity_thesis": "部分用户对 Chrome 生态垄断、隐私和平台控制有长期不满，但这更像市场情绪，不一定对应一个新产品机会。可观察是否存在企业级浏览器管理、开发者调试或隐私合规的窄切口。",
       "codex_anti_signals": [
-        "单条情绪型帖子不足以证明可产品化需求。",
-        "路线图工具市场成熟，若没有明确差异点，很难从 Jira、Aha、Productboard、Linear 中切入。"
+        "浏览器是资本和工程密集型赛道，新进入者很难竞争",
+        "用户抱怨垄断不等于愿意迁移或付费"
+      ],
+      "analysis_provider": "codex"
+    },
+    {
+      "cluster_id": "cluster-libretaxi-free-open-fcd97469507cc03f",
+      "title": "本地社区打车调度工具",
+      "category": "竞品/市场情报",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Hacker News"
+      ],
+      "top_score": 50,
+      "avg_score": 50.0,
+      "decision_score": 50,
+      "decision_verdict": "Discard",
+      "decision_reason": "应丢弃通用平台方向。只有在找到已有司机网络或地方组织作为锚定客户时，才值得重开验证。",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "991d7eaf461f990d",
+          "title": "LibreTaxi – A free and open source alternative to Uber and Lyft",
+          "source": "Hacker News",
+          "source_url": "http://libretaxi.org/",
+          "total_score": 50,
+          "pain_summary": "LibreTaxi – A free and open source alternative to Uber and Lyft",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "样本是“免费开源的 Uber 和 Lyft 替代方案”，说明替代动机来自平台佣金、控制权或可用性。但目前缺少来自司机组织或本地运营方的重复需求。",
+      "evidence_chain": {
+        "passed_count": 3,
+        "total_count": 5,
+        "score": 60,
+        "status": "medium",
+        "items": [
+          {
+            "label": "2 个以上独立来源",
+            "passed": false,
+            "detail": "当前覆盖 1 个来源"
+          },
+          {
+            "label": "明确付费/预算信号",
+            "passed": true,
+            "detail": "文本中出现价格、账单、预算、付费或成本线索"
+          },
+          {
+            "label": "现有替代方案抱怨",
+            "passed": true,
+            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
+          },
+          {
+            "label": "具体工作流",
+            "passed": false,
+            "detail": "仍偏泛，需要收窄到具体工作流"
+          },
+          {
+            "label": "7 天内可触达验证",
+            "passed": true,
+            "detail": "样本包含可回访的公开来源链接"
+          }
+        ]
+      },
+      "recommended_action": "7 天内联系 10 个出租车合作社、校园安全接送组织、社区交通非营利或小型车队，询问他们是否需要低佣金调度系统。通过标准：至少 3 个组织提供现有派单流程，至少 2 个愿意参与试点，至少 1 个愿意支付每月 SaaS 或部署服务费。",
+      "opportunity_hypothesis": "在部分市场，司机和乘客可能需要低佣金、社区运营、开源透明的 Uber/Lyft 替代方案。机会不在复制网约车平台，而在给本地车队、合作社或非营利交通组织提供调度和支付工具。",
+      "evidence": "样本是“免费开源的 Uber 和 Lyft 替代方案”，说明替代动机来自平台佣金、控制权或可用性。但目前缺少来自司机组织或本地运营方的重复需求。",
+      "anti_signals": [
+        "双边市场冷启动难，获客和合规成本高",
+        "开源免费叙事不等于可持续商业模式"
+      ],
+      "not_build_now_reason": "应丢弃通用平台方向。只有在找到已有司机网络或地方组织作为锚定客户时，才值得重开验证。",
+      "seven_day_validation": "7 天内联系 10 个出租车合作社、校园安全接送组织、社区交通非营利或小型车队，询问他们是否需要低佣金调度系统。通过标准：至少 3 个组织提供现有派单流程，至少 2 个愿意参与试点，至少 1 个愿意支付每月 SaaS 或部署服务费。",
+      "paid_signal": "尚不明确；需要验证付费方是车队、合作社还是地方机构，而不是单个司机或乘客。",
+      "codex_opportunity_thesis": "在部分市场，司机和乘客可能需要低佣金、社区运营、开源透明的 Uber/Lyft 替代方案。机会不在复制网约车平台，而在给本地车队、合作社或非营利交通组织提供调度和支付工具。",
+      "codex_anti_signals": [
+        "双边市场冷启动难，获客和合规成本高",
+        "开源免费叙事不等于可持续商业模式"
+      ],
+      "analysis_provider": "codex"
+    },
+    {
+      "cluster_id": "cluster-localsend-open-source-ce0f4428d8a39248",
+      "title": "跨平台本地文件传输工具",
+      "category": "竞品/市场情报",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Hacker News"
+      ],
+      "top_score": 50,
+      "avg_score": 50.0,
+      "decision_score": 50,
+      "decision_verdict": "Discard",
+      "decision_reason": "暂不作为新产品开工。除非发现企业管理、审计、批量部署或安全传输等付费场景，否则很难从免费工具中突围。",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "fbda2d087881b5a9",
+          "title": "Localsend: An open-source cross-platform alternative to AirDrop",
+          "source": "Hacker News",
+          "source_url": "https://github.com/localsend/localsend",
+          "total_score": 50,
+          "pain_summary": "Localsend: An open-source cross-platform alternative to AirDrop",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "样本指向“开源跨平台 AirDrop 替代品”，说明用户对封闭生态的文件传输限制有替代需求。痛点具体，但已有成熟开源项目，商业化切口未明。",
+      "evidence_chain": {
+        "passed_count": 3,
+        "total_count": 5,
+        "score": 60,
+        "status": "medium",
+        "items": [
+          {
+            "label": "2 个以上独立来源",
+            "passed": false,
+            "detail": "当前覆盖 1 个来源"
+          },
+          {
+            "label": "明确付费/预算信号",
+            "passed": true,
+            "detail": "文本中出现价格、账单、预算、付费或成本线索"
+          },
+          {
+            "label": "现有替代方案抱怨",
+            "passed": true,
+            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
+          },
+          {
+            "label": "具体工作流",
+            "passed": false,
+            "detail": "仍偏泛，需要收窄到具体工作流"
+          },
+          {
+            "label": "7 天内可触达验证",
+            "passed": true,
+            "detail": "样本包含可回访的公开来源链接"
+          }
+        ]
+      },
+      "recommended_action": "7 天内访谈 15 位学校 IT、创意工作室管理员、实验室管理员和小企业 IT，了解跨平台传文件的真实频次和合规要求。通过标准：至少 5 个团队每周多次遇到传输失败或权限问题，至少 3 个团队需要审计或集中部署，至少 2 个愿意为管理版付费。",
+      "opportunity_hypothesis": "跨设备、跨系统的近场文件传输仍有体验缺口，尤其在 Android、Windows、Linux、iOS 混用环境中。机会可能在企业内网、教室、实验室或创作者设备间的安全快速传输，而不是普通 AirDrop 替代。",
+      "evidence": "样本指向“开源跨平台 AirDrop 替代品”，说明用户对封闭生态的文件传输限制有替代需求。痛点具体，但已有成熟开源项目，商业化切口未明。",
+      "anti_signals": [
+        "免费开源替代品已经存在，普通用户付费意愿弱",
+        "操作系统权限和局域网环境会带来稳定性问题"
+      ],
+      "not_build_now_reason": "暂不作为新产品开工。除非发现企业管理、审计、批量部署或安全传输等付费场景，否则很难从免费工具中突围。",
+      "seven_day_validation": "7 天内访谈 15 位学校 IT、创意工作室管理员、实验室管理员和小企业 IT，了解跨平台传文件的真实频次和合规要求。通过标准：至少 5 个团队每周多次遇到传输失败或权限问题，至少 3 个团队需要审计或集中部署，至少 2 个愿意为管理版付费。",
+      "paid_signal": "尚不明确；需要验证企业是否愿意为设备管理、审计日志、权限控制和内网部署付费。",
+      "codex_opportunity_thesis": "跨设备、跨系统的近场文件传输仍有体验缺口，尤其在 Android、Windows、Linux、iOS 混用环境中。机会可能在企业内网、教室、实验室或创作者设备间的安全快速传输，而不是普通 AirDrop 替代。",
+      "codex_anti_signals": [
+        "免费开源替代品已经存在，普通用户付费意愿弱",
+        "操作系统权限和局域网环境会带来稳定性问题"
+      ],
+      "analysis_provider": "codex"
+    },
+    {
+      "cluster_id": "cluster-launch-promise-cost-8a3f7283dbc313b3",
+      "title": "司法替代监管个案管理系统",
+      "category": "竞品/市场情报",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Hacker News"
+      ],
+      "top_score": 50,
+      "avg_score": 50.0,
+      "decision_score": 50,
+      "decision_verdict": "Discard",
+      "decision_reason": "应丢弃普通创业 MVP 方向。除非团队已有司法系统渠道、合规经验和试点城市资源，否则不是轻量软件机会。",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "c696a7fb46e4f027",
+          "title": "Launch HN: Promise (YC W18) – Cost-effective, more humane alternative to jail",
+          "source": "Hacker News",
+          "source_url": "https://news.ycombinator.com/item?id=16630971",
+          "total_score": 50,
+          "pain_summary": "Launch HN: Promise (YC W18) – Cost-effective, more humane alternative to jail",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "样本描述“比监禁更低成本、更人性化的替代方案”，说明宏观成本和社会效果痛点明确。但这是重合规、重采购、重线下执行的公共部门场景。",
+      "evidence_chain": {
+        "passed_count": 3,
+        "total_count": 5,
+        "score": 60,
+        "status": "medium",
+        "items": [
+          {
+            "label": "2 个以上独立来源",
+            "passed": false,
+            "detail": "当前覆盖 1 个来源"
+          },
+          {
+            "label": "明确付费/预算信号",
+            "passed": true,
+            "detail": "文本中出现价格、账单、预算、付费或成本线索"
+          },
+          {
+            "label": "现有替代方案抱怨",
+            "passed": true,
+            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
+          },
+          {
+            "label": "具体工作流",
+            "passed": false,
+            "detail": "仍偏泛，需要收窄到具体工作流"
+          },
+          {
+            "label": "7 天内可触达验证",
+            "passed": true,
+            "detail": "样本包含可回访的公开来源链接"
+          }
+        ]
+      },
+      "recommended_action": "7 天内联系 5 位公共辩护人、缓刑官、司法改革非营利负责人或县级项目管理员，验证现有个案管理痛点和采购路径。通过标准：至少 3 人确认当前工具落后且有预算来源，至少 1 个机构愿意介绍试点负责人，否则不推进。",
+      "opportunity_hypothesis": "司法系统存在用更低成本、更人性化方式替代羁押的需求，软件机会可能是帮助政府、法院和服务机构管理社区监管、提醒、合规打卡和个案支持。",
+      "evidence": "样本描述“比监禁更低成本、更人性化的替代方案”，说明宏观成本和社会效果痛点明确。但这是重合规、重采购、重线下执行的公共部门场景。",
+      "anti_signals": [
+        "政府采购周期长，销售复杂，合规和伦理风险高",
+        "单条历史样本不足以证明当前可进入市场"
+      ],
+      "not_build_now_reason": "应丢弃普通创业 MVP 方向。除非团队已有司法系统渠道、合规经验和试点城市资源，否则不是轻量软件机会。",
+      "seven_day_validation": "7 天内联系 5 位公共辩护人、缓刑官、司法改革非营利负责人或县级项目管理员，验证现有个案管理痛点和采购路径。通过标准：至少 3 人确认当前工具落后且有预算来源，至少 1 个机构愿意介绍试点负责人，否则不推进。",
+      "paid_signal": "可能存在于政府合同或非营利项目预算，但当前尚不明确；需验证采购主体、预算周期和合规要求。",
+      "codex_opportunity_thesis": "司法系统存在用更低成本、更人性化方式替代羁押的需求，软件机会可能是帮助政府、法院和服务机构管理社区监管、提醒、合规打卡和个案支持。",
+      "codex_anti_signals": [
+        "政府采购周期长，销售复杂，合规和伦理风险高",
+        "单条历史样本不足以证明当前可进入市场"
+      ],
+      "analysis_provider": "codex"
+    },
+    {
+      "cluster_id": "cluster-jitsi-meet-open-b36e29fb04f67d58",
+      "title": "可自托管安全视频会议",
+      "category": "竞品/市场情报",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "Hacker News"
+      ],
+      "top_score": 50,
+      "avg_score": 50.0,
+      "decision_score": 50,
+      "decision_verdict": "Discard",
+      "decision_reason": "不应立即做新会议产品。可观察托管、合规部署、录制留存、内网会议和运维支持是否有付费需求。",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "58e9ab75ab5e1d0f",
+          "title": "Jitsi Meet: An open source alternative to Zoom",
+          "source": "Hacker News",
+          "source_url": "https://meet.jit.si",
+          "total_score": 50,
+          "pain_summary": "Jitsi Meet: An open source alternative to Zoom",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "样本明确是“Jitsi Meet 作为 Zoom 的开源替代”，属于替代方案信号。它说明市场存在开源视频会议偏好，但已有成熟项目，新增产品必须围绕部署运维、稳定性和企业管理。",
+      "evidence_chain": {
+        "passed_count": 3,
+        "total_count": 5,
+        "score": 60,
+        "status": "medium",
+        "items": [
+          {
+            "label": "2 个以上独立来源",
+            "passed": false,
+            "detail": "当前覆盖 1 个来源"
+          },
+          {
+            "label": "明确付费/预算信号",
+            "passed": true,
+            "detail": "文本中出现价格、账单、预算、付费或成本线索"
+          },
+          {
+            "label": "现有替代方案抱怨",
+            "passed": true,
+            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
+          },
+          {
+            "label": "具体工作流",
+            "passed": false,
+            "detail": "仍偏泛，需要收窄到具体工作流"
+          },
+          {
+            "label": "7 天内可触达验证",
+            "passed": true,
+            "detail": "样本包含可回访的公开来源链接"
+          }
+        ]
+      },
+      "recommended_action": "7 天内联系 12 位教育机构、非营利组织、医疗小机构和企业 IT，询问是否因隐私、成本或网络限制考虑自托管会议。通过标准：至少 4 个组织有明确自托管需求，至少 2 个组织愿意试用托管 Jitsi 管理面板，至少 1 个愿意支付部署或月费。",
+      "opportunity_hypothesis": "部分组织需要 Zoom 的开源或自托管替代方案，核心需求是数据控制、低成本和可定制部署。机会不在做通用视频会议，而在高合规组织的部署、管理和支持层。",
+      "evidence": "样本明确是“Jitsi Meet 作为 Zoom 的开源替代”，属于替代方案信号。它说明市场存在开源视频会议偏好，但已有成熟项目，新增产品必须围绕部署运维、稳定性和企业管理。",
+      "anti_signals": [
+        "视频会议基础能力已高度商品化，直接竞争难度大",
+        "已有 Jitsi、Zoom、Google Meet、Teams 等强势选择"
+      ],
+      "not_build_now_reason": "不应立即做新会议产品。可观察托管、合规部署、录制留存、内网会议和运维支持是否有付费需求。",
+      "seven_day_validation": "7 天内联系 12 位教育机构、非营利组织、医疗小机构和企业 IT，询问是否因隐私、成本或网络限制考虑自托管会议。通过标准：至少 4 个组织有明确自托管需求，至少 2 个组织愿意试用托管 Jitsi 管理面板，至少 1 个愿意支付部署或月费。",
+      "paid_signal": "尚不明确；需要验证客户是否愿意为托管运维、SLA、审计和集成付费，而不是自行部署免费开源版本。",
+      "codex_opportunity_thesis": "部分组织需要 Zoom 的开源或自托管替代方案，核心需求是数据控制、低成本和可定制部署。机会不在做通用视频会议，而在高合规组织的部署、管理和支持层。",
+      "codex_anti_signals": [
+        "视频会议基础能力已高度商品化，直接竞争难度大",
+        "已有 Jitsi、Zoom、Google Meet、Teams 等强势选择"
       ],
       "analysis_provider": "codex"
     }
   ],
   "decision_summary": {
     "total_clusters": 12,
-    "build_now_count": 1,
-    "monitor_count": 4,
-    "discard_count": 7
+    "build_now_count": 0,
+    "monitor_count": 3,
+    "discard_count": 9
   },
   "source_health": {
-    "status": "ok",
-    "raw_count": 280,
-    "unique_count": 188,
-    "candidate_count": 80,
-    "error_count": 0,
-    "errors": [],
+    "status": "degraded",
+    "raw_count": 100,
+    "unique_count": 98,
+    "candidate_count": 51,
+    "error_count": 8,
+    "errors": [
+      "Reddit `r/SaaS` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/Entrepreneur` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/indiehackers` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/smallbusiness` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/startups` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/ProductManagement` 抓取失败：HTTP Error 429: Too Many Requests",
+      "Reddit `r/NoCode` 抓取失败：HTTP Error 403: Blocked",
+      "Reddit `r/freelance` 抓取失败：HTTP Error 429: Too Many Requests"
+    ],
     "source_counts": {
-      "Reddit r/startups": 5,
-      "Reddit r/indiehackers": 1,
-      "Reddit r/NoCode": 5,
-      "Reddit r/Entrepreneur": 4,
-      "Reddit r/ProductManagement": 5,
-      "Reddit r/SaaS": 4,
-      "Hacker News": 51,
-      "Reddit r/smallbusiness": 4,
-      "Reddit r/freelance": 1
+      "Hacker News": 51
     }
   },
   "source_stats": {
-    "total_candidates": 80,
+    "total_candidates": 51,
     "platforms": [
       {
         "name": "Hacker News",
         "count": 51,
-        "percent": 64
-      },
-      {
-        "name": "Reddit",
-        "count": 29,
-        "percent": 36
+        "percent": 100
       }
     ],
     "top_sources": [
       {
         "source": "Hacker News",
         "count": 51,
-        "percent": 64
-      },
-      {
-        "source": "Reddit r/startups",
-        "count": 5,
-        "percent": 6
-      },
-      {
-        "source": "Reddit r/NoCode",
-        "count": 5,
-        "percent": 6
-      },
-      {
-        "source": "Reddit r/ProductManagement",
-        "count": 5,
-        "percent": 6
-      },
-      {
-        "source": "Reddit r/Entrepreneur",
-        "count": 4,
-        "percent": 5
-      },
-      {
-        "source": "Reddit r/SaaS",
-        "count": 4,
-        "percent": 5
-      },
-      {
-        "source": "Reddit r/smallbusiness",
-        "count": 4,
-        "percent": 5
-      },
-      {
-        "source": "Reddit r/indiehackers",
-        "count": 1,
-        "percent": 1
-      },
-      {
-        "source": "Reddit r/freelance",
-        "count": 1,
-        "percent": 1
+        "percent": 100
       }
     ]
   },
   "label_counts": {
-    "未标注": 80
+    "未标注": 51
   },
   "analysis_metadata": {
     "analysis_provider": "codex",
     "analysis_status": "ok",
     "analysis_binary": "/Users/e/.vscode/extensions/openai.chatgpt-26.513.21555-darwin-arm64/bin/macos-aarch64/codex"
   },
-  "markdown_report": "# 蓝海需求扫描日报 - 2026-05-18 14:11:58\n\n## 概览\n\n- 原始数据：280 条\n- 去重后：188 条\n- 候选痛点：80 条\n- Build Now：1 条\n- Monitor：17 条\n\n## Top 机会\n\n### 1. 为r/startups 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1tdot03/maybe_some_startup_advice_is_too_universal/)\n- 原标题：Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote)\n- 总分：76 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 15 / JTBD 20 / OPC 24 / RICE 17\n- 结论：Build Now\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：Maybe some startup advice is too universal, especially “don’t build, just sell first” (i will not promote) I’ve been thinking about a lot of common SaaS/startup advice lately.\n- 命中规则：missing\n- 下一步：今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。\n\n### 2. 为r/indiehackers 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/indiehackers](https://www.reddit.com/r/indiehackers/comments/1t4k4su/my_builder_trap_experience_and_how_i_try_to_learn/)\n- 原标题：My \"builder trap\" experience and how I try to learn from it\n- 总分：71 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 30 / RICE 16\n- 结论：Monitor\n- 目标用户：r/indiehackers 中反复表达类似痛点的用户\n- 痛点摘要：My \"builder trap\" experience and how I try to learn from it Recently I've been a bit more active on Reddit, as I'm building another startup.\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 3. 为r/NoCode 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/NoCode](https://www.reddit.com/r/nocode/comments/1tfun8z/warning_replits_autoscale_has_no_spend_cap_by/)\n- 原标题：Warning: Replit's autoscale has no spend cap by default. Got a $480 bill in one weekend after a TikTok hit a client's landing page.\n- 总分：68 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 14 / OPC 30 / RICE 8\n- 结论：Monitor\n- 目标用户：r/NoCode 中反复表达类似痛点的用户\n- 痛点摘要：Warning: Replit's autoscale has no spend cap by default.\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 4. 为r/Entrepreneur 中反复表达类似痛点的用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Reddit r/Entrepreneur](https://www.reddit.com/r/Entrepreneur/comments/1t839ve/investor_or_sponsor_looking_for_funding_for_game/)\n- 原标题：Investor or sponsor? Looking for funding for game prizes - which fits?\n- 总分：66 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 18 / JTBD 12 / OPC 21 / RICE 15\n- 结论：Monitor\n- 目标用户：r/Entrepreneur 中反复表达类似痛点的用户\n- 痛点摘要：Investor or sponsor? Looking for funding for game prizes - which fits? Building a project with web games and tournaments. Players compete, win credits, spend...\n- 命中规则：missing, looking for\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 5. 为r/ProductManagement 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/ProductManagement](https://www.reddit.com/r/ProductManagement/comments/1t8uwrf/where_does_product_ops_end_and_productengineering/)\n- 原标题：Where does Product Ops end and Product/Engineering workflow design begin?\n- 总分：65 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 30 / RICE 10\n- 结论：Monitor\n- 目标用户：r/ProductManagement 中反复表达类似痛点的用户\n- 痛点摘要：Where does Product Ops end and Product/Engineering workflow design begin?\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 6. 为r/startups 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/startups](https://www.reddit.com/r/startups/comments/1tcrfvj/growing_from_the_perspective_of_a_nontechnical/)\n- 原标题：Growing, from the perspective of a non-technical person (I will not promote)\n- 总分：64 / 100\n- 分类：销售/线索转化\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 30 / RICE 9\n- 结论：Monitor\n- 目标用户：r/startups 中反复表达类似痛点的用户\n- 痛点摘要：Growing, from the perspective of a non-technical person (I will not promote) I thought I'd share my perspective as a non-technical person, since there's a lo...\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 7. 为r/Entrepreneur 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。\n\n- 来源：[Reddit r/Entrepreneur](https://www.reddit.com/r/Entrepreneur/comments/1tc4p95/i_literally_tried_expensify_ramp_brex_for_my/)\n- 原标题：I literally tried Expensify, Ramp &amp; Brex for my travel expense management - My thoughts.\n- 总分：63 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 11 / JTBD 15 / OPC 27 / RICE 10\n- 结论：Monitor\n- 目标用户：r/Entrepreneur 中反复表达类似痛点的用户\n- 痛点摘要：I literally tried Expensify, Ramp &amp; Brex for my travel expense management - My thoughts.\n- 命中规则：annoying\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 8. 为r/Entrepreneur 中反复表达类似痛点的用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Reddit r/Entrepreneur](https://www.reddit.com/r/Entrepreneur/comments/1t1bhxf/my_cofounder_uses_clay_and_ai_agents_for_outreach/)\n- 原标题：My co-founder uses Clay and AI agents for outreach. I send Instagram DMs manually. Mine worked better.\n- 总分：60 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 14\n- 结论：Monitor\n- 目标用户：r/Entrepreneur 中反复表达类似痛点的用户\n- 痛点摘要：My co-founder uses Clay and AI agents for outreach.\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 9. 为r/NoCode 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。\n\n- 来源：[Reddit r/NoCode](https://www.reddit.com/r/nocode/comments/1tfyb77/not_as_fast_as_i_wouldve_thought_but_slowly_but/)\n- 原标题：Not as fast as I would've thought but slowly but surely\n- 总分：60 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 15 / OPC 21 / RICE 8\n- 结论：Monitor\n- 目标用户：r/NoCode 中反复表达类似痛点的用户\n- 痛点摘要：Not as fast as I would've thought but slowly but surely After 10 months I finally was able to launch my SaaS.\n- 命中规则：slow\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 10. 为r/SaaS 中反复表达类似痛点的用户构建一个聚焦该痛点的微型 SaaS。\n\n- 来源：[Reddit r/SaaS](https://www.reddit.com/r/SaaS/comments/1tfq5hi/top_15_most_trusted_custom_mobile_app_development/)\n- 原标题：Top 15 Most Trusted Custom Mobile App Development Companies in the USA for 2026\n- 总分：59 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 11 / JTBD 9 / OPC 29 / RICE 10\n- 结论：Monitor\n- 目标用户：r/SaaS 中反复表达类似痛点的用户\n- 痛点摘要：Top 15 Most Trusted Custom Mobile App Development Companies in the USA for 2026 As businesses continue investing in digital products, the demand for reliable...\n- 命中规则：looking for\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n"
+  "markdown_report": "# 蓝海需求扫描日报 - 2026-05-19 13:42:57\n\n## 概览\n\n- 原始数据：100 条\n- 去重后：98 条\n- 候选痛点：51 条\n- Build Now：0 条\n- Monitor：2 条\n\n## Top 机会\n\n### 1. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://flowdash.com/)\n- 原标题：Show HN: Flowdash – Build internal tools for your team’s manual workflows\n- 总分：55 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：1\n- 评分：ERRC 16 / JTBD 9 / OPC 24 / RICE 6\n- 结论：Monitor\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Show HN: Flowdash – Build internal tools for your team’s manual workflows\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 2. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8)\n- 原标题：Replacing manual marketing workflows with autonomous AI agents\n- 总分：55 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：1\n- 评分：ERRC 16 / JTBD 9 / OPC 24 / RICE 6\n- 结论：Monitor\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Replacing manual marketing workflows with autonomous AI agents\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 3. 为需要降低人工流程成本的小团队或 B2B 用户提供一个定价更友好的垂直轻量版。\n\n- 来源：[Hacker News](https://www.reuters.com/business/they-tried-made-usa-it-was-too-expensive-their-customers-2025-07-02/)\n- 原标题：They tried Made in the USA – it was too expensive for their customers\n- 总分：54 / 100\n- 分类：定价/商业模式\n- 7 天重复信号：1\n- 评分：ERRC 11 / JTBD 14 / OPC 15 / RICE 14\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：They tried Made in the USA – it was too expensive for their customers\n- 命中规则：too expensive\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 4. 为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Hacker News](http://programmers.stackexchange.com/questions/208677/how-to-handle-divide-by-zero-in-a-language-that-doesnt-support-exceptions)\n- 原标题：How to handle division by zero in a language that doesn't support exceptions?\n- 总分：53 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：1\n- 评分：ERRC 15 / JTBD 9 / OPC 15 / RICE 14\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：How to handle division by zero in a language that doesn't support exceptions?\n- 命中规则：doesn't support\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 5. 为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Hacker News](https://groups.google.com/a/dartlang.org/forum/#!topic/misc/0pv-Uaq8FGI)\n- 原标题：Google's Dart doesn't support deserialising JSON (or anything) into Dart Types\n- 总分：53 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：1\n- 评分：ERRC 15 / JTBD 9 / OPC 15 / RICE 14\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Google's Dart doesn't support deserialising JSON (or anything) into Dart Types\n- 命中规则：doesn't support\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 6. 为有明确工具替代需求的利基用户提供一个更轻量、低成本的替代工具。\n\n- 来源：[Hacker News](https://github.com/suitenumerique/docs)\n- 原标题：Docs – Open source alternative to Notion or Outline\n- 总分：52 / 100\n- 分类：客服/成功/留存\n- 7 天重复信号：1\n- 评分：ERRC 15 / JTBD 9 / OPC 12 / RICE 16\n- 结论：Discard\n- 目标用户：有明确工具替代需求的利基用户\n- 痛点摘要：Docs – Open source alternative to Notion or Outline\n- 命中规则：alternative to\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 7. 为开发者、独立黑客或技术团队构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://news.ycombinator.com/item?id=25126131)\n- 原标题：Show HN: Phiona – Automate manual data workflows, no code required\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：1\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：开发者、独立黑客或技术团队\n- 痛点摘要：Show HN: Phiona – Automate manual data workflows, no code required\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 8. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://news.ycombinator.com/item?id=47459627)\n- 原标题：Show HN: The Cost of Manual Workflows\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：1\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Show HN: The Cost of Manual Workflows\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 9. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://news.ycombinator.com/item?id=46884442)\n- 原标题：A manual workflow to fix the \"muffled\" audio of AI music models\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：1\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：A manual workflow to fix the \"muffled\" audio of AI music models\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 10. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://or-levi.medium.com/the-cobblers-children-have-no-co-pilot-why-vcs-are-losing-the-ai-operational-race-6d6c3baafcc6)\n- 原标题：Why do VCs fund AI-native companies but still run on manual workflows?\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：1\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Why do VCs fund AI-native companies but still run on manual workflows?\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n## 抓取错误\n\n- Reddit `r/SaaS` 抓取失败：HTTP Error 403: Blocked\n- Reddit `r/Entrepreneur` 抓取失败：HTTP Error 403: Blocked\n- Reddit `r/indiehackers` 抓取失败：HTTP Error 403: Blocked\n- Reddit `r/smallbusiness` 抓取失败：HTTP Error 403: Blocked\n- Reddit `r/startups` 抓取失败：HTTP Error 403: Blocked\n- Reddit `r/ProductManagement` 抓取失败：HTTP Error 429: Too Many Requests\n- Reddit `r/NoCode` 抓取失败：HTTP Error 403: Blocked\n- Reddit `r/freelance` 抓取失败：HTTP Error 429: Too Many Requests\n"
 }
