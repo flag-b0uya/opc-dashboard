@@ -56,6 +56,13 @@ def build_quality_notices(snapshot: Dict) -> List[Dict]:
 
     errors = list(summary.get("errors") or [])
     error_count = int(source_health.get("error_count") or len(errors))
+    cache_fallback_count = int(source_health.get("cache_fallback_count") or 0)
+    if cache_fallback_count:
+        notices.append({
+            "level": "info",
+            "title": "部分数据沿用缓存",
+            "body": f"{cache_fallback_count} 个数据源本次未完全成功，已使用最近可用数据补齐。机会排序可用，但需要关注来源新鲜度。",
+        })
     if error_count:
         notices.append({
             "level": "warning",

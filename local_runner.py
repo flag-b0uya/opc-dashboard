@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import json
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Union
@@ -11,14 +12,26 @@ from typing import Any, Dict, Iterable, List, Optional, Union
 from demand_engine import (
     build_decision_summary,
     build_opportunity_clusters,
+    dedupe_items,
+    fetch_app_store_reviews,
+    fetch_hn_items,
+    fetch_reddit_items,
+    filter_candidates,
     format_markdown_report,
     get_history_summary,
+    get_repeat_counts,
     ideas_to_dicts,
-    run_demand_scan,
     save_scan_to_history,
+    score_candidate,
 )
 from codex_analysis import CodexAnalysisError, analyze_clusters_with_codex
 from snapshot_exporter import build_dashboard_snapshot, write_dashboard_snapshot
+from source_reliability import (
+    DEFAULT_SOURCE_CACHE_PATH,
+    SourceFetchResult,
+    SourceReliabilityReport,
+    run_source_with_cache,
+)
 
 
 DEFAULT_CONFIG_PATH = Path("dashboard_config.json")
@@ -93,6 +106,7 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser.add_argument("--history-max-records", type=int)
     parser.add_argument("--output")
     parser.add_argument("--analysis-provider", choices=["heuristic", "codex"], default=None)
+    parser.add_argument("--source-cache", help="Local last-good source cache path.")
     return parser.parse_args(argv)
 
 
@@ -132,21 +146,101 @@ def resolve_scan_options(args: argparse.Namespace) -> Dict[str, Any]:
         or int(config.get("history_max_records", DEFAULT_HISTORY_MAX_RECORDS)),
         "output": args.output or config.get("output") or DEFAULT_OUTPUT_PATH,
         "analysis_provider": args.analysis_provider or config.get("analysis_provider") or "heuristic",
+        "source_cache_path": args.source_cache or config.get("source_cache_path") or str(DEFAULT_SOURCE_CACHE_PATH),
     }
+
+
+def _fetch_result(fetch_output) -> SourceFetchResult:
+    items, errors = fetch_output
+    return SourceFetchResult(items=list(items), errors=list(errors))
+
+
+def fetch_items_with_reliability(options: Dict[str, Any]):
+    cache_path = Path(options["source_cache_path"])
+    statuses = []
+    all_items = []
+
+    hn_items, hn_status = run_source_with_cache(
+        cache_path,
+        source_key="hacker_news",
+        source_label="Hacker News",
+        enabled=bool(options["hn_queries"]),
+        fetcher=lambda: _fetch_result(fetch_hn_items(options["hn_queries"], options["limit_per_source"])),
+    )
+    all_items.extend(hn_items)
+    statuses.append(hn_status)
+
+    reddit_items, reddit_status = run_source_with_cache(
+        cache_path,
+        source_key="reddit",
+        source_label="Reddit",
+        enabled=bool(options["subreddits"]),
+        fetcher=lambda: _fetch_result(
+            fetch_reddit_items(options["subreddits"], options["reddit_query"], options["limit_per_source"])
+        ),
+    )
+    all_items.extend(reddit_items)
+    statuses.append(reddit_status)
+
+    app_items, app_status = run_source_with_cache(
+        cache_path,
+        source_key="app_store",
+        source_label="App Store",
+        enabled=bool(options["app_ids"]),
+        fetcher=lambda: _fetch_result(
+            fetch_app_store_reviews(
+                options["app_ids"],
+                options["app_store_country"],
+                options["limit_per_source"],
+            )
+        ),
+    )
+    all_items.extend(app_items)
+    statuses.append(app_status)
+
+    return all_items, SourceReliabilityReport(statuses)
+
+
+def score_items(all_items):
+    unique_items = dedupe_items(all_items)
+    candidates = filter_candidates(unique_items)
+    scored = [score_candidate(item, rules) for item, rules in candidates]
+    repeat_counts = get_repeat_counts(scored, days=7)
+    for idea in scored:
+        idea.repeat_7d = repeat_counts.get(idea.signal_key, 1)
+    scored.sort(key=lambda idea: idea.total_score, reverse=True)
+    return unique_items, candidates, scored
 
 
 def main(argv: Optional[List[str]] = None) -> int:
     args = parse_args(argv)
     options = resolve_scan_options(args)
 
-    ideas, summary = run_demand_scan(
-        hn_queries=options["hn_queries"],
-        subreddits=options["subreddits"],
-        reddit_query=options["reddit_query"],
-        app_ids=options["app_ids"],
-        app_store_country=options["app_store_country"],
-        limit_per_source=options["limit_per_source"],
+    all_items, reliability_report = fetch_items_with_reliability(options)
+    unique_items, candidates, ideas = score_items(all_items)
+    summary = {
+        "raw_count": len(all_items),
+        "unique_count": len(unique_items),
+        "candidate_count": len(candidates),
+        "build_now_count": sum(1 for idea in ideas if idea.verdict == "Build Now"),
+        "monitor_count": sum(1 for idea in ideas if idea.verdict == "Monitor"),
+        "discard_count": sum(1 for idea in ideas if idea.verdict == "Discard"),
+        "errors": [],
+        "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    source_health = reliability_report.to_source_health(
+        raw_count=summary["raw_count"],
+        unique_count=summary["unique_count"],
+        candidate_count=summary["candidate_count"],
     )
+
+    if not source_health["publishable"]:
+        print("Snapshot blocked: source coverage is not publishable.")
+        print(f"Coverage: {source_health.get('coverage_status')}")
+        for error in source_health.get("errors", []):
+            print(f"  {error}")
+        return 2
+
     saved_count = save_scan_to_history(ideas, summary, max_records=options["history_max_records"])
     summary["saved_count"] = saved_count
 
@@ -176,6 +270,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         markdown_report=report,
         opportunity_clusters=opportunity_clusters,
         decision_summary=decision_summary,
+        source_health=source_health,
         analysis_metadata=analysis_metadata,
     )
     output_path = Path(options["output"])

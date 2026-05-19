@@ -40,6 +40,25 @@ class DashboardPresenterTest(unittest.TestCase):
 
         self.assertEqual([notice["title"] for notice in notices], ["Codex 深度分析已完成"])
 
+    def test_quality_notices_surface_source_cache_fallback(self):
+        notices = build_quality_notices({
+            "summary": {"candidate_count": 5, "errors": []},
+            "source_health": {
+                "coverage_status": "degraded",
+                "error_count": 1,
+                "cache_fallback_count": 1,
+                "sources": [
+                    {"source": "Hacker News", "status": "ok", "count": 3},
+                    {"source": "App Store", "status": "fallback", "count": 2, "used_cache": True},
+                ],
+            },
+            "analysis_metadata": {"analysis_provider": "codex", "analysis_status": "ok"},
+            "opportunity_clusters": [],
+        })
+
+        titles = [notice["title"] for notice in notices]
+        self.assertIn("部分数据沿用缓存", titles)
+
 
 if __name__ == "__main__":
     unittest.main()

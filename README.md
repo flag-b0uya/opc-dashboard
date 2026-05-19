@@ -19,7 +19,7 @@ python3 local_runner.py --analysis-provider codex
 
 该模式会在规则聚类后调用当前环境里的 `codex exec`，把需求簇重写成更像研究员分析的机会判断。如果 Codex CLI 不可用，会回退到规则分析，并在快照的 `analysis_metadata` 和页面顶部显示 fallback 状态。
 
-3. 检查 `data/dashboard_snapshot.json`。
+3. 检查 `data/dashboard_snapshot.json`。Runner 会维护本地 `data/source_cache.json` 作为 last-good 数据源缓存；该文件用于下一次采集降级时补齐数据，不需要提交。
 4. 提交并同步到 GitHub：
 
 ```bash
@@ -54,8 +54,21 @@ python3 local_runner.py --hn-query "manual workflow" --subreddit SaaS --limit-pe
 - `limit_per_source`: 每个来源抓取数量。
 - `history_max_records`: 本地历史最多保留记录数，影响 7 天重复信号统计，默认 10000。
 - `output`: 快照输出路径，默认 `data/dashboard_snapshot.json`。
+- `source_cache_path`: 本地数据源缓存路径，默认 `data/source_cache.json`。当某个源临时失败但缓存仍新鲜时，runner 会使用最近可用数据并把 `source_health.coverage_status` 标记为 `degraded`。
 
 默认样例按轻量雷达版配置：10 个 HN 关键词、0 个 Reddit 社区、10 个 App Store app、每源 25 条。Reddit 作为 opt-in 来源保留，避免公开接口限流污染每日看板。理论原始量约数百条/天，实际数量会受来源返回量、去重和筛选影响。
+
+## 数据源可靠性
+
+`local_runner.py` 会为每类数据源记录独立状态：
+
+- `ok`: 本次采集成功并刷新缓存。
+- `partial`: 本次返回了可用数据，但部分 query 或 target 失败；快照可发布，覆盖率标为降级。
+- `fallback`: 本次采集失败，但使用了 72 小时内的 last-good 缓存；快照可发布，页面会提示部分数据沿用缓存。
+- `failed`: 没有当前数据，也没有新鲜缓存。
+- `disabled`: 配置为空，跳过该源。
+
+如果没有任何可用源或没有候选信号，runner 会阻止写入新快照，避免用空数据覆盖线上看板。
 
 ## 数据源检查
 

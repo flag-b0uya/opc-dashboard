@@ -7,6 +7,7 @@ from local_runner import (
     DEFAULT_RUNNER_APP_IDS,
     DEFAULT_RUNNER_HN_QUERIES,
     DEFAULT_RUNNER_SUBREDDITS,
+    DEFAULT_SOURCE_CACHE_PATH,
     parse_args,
     resolve_scan_options,
 )
@@ -28,6 +29,7 @@ class LocalRunnerConfigTest(unittest.TestCase):
         self.assertEqual(options["history_max_records"], 10000)
         self.assertEqual(options["output"], "data/dashboard_snapshot.json")
         self.assertEqual(options["analysis_provider"], "heuristic")
+        self.assertEqual(options["source_cache_path"], str(DEFAULT_SOURCE_CACHE_PATH))
 
     def test_config_file_is_used_and_cli_overrides_it(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -44,6 +46,7 @@ class LocalRunnerConfigTest(unittest.TestCase):
                         "history_max_records": 12000,
                         "output": "tmp/snapshot.json",
                         "analysis_provider": "codex",
+                        "source_cache_path": "tmp/source-cache.json",
                     }
                 ),
                 encoding="utf-8",
@@ -57,6 +60,8 @@ class LocalRunnerConfigTest(unittest.TestCase):
                     "override query",
                     "--limit-per-source",
                     "3",
+                    "--source-cache",
+                    "override/cache.json",
                 ]
             )
             options = resolve_scan_options(args)
@@ -70,6 +75,7 @@ class LocalRunnerConfigTest(unittest.TestCase):
         self.assertEqual(options["history_max_records"], 12000)
         self.assertEqual(options["output"], "tmp/snapshot.json")
         self.assertEqual(options["analysis_provider"], "codex")
+        self.assertEqual(options["source_cache_path"], "override/cache.json")
 
     def test_empty_lists_in_config_disable_sources(self):
         with tempfile.TemporaryDirectory() as tmpdir:

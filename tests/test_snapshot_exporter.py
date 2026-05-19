@@ -137,6 +137,30 @@ class SnapshotExporterTest(unittest.TestCase):
         self.assertEqual(snapshot["analysis_metadata"]["analysis_provider"], "codex")
         self.assertEqual(snapshot["analysis_metadata"]["analysis_status"], "ok")
 
+    def test_snapshot_preserves_source_reliability_metadata(self):
+        snapshot = build_dashboard_snapshot(
+            ideas=[],
+            summary={"generated_at": "2026-05-19 10:00:00"},
+            history_summary={},
+            markdown_report="",
+            source_health={
+                "status": "degraded",
+                "coverage_status": "degraded",
+                "publishable": True,
+                "usable_source_count": 2,
+                "cache_fallback_count": 1,
+                "sources": [
+                    {"source": "Hacker News", "status": "ok", "count": 4},
+                    {"source": "App Store", "status": "fallback", "count": 3, "used_cache": True},
+                ],
+            },
+        )
+
+        self.assertTrue(snapshot["source_health"]["publishable"])
+        self.assertEqual(snapshot["source_health"]["coverage_status"], "degraded")
+        self.assertEqual(snapshot["source_health"]["cache_fallback_count"], 1)
+        self.assertEqual(snapshot["source_health"]["sources"][1]["status"], "fallback")
+
     def test_load_dashboard_snapshot_handles_missing_and_invalid_files(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             missing_path = Path(tmpdir) / "missing.json"

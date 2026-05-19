@@ -28,5 +28,6 @@
   "app_store_country": "us",
   "limit_per_source": 25,
   "history_max_records": 10000,
-  "output": "data/dashboard_snapshot.json"
+  "output": "data/dashboard_snapshot.json",
+  "source_cache_path": "data/source_cache.json"
 }
