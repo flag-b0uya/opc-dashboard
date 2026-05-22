@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import html
+from typing import Any, Dict, Iterable, List
 
 import streamlit as st
 
@@ -17,11 +18,49 @@ from dashboard_presenter import (
 from snapshot_exporter import load_dashboard_snapshot
 
 
-st.set_page_config(page_title="蓝海机会雷达", page_icon="🌊", layout="wide")
+st.set_page_config(page_title="OPC Pain Intelligence", layout="wide")
 
 
-def esc(value) -> str:
+def esc(value: Any) -> str:
     return html.escape("" if value is None else str(value))
+
+
+def as_int(value: Any, default: int = 0) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def as_float(value: Any, default: float = 0.0) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def percent(part: int, total: int) -> int:
+    return max(0, min(100, round(part / max(total, 1) * 100)))
+
+
+def verdict_label(verdict: str) -> str:
+    labels = {
+        "Build Now": "立即验证",
+        "Validate Manually": "人工验证",
+        "Monitor": "继续观察",
+        "Discard": "暂不投入",
+    }
+    return labels.get(verdict or "", verdict or "未判定")
+
+
+def verdict_class(verdict: str) -> str:
+    if verdict in {"Build Now", "Validate Manually"}:
+        return "is-build"
+    if verdict == "Monitor":
+        return "is-monitor"
+    if verdict == "Discard":
+        return "is-discard"
+    return "is-neutral"
 
 
 def render_styles() -> None:
@@ -29,407 +68,530 @@ def render_styles() -> None:
         """
         <style>
         :root {
-            --opc-ink: #101828;
-            --opc-body: #475467;
-            --opc-muted: #667085;
-            --opc-faint: #98a2b3;
-            --opc-border: #dfe4ea;
-            --opc-border-soft: #eef0f3;
-            --opc-surface: #ffffff;
-            --opc-surface-soft: #f8fafc;
-            --opc-surface-glass: rgba(255, 255, 255, 0.84);
-            --opc-canvas: #f4f7f8;
-            --opc-rail: #d8ebe7;
-            --opc-green: #0f766e;
-            --opc-blue: #2563eb;
-            --opc-amber: #b45309;
-            --opc-red: #b42318;
-            --opc-coral: #e11d48;
-            --opc-shadow: 0 18px 55px rgba(15, 23, 42, 0.08);
+            --ink: #101828;
+            --body: #475467;
+            --muted: #667085;
+            --faint: #8a96a8;
+            --line: #dfe4ea;
+            --line-soft: #edf1f5;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --canvas: #f3f7f8;
+            --green: #0f766e;
+            --blue: #2563eb;
+            --amber: #b45309;
+            --red: #b42318;
+            --rose: #be123c;
+            --violet: #5b21b6;
+            --shadow: 0 18px 44px rgba(16, 24, 40, 0.08);
+            --shadow-soft: 0 10px 28px rgba(16, 24, 40, 0.055);
         }
-        html, body, [data-testid="stAppViewContainer"] {
+        html,
+        body,
+        [data-testid="stAppViewContainer"] {
+            color: var(--body);
             font-family: "Source Sans 3", "Noto Sans SC", "PingFang SC", sans-serif;
-            color: var(--opc-body);
             background:
-                linear-gradient(90deg, rgba(15, 118, 110, 0.055) 1px, transparent 1px),
-                linear-gradient(180deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
-                linear-gradient(180deg, #fbfcfd 0%, var(--opc-canvas) 44%, #ffffff 100%);
-            background-size: 44px 44px, 44px 44px, auto;
+                linear-gradient(90deg, rgba(16,24,40,0.035) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(15,118,110,0.042) 1px, transparent 1px),
+                linear-gradient(180deg, #fbfcfd 0%, var(--canvas) 48%, #ffffff 100%);
+            background-size: 48px 48px, 48px 48px, auto;
         }
         [data-testid="stHeader"] {
             background: transparent;
         }
         [data-testid="stToolbar"] {
-            right: 1.25rem;
+            right: 1rem;
         }
         .block-container {
-            padding-top: 1.7rem;
+            max-width: 1280px;
+            padding-top: 1.4rem;
             padding-bottom: 4rem;
-            max-width: 1220px;
         }
-        .dashboard-shell {
-            border: 1px solid rgba(15, 118, 110, 0.16);
-            border-radius: 8px;
-            background:
-                linear-gradient(135deg, rgba(255,255,255,0.94), rgba(248,250,252,0.86)),
-                repeating-linear-gradient(90deg, transparent 0 68px, rgba(15,118,110,0.035) 68px 69px);
-            box-shadow: var(--opc-shadow);
-            padding: 22px;
-            margin-bottom: 18px;
+        h1, h2, h3, h4 {
+            color: var(--ink);
+            letter-spacing: 0;
+        }
+        button,
+        [role="button"],
+        .stDownloadButton button {
+            min-height: 44px;
+        }
+        .hf-stage {
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(16, 24, 40, 0.1);
+            border-radius: 8px;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.96), rgba(248,250,252,0.88)),
+                repeating-linear-gradient(135deg, rgba(15,118,110,0.045) 0 1px, transparent 1px 18px);
+            box-shadow: var(--shadow);
+            padding: 22px;
+            margin-bottom: 18px;
         }
-        .dashboard-shell:before {
+        .hf-stage:before {
             content: "";
             position: absolute;
             inset: 0;
-            border-top: 3px solid var(--opc-green);
+            border-top: 3px solid var(--green);
             pointer-events: none;
         }
-        .dashboard-shell:after {
+        .hf-stage:after {
             content: "";
             position: absolute;
             left: 22px;
             right: 22px;
             bottom: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--opc-green), var(--opc-blue), var(--opc-amber), var(--opc-coral));
-            opacity: 0.85;
+            background: linear-gradient(90deg, var(--green), var(--blue), var(--amber), var(--rose));
+            opacity: 0.9;
         }
-        .signal-strip {
+        .control-top {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+            gap: 22px;
+            align-items: stretch;
+        }
+        .identity {
+            min-height: 245px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 12px 0 0;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 18px;
         }
-        .signal-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            border: 1px solid rgba(15, 118, 110, 0.18);
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.72);
-            color: var(--opc-body);
+        .kicker {
+            color: var(--green);
             font-size: 13px;
-            padding: 7px 11px;
-            min-height: 34px;
-        }
-        .signal-pill b {
-            color: var(--opc-ink);
-            font-weight: 750;
-        }
-        .signal-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: var(--opc-green);
-            box-shadow: 0 0 0 4px rgba(15,118,110,0.12);
-        }
-        .hero {
-            padding: 4px 0 12px;
-        }
-        .eyebrow {
-            color: var(--opc-green);
-            font-size: 13px;
-            font-weight: 700;
+            font-weight: 760;
+            text-transform: uppercase;
             letter-spacing: 0;
             margin-bottom: 12px;
         }
-        .hero h1 {
-            color: var(--opc-ink);
-            font-size: 54px;
-            line-height: 1.06;
-            margin: 0 0 14px;
-            max-width: 820px;
-        }
-        .hero p {
-            color: var(--opc-body);
-            font-size: 18px;
-            line-height: 1.65;
+        .identity h1 {
+            font-size: 58px;
+            line-height: 1.02;
             margin: 0;
-            max-width: 780px;
+            max-width: 850px;
+            font-weight: 860;
         }
-        .hero-grid {
-            align-items: stretch;
+        .identity p {
+            max-width: 760px;
+            margin: 14px 0 0;
+            color: var(--body);
+            font-size: 18px;
+            line-height: 1.62;
         }
-        .radar-panel {
-            border: 1px solid rgba(15, 118, 110, 0.18);
+        .status-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .status-pill {
+            display: inline-grid;
+            grid-template-columns: 8px auto;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(15,118,110,0.18);
             border-radius: 8px;
-            background:
-                linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.92)),
-                repeating-linear-gradient(135deg, transparent 0 14px, rgba(15,118,110,0.035) 14px 15px);
-            padding: 20px;
-            min-height: 230px;
-            box-shadow: 0 14px 38px rgba(15, 23, 42, 0.07);
+            background: rgba(255,255,255,0.72);
+            color: var(--body);
+            padding: 8px 10px;
+            min-height: 38px;
+            font-size: 13px;
         }
-        .radar-title {
-            color: var(--opc-ink);
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 12px;
+        .status-pill:before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 0 4px rgba(15,118,110,0.11);
+        }
+        .status-pill b {
+            color: var(--ink);
+            font-weight: 760;
+            font-variant-numeric: tabular-nums;
+        }
+        .scene-panel {
+            border: 1px solid rgba(16,24,40,0.1);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.78);
+            box-shadow: var(--shadow-soft);
+            padding: 18px;
+        }
+        .scene-panel h2 {
+            margin: 0 0 14px;
+            font-size: 18px;
         }
         .radar-row {
             display: grid;
-            grid-template-columns: 92px 1fr 42px;
+            grid-template-columns: 86px minmax(0, 1fr) 44px;
             gap: 10px;
             align-items: center;
-            margin: 12px 0;
-            color: var(--opc-body);
+            padding: 9px 0;
+            color: var(--body);
             font-size: 13px;
         }
-        .bar {
-            height: 10px;
+        .rail {
+            height: 9px;
             border-radius: 999px;
-            background: #e6edf2;
+            background: #e8eef2;
             overflow: hidden;
-            position: relative;
         }
-        .bar span {
+        .rail span {
             display: block;
-            height: 10px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, var(--opc-green), #14b8a6);
+            height: 100%;
+            width: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--green), #14b8a6);
         }
-        .bar .orange {
-            background: linear-gradient(90deg, #f97316, var(--opc-amber));
+        .rail span.blue {
+            background: linear-gradient(90deg, var(--blue), #38bdf8);
         }
-        .bar .blue {
-            background: linear-gradient(90deg, var(--opc-blue), #38bdf8);
+        .rail span.amber {
+            background: linear-gradient(90deg, #f59e0b, var(--amber));
         }
-        .metric-card {
-            border: 1px solid rgba(16, 24, 40, 0.09);
+        .rail span.rose {
+            background: linear-gradient(90deg, var(--rose), var(--violet));
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin: 18px 0;
+        }
+        .metric-tile {
+            border: 1px solid rgba(16,24,40,0.09);
             border-radius: 8px;
-            padding: 18px;
-            background: var(--opc-surface-glass);
+            background: rgba(255,255,255,0.84);
+            box-shadow: var(--shadow-soft);
+            padding: 16px;
             min-height: 112px;
-            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.055);
         }
-        .metric-label {
-            color: var(--opc-muted);
+        .metric-tile span {
+            display: block;
+            color: var(--muted);
             font-size: 13px;
-            margin-bottom: 8px;
+            margin-bottom: 9px;
         }
-        .metric-value {
-            color: var(--opc-ink);
-            font-size: 31px;
-            font-weight: 750;
-            line-height: 1.1;
+        .metric-tile strong {
+            display: block;
+            color: var(--ink);
+            font-size: 34px;
+            line-height: 1;
+            font-weight: 840;
+            font-variant-numeric: tabular-nums;
         }
-        .metric-note {
-            color: var(--opc-faint);
+        .metric-tile em {
+            display: block;
+            color: var(--faint);
             font-size: 12px;
-            margin-top: 8px;
+            font-style: normal;
+            margin-top: 9px;
         }
-        .summary-box {
-            border: 1px solid rgba(15, 118, 110, 0.16);
+        .section-title {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 14px;
+            border-bottom: 1px solid var(--line);
+            padding: 4px 0 11px;
+            margin: 14px 0 16px;
+        }
+        .section-title h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+        .section-title span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+        .brief {
+            border: 1px solid rgba(16,24,40,0.1);
             border-radius: 8px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.88));
-            padding: 20px;
-            margin: 8px 0 20px;
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.045);
+            background: rgba(255,255,255,0.82);
+            box-shadow: var(--shadow-soft);
+            padding: 18px;
+            margin-bottom: 16px;
         }
-        .summary-box h2 {
-            color: var(--opc-ink);
+        .brief h2 {
+            margin: 0 0 8px;
             font-size: 24px;
-            line-height: 1.35;
-            margin: 0 0 10px;
+            line-height: 1.25;
         }
-        .summary-box p {
-            color: var(--opc-body);
-            line-height: 1.7;
+        .brief p {
             margin: 7px 0;
+            color: var(--body);
+            font-size: 16px;
+            line-height: 1.65;
         }
-        .idea-card {
-            border: 1px solid var(--opc-border);
-            border-radius: 8px;
-            padding: 18px 18px 14px;
-            background: var(--opc-surface-glass);
-            margin-bottom: 14px;
-        }
-        .idea-card h3 {
-            color: var(--opc-ink);
-            font-size: 20px;
-            line-height: 1.35;
-            margin: 12px 0 9px;
-        }
-        .idea-card p {
-            color: var(--opc-body);
-            line-height: 1.6;
-            margin: 7px 0;
-        }
-        .cluster-card {
-            border: 1px solid rgba(16, 24, 40, 0.10);
-            border-radius: 8px;
-            padding: 22px;
-            background:
-                linear-gradient(180deg, rgba(255,255,255,0.97), rgba(252,253,254,0.96)),
-                linear-gradient(90deg, rgba(15,118,110,0.09), transparent 28%);
-            margin-bottom: 20px;
-            box-shadow: var(--opc-shadow);
+        .memo {
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(16,24,40,0.11);
+            border-radius: 8px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,252,253,0.96)),
+                linear-gradient(90deg, rgba(15,118,110,0.08), transparent 34%);
+            box-shadow: var(--shadow);
+            padding: 22px;
+            margin-bottom: 18px;
         }
-        .cluster-card:before {
+        .memo:before {
             content: "";
             position: absolute;
-            top: 0;
             left: 0;
+            top: 0;
             bottom: 0;
             width: 4px;
-            background: linear-gradient(180deg, var(--opc-green), var(--opc-blue));
+            background: linear-gradient(180deg, var(--green), var(--blue));
         }
-        .section-band {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin: 22px 0 14px;
-            padding: 12px 14px;
-            border: 1px solid rgba(15,118,110,0.14);
-            border-radius: 8px;
-            background: rgba(255,255,255,0.74);
+        .memo-head {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 14px;
+            align-items: start;
         }
-        .section-band h2 {
-            color: var(--opc-ink);
-            font-size: 20px;
-            margin: 0;
+        .memo h3 {
+            margin: 8px 0 0;
+            color: var(--ink);
+            font-size: 25px;
+            line-height: 1.28;
         }
-        .section-band span {
-            color: var(--opc-muted);
-            font-size: 13px;
+        .memo-score {
+            min-width: 92px;
+            text-align: right;
+            color: var(--ink);
+            font-weight: 840;
+            font-size: 36px;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
         }
-        .cluster-kicker {
+        .memo-score span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 650;
+            margin-top: 5px;
+        }
+        .tag-row {
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
             gap: 6px;
-            margin-bottom: 6px;
         }
-        .cluster-card h3 {
-            color: var(--opc-ink);
-            font-size: 24px;
-            line-height: 1.32;
-            margin: 8px 0 12px;
-        }
-        .cluster-card p {
-            color: var(--opc-body);
-            line-height: 1.68;
-            margin: 8px 0;
-            font-size: 16px;
-        }
-        .cluster-meta {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(96px, 1fr));
-            gap: 10px;
-            margin: 14px 0;
-        }
-        .cluster-meta div {
-            border: 1px solid var(--opc-border-soft);
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            border: 1px solid #d0d5dd;
             border-radius: 8px;
-            padding: 10px;
-            background: rgba(248,250,252,0.82);
+            background: rgba(255,255,255,0.86);
+            color: #344054;
+            font-size: 12px;
+            font-weight: 650;
+            padding: 4px 9px;
         }
-        .cluster-meta span {
+        .tag.is-build {
+            border-color: #99f6e4;
+            background: #ecfdf5;
+            color: var(--green);
+        }
+        .tag.is-monitor {
+            border-color: #fed7aa;
+            background: #fff7ed;
+            color: #c2410c;
+        }
+        .tag.is-discard {
+            border-color: #fecaca;
+            background: #fef2f2;
+            color: var(--red);
+        }
+        .memo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1px;
+            border: 1px solid var(--line-soft);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 16px 0;
+            background: var(--line-soft);
+        }
+        .memo-stat {
+            background: rgba(248,250,252,0.94);
+            padding: 12px;
+        }
+        .memo-stat span {
             display: block;
-            color: var(--opc-muted);
+            color: var(--muted);
             font-size: 12px;
             margin-bottom: 4px;
         }
-        .cluster-meta strong {
-            color: var(--opc-ink);
-            font-size: 18px;
+        .memo-stat strong {
+            color: var(--ink);
+            font-size: 20px;
+            font-variant-numeric: tabular-nums;
         }
-        .analysis-section {
-            margin: 12px 0;
+        .memo-body {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(260px, 0.62fr);
+            gap: 18px;
+            align-items: start;
         }
-        .analysis-section strong {
-            color: var(--opc-ink);
-        }
-        .anti-list {
-            color: var(--opc-body);
-            line-height: 1.58;
-            margin: 6px 0 10px 18px;
-            padding: 0;
-        }
-        .anti-list li {
-            margin: 4px 0;
-        }
-        .evidence-chain {
-            border: 1px solid rgba(15,118,110,0.13);
-            border-radius: 8px;
-            margin: 14px 0;
-            padding: 12px;
-            background: linear-gradient(180deg, rgba(248,250,252,0.94), rgba(255,255,255,0.88));
-        }
-        .evidence-chain h4 {
-            color: var(--opc-ink);
+        .memo-copy p {
+            color: var(--body);
             font-size: 16px;
+            line-height: 1.68;
+            margin: 10px 0;
+        }
+        .memo-copy strong {
+            color: var(--ink);
+        }
+        .evidence {
+            border-top: 1px solid var(--line-soft);
+            margin-top: 14px;
+            padding-top: 12px;
+        }
+        .evidence h4,
+        .action h4 {
+            color: var(--ink);
+            font-size: 15px;
             margin: 0 0 10px;
         }
         .evidence-row {
             display: grid;
-            grid-template-columns: 64px 180px 1fr;
-            gap: 10px;
+            grid-template-columns: 54px 118px minmax(0, 1fr);
+            gap: 9px;
             align-items: start;
-            padding: 8px 0;
-            color: var(--opc-body);
-            font-size: 14px;
             border-top: 1px solid #f3f4f6;
+            padding: 8px 0;
+            font-size: 13px;
+            line-height: 1.45;
         }
         .evidence-row:first-of-type {
             border-top: none;
         }
-        .evidence-pass {
-            color: var(--opc-green);
+        .pass {
+            color: var(--green);
+            font-weight: 760;
+        }
+        .miss {
+            color: var(--amber);
+            font-weight: 760;
+        }
+        .ev-label {
+            color: var(--ink);
             font-weight: 700;
         }
-        .evidence-miss {
-            color: var(--opc-amber);
-            font-weight: 700;
-        }
-        .evidence-label {
-            color: var(--opc-ink);
-            font-weight: 650;
-        }
-        .quality-notice {
-            border: 1px solid var(--opc-border);
+        .action {
+            border: 1px solid rgba(15,118,110,0.14);
             border-radius: 8px;
-            padding: 14px 16px;
-            margin: 10px 0;
-            background: rgba(255,255,255,0.82);
+            background: linear-gradient(180deg, rgba(248,250,252,0.98), rgba(255,255,255,0.92));
+            padding: 14px;
         }
-        .quality-notice h3 {
-            color: var(--opc-ink);
-            font-size: 16px;
-            margin: 0 0 4px;
+        .action-band {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1px;
+            border: 1px solid var(--line-soft);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--line-soft);
+            margin-bottom: 12px;
         }
-        .quality-notice p {
-            color: var(--opc-body);
-            margin: 0;
+        .action-cell {
+            background: rgba(255,255,255,0.86);
+            padding: 11px;
+            min-height: 82px;
+        }
+        .action-cell span {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+        .action-cell strong {
+            color: var(--ink);
+            font-size: 18px;
+            font-variant-numeric: tabular-nums;
+        }
+        .action p,
+        .action li {
+            color: var(--body);
+            font-size: 14px;
             line-height: 1.55;
         }
-        .quality-warning {
+        .action ul {
+            margin: 6px 0 0 18px;
+            padding: 0;
+        }
+        .notice {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.84);
+            padding: 14px 15px;
+            margin: 10px 0;
+        }
+        .notice h3 {
+            margin: 0 0 4px;
+            font-size: 16px;
+        }
+        .notice p {
+            margin: 0;
+            color: var(--body);
+            line-height: 1.55;
+        }
+        .notice.warning {
             border-color: #fed7aa;
             background: #fffbeb;
         }
-        .quality-success {
+        .notice.success {
             border-color: #99f6e4;
             background: #ecfdf5;
         }
-        .sample-link {
-            color: var(--opc-body);
-            font-size: 13px;
-            margin: 4px 0;
+        .idea {
+            border: 1px solid rgba(16,24,40,0.1);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.84);
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+        .idea h3 {
+            color: var(--ink);
+            font-size: 18px;
+            line-height: 1.35;
+            margin: 10px 0 8px;
+        }
+        .idea p {
+            color: var(--body);
+            line-height: 1.58;
+            margin: 6px 0;
+        }
+        .quiet {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.78);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .quiet h3 {
+            font-size: 17px;
+            margin: 0 0 7px;
+        }
+        .quiet p {
+            color: var(--body);
+            margin: 0;
+            line-height: 1.58;
         }
         .source-row {
             display: grid;
-            grid-template-columns: minmax(120px, 1fr) 46px;
+            grid-template-columns: minmax(120px, 1fr) 48px;
             gap: 10px;
             align-items: center;
             margin: 10px 0;
         }
-        .source-name {
-            color: #344054;
+        .source-row span {
+            display: block;
+            color: var(--body);
             font-size: 13px;
             margin-bottom: 5px;
         }
@@ -439,139 +601,58 @@ def render_styles() -> None:
             background: #edf2f7;
             overflow: hidden;
         }
-        .source-bar span {
+        .source-bar b {
             display: block;
-            height: 8px;
-            border-radius: 999px;
-            background: var(--opc-green);
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--green), var(--blue));
         }
         .source-count {
-            color: var(--opc-muted);
+            color: var(--muted);
             font-size: 13px;
             text-align: right;
+            font-variant-numeric: tabular-nums;
         }
-        .tag {
-            display: inline-block;
-            border: 1px solid #d0d5dd;
-            border-radius: 999px;
-            padding: 4px 10px;
-            font-size: 12px;
-            color: #344054;
-            margin: 0 6px 6px 0;
-            background: rgba(255,255,255,0.82);
-        }
-        .tag-strong {
-            border-color: #99f6e4;
-            background: #ecfdf5;
-            color: var(--opc-green);
-        }
-        .tag-warm {
-            border-color: #fed7aa;
-            background: #fff7ed;
-            color: #c2410c;
-        }
-        .quiet-box {
-            border: 1px solid var(--opc-border);
-            border-radius: 8px;
-            padding: 18px;
-            background: var(--opc-surface);
-            margin-bottom: 16px;
-        }
-        .quiet-box h3 {
-            font-size: 17px;
-            margin: 0 0 8px;
-        }
-        .quiet-box p {
-            color: var(--opc-body);
-            margin: 0;
-            line-height: 1.6;
-        }
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px;
-            margin: 14px 0;
-        }
-        .action-box {
-            border: 1px solid rgba(15,118,110,0.15);
-            border-radius: 8px;
-            background: linear-gradient(180deg, rgba(248,250,252,0.95), rgba(255,255,255,0.9));
-            padding: 12px;
-            min-height: 96px;
-        }
-        .action-box span {
-            display: block;
-            color: var(--opc-muted);
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-        .action-box strong {
-            color: var(--opc-ink);
-            font-size: 18px;
-        }
-        .asset-box {
-            border: 1px solid var(--opc-border-soft);
-            border-radius: 8px;
-            padding: 12px;
-            background: #fcfcfd;
-            margin: 10px 0;
-        }
-        .asset-box h4 {
-            color: var(--opc-ink);
-            font-size: 15px;
-            margin: 0 0 6px;
-        }
-        .asset-box p, .asset-box li {
-            color: var(--opc-body);
-            font-size: 14px;
-            line-height: 1.55;
-        }
-        button, [role="button"], .stDownloadButton button {
-            min-height: 44px;
-        }
-        @media (max-width: 760px) {
-            .block-container {
-                padding-top: 1.25rem;
+        @media (max-width: 920px) {
+            .control-top,
+            .memo-body {
+                grid-template-columns: 1fr;
             }
-            .dashboard-shell {
-                padding: 16px;
-            }
-            .section-band {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-            .hero h1 {
-                font-size: 38px;
-            }
-            .hero p {
-                font-size: 16px;
-            }
-            .radar-row {
-                grid-template-columns: 76px 1fr 34px;
-            }
-            .cluster-meta {
+            .metric-grid,
+            .memo-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
-            .action-grid {
-                grid-template-columns: 1fr;
-            }
-            .cluster-card {
-                padding: 16px;
-            }
-            .cluster-card h3 {
-                font-size: 21px;
-            }
-            .evidence-row {
-                grid-template-columns: 1fr;
-                gap: 3px;
+            .identity h1 {
+                font-size: 44px;
             }
         }
-        @media (max-width: 520px) {
-            .cluster-meta {
+        @media (max-width: 620px) {
+            .block-container {
+                padding-top: 1rem;
+            }
+            .hf-stage,
+            .memo {
+                padding: 16px;
+            }
+            .identity h1 {
+                font-size: 36px;
+            }
+            .identity p {
+                font-size: 16px;
+            }
+            .metric-grid,
+            .memo-grid,
+            .action-band,
+            .memo-head,
+            .evidence-row {
                 grid-template-columns: 1fr;
             }
-            .metric-card {
-                min-height: auto;
+            .memo-score {
+                text-align: left;
+            }
+            .section-title {
+                align-items: flex-start;
+                flex-direction: column;
             }
         }
         </style>
@@ -580,85 +661,122 @@ def render_styles() -> None:
     )
 
 
-def render_metric(label: str, value, note: str = "") -> None:
-    st.markdown(
-        f"""
-        <div class="metric-card">
-            <div class="metric-label">{esc(label)}</div>
-            <div class="metric-value">{esc(value)}</div>
-            <div class="metric-note">{esc(note)}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def decision_label(verdict: str) -> str:
-    if verdict == "Build Now":
-        return "立即验证"
-    if verdict == "Monitor":
-        return "继续观察"
-    return "暂不投入"
-
-
-def render_executive_summary(summary: dict, decision_summary: dict, source_stats: dict) -> None:
-    build_now = int(decision_summary.get("build_now_count", 0) or 0)
-    monitor = int(decision_summary.get("monitor_count", 0) or 0)
-    discard = int(decision_summary.get("discard_count", 0) or 0)
-    total_clusters = int(decision_summary.get("total_clusters", 0) or 0)
-    raw_count = int(summary.get("raw_count", 0) or 0)
-    candidate_count = int(summary.get("candidate_count", 0) or 0)
-    top_platform = ""
-    platforms = source_stats.get("platforms", []) if source_stats else []
-    if platforms:
-        top_platform = f"主要来源是 {platforms[0].get('name')}，贡献 {platforms[0].get('percent', 0)}% 候选信号。"
-
-    if build_now:
-        headline = f"今天有 {build_now} 个需求簇值得立即验证"
-        detail = "这些机会同时满足高分、重复信号、明确场景和可执行验证动作。"
-    else:
-        headline = "今天没有足够可信的立即开工机会"
-        detail = "当前信号更适合继续观察：有讨论热度，但证据链还不够完整，或带有明显泛创业/自推噪音。"
-
-    st.markdown(
-        f"""
-        <div class="summary-box">
-            <h2>{esc(headline)}</h2>
-            <p>{esc(detail)}</p>
-            <p>本次扫描 {esc(raw_count)} 条原始信号，筛出 {esc(candidate_count)} 条候选，合并为 {esc(total_clusters)} 个需求簇：
-            {esc(build_now)} 个立即验证，{esc(monitor)} 个继续观察，{esc(discard)} 个暂不投入。{esc(top_platform)}</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def render_signal_strip(summary: dict, analysis_label: str, generated_at: str) -> str:
-    raw_count = int(summary.get("raw_count", 0) or 0)
-    candidate_count = int(summary.get("candidate_count", 0) or 0)
-    saved_count = int(summary.get("saved_count", 0) or 0)
+def status_strip(summary: Dict, analysis_label: str, generated_at: str) -> str:
+    raw_count = as_int(summary.get("raw_count"))
+    candidate_count = as_int(summary.get("candidate_count"))
+    saved_count = as_int(summary.get("saved_count"))
     error_count = len(summary.get("errors", []) or [])
-    candidate_rate = round(candidate_count / max(raw_count, 1) * 100)
-    return f"""
-        <div class="signal-strip">
-            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(candidate_rate)}%</b> 候选率</div>
-            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(saved_count)}</b> 条写入历史</div>
-            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(error_count)}</b> 个来源错误</div>
-            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(analysis_label)}</b> 分析状态</div>
-            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(generated_at)}</b> 快照时间</div>
+    candidate_rate = percent(candidate_count, raw_count)
+    return (
+        '<div class="status-strip">'
+        f'<div class="status-pill"><span><b>{candidate_rate}%</b> 候选率</span></div>'
+        f'<div class="status-pill"><span><b>{saved_count}</b> 写入历史</span></div>'
+        f'<div class="status-pill"><span><b>{error_count}</b> 来源错误</span></div>'
+        f'<div class="status-pill"><span><b>{esc(analysis_label)}</b> 分析状态</span></div>'
+        f'<div class="status-pill"><span><b>{esc(generated_at)}</b> 快照时间</span></div>'
+        "</div>"
+    )
+
+
+def render_radar(summary: Dict, decision_summary: Dict, repeated_count: int) -> None:
+    raw_count = max(as_int(summary.get("raw_count")), 1)
+    candidate_count = as_int(summary.get("candidate_count"))
+    build_count = as_int(decision_summary.get("build_now_count", summary.get("build_now_count")))
+    monitor_count = as_int(decision_summary.get("monitor_count", summary.get("monitor_count")))
+    cluster_count = as_int(decision_summary.get("total_clusters"))
+    rows = [
+        ("候选率", percent(candidate_count, raw_count), "green"),
+        ("立即验证", percent(build_count, max(cluster_count, 1)), "amber"),
+        ("继续观察", percent(monitor_count, max(cluster_count, 1)), "blue"),
+        ("重复信号", min(100, repeated_count * 20), "rose"),
+    ]
+    body = "".join(
+        f"""
+        <div class="radar-row">
+            <span>{esc(label)}</span>
+            <div class="rail"><span class="{css}" style="width:{value}%"></span></div>
+            <span>{value}%</span>
         </div>
         """
+        for label, value, css in rows
+    )
+    st.markdown(
+        f"""
+        <div class="scene-panel">
+            <h2>Signal Composition</h2>
+            {body}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
-def render_quality_notices(notices: list) -> None:
+def render_command_stage(snapshot: Dict, analysis_label: str) -> None:
+    summary = snapshot.get("summary", {})
+    decision_summary = snapshot.get("decision_summary", {})
+    repeated = snapshot.get("repeated_signals_7d", [])
+    generated_at = snapshot.get("generated_at", "未生成")
+    build_now = as_int(decision_summary.get("build_now_count", summary.get("build_now_count")))
+    candidate_count = as_int(summary.get("candidate_count"))
+    cluster_count = as_int(decision_summary.get("total_clusters"))
+
+    if build_now:
+        headline = f"{build_now} 个机会进入验证台"
+        subline = "优先处理证据链完整、付费暗示明确、并且能在 7 天内拿到真实反馈的需求簇。"
+    else:
+        headline = "今天更适合观察与补证据"
+        subline = "当前信号还没有形成足够强的开工证据，重点看缺口、来源质量和下一步验证动作。"
+
+    left, right = st.columns([1.38, 0.62], gap="large")
+    with left:
+        st.markdown(
+            f"""
+            <section class="hf-stage identity">
+                <div>
+                    <div class="kicker">OPC PAIN INTELLIGENCE SYSTEM · PERSONAL COMMAND BOARD</div>
+                    <h1>{esc(headline)}</h1>
+                    <p>{esc(subline)}</p>
+                </div>
+                {status_strip(summary, analysis_label, generated_at)}
+            </section>
+            """,
+            unsafe_allow_html=True,
+        )
+    with right:
+        render_radar(summary, decision_summary, len(repeated))
+
+    render_metric_grid(
+        [
+            ("候选机会", candidate_count, f"原始信号 {summary.get('raw_count', 0)}"),
+            ("需求簇", cluster_count, f"重复信号 {len(repeated)}"),
+            ("立即验证", build_now, "进入行动队列"),
+            ("继续观察", decision_summary.get("monitor_count", summary.get("monitor_count", 0)), "等待补证据"),
+        ]
+    )
+
+
+def render_metric_grid(metrics: Iterable[tuple]) -> None:
+    tiles = "".join(
+        f"""
+        <div class="metric-tile">
+            <span>{esc(label)}</span>
+            <strong>{esc(value)}</strong>
+            <em>{esc(note)}</em>
+        </div>
+        """
+        for label, value, note in metrics
+    )
+    st.markdown(f'<div class="metric-grid">{tiles}</div>', unsafe_allow_html=True)
+
+
+def render_quality_notices(notices: List[Dict]) -> None:
     if not notices:
         return
     for notice in notices:
-        level = notice.get("level", "info")
-        css_class = "quality-success" if level == "success" else "quality-warning" if level == "warning" else ""
+        css = "success" if notice.get("level") == "success" else "warning" if notice.get("level") == "warning" else ""
         st.markdown(
             f"""
-            <div class="quality-notice {css_class}">
+            <div class="notice {css}">
                 <h3>{esc(notice.get("title", ""))}</h3>
                 <p>{esc(notice.get("body", ""))}</p>
             </div>
@@ -667,63 +785,167 @@ def render_quality_notices(notices: list) -> None:
         )
 
 
-def render_empty_state() -> None:
-    st.markdown(
-        """
-        <section class="hero">
-            <div class="eyebrow">LOCAL-FIRST DEMAND RADAR</div>
-            <h1>蓝海机会雷达</h1>
-            <p>线上页面只负责展示。本地扫描完成并提交快照后，这里会展示最新机会看板。</p>
-        </section>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.info("还没有找到 `data/dashboard_snapshot.json`。请在本地运行：`python3 local_runner.py`。")
-
-
-def render_radar_panel(summary: dict, decision_summary: dict, repeated_count: int) -> None:
-    candidate_count = int(summary.get("candidate_count", 0) or 0)
-    monitor_count = int(decision_summary.get("monitor_count", summary.get("monitor_count", 0)) or 0)
-    build_now_count = int(decision_summary.get("build_now_count", summary.get("build_now_count", 0)) or 0)
-    raw_count = max(int(summary.get("raw_count", 0) or 0), 1)
-
-    candidate_pct = min(100, round(candidate_count / raw_count * 100))
-    monitor_pct = min(100, round(monitor_count / max(candidate_count, 1) * 100))
-    build_pct = min(100, round(build_now_count / max(candidate_count, 1) * 100))
-    repeat_pct = min(100, repeated_count * 20)
-
+def executive_brief(summary: Dict, decision_summary: Dict, source_stats: Dict) -> None:
+    raw_count = as_int(summary.get("raw_count"))
+    candidate_count = as_int(summary.get("candidate_count"))
+    total_clusters = as_int(decision_summary.get("total_clusters"))
+    build_now = as_int(decision_summary.get("build_now_count"))
+    monitor = as_int(decision_summary.get("monitor_count"))
+    source_line = ""
+    platforms = source_stats.get("platforms", []) if source_stats else []
+    if platforms:
+        first = platforms[0]
+        source_line = f"主要候选来源为 {first.get('name')}，占 {first.get('percent', 0)}%。"
     st.markdown(
         f"""
-        <div class="radar-panel">
-            <div class="radar-title">机会雷达快照</div>
-            <div class="radar-row">
-                <span>候选率</span><div class="bar"><span style="width:{candidate_pct}%"></span></div><span>{candidate_pct}%</span>
-            </div>
-            <div class="radar-row">
-                <span>可观察</span><div class="bar"><span class="blue" style="width:{monitor_pct}%"></span></div><span>{monitor_pct}%</span>
-            </div>
-            <div class="radar-row">
-                <span>可行动</span><div class="bar"><span class="orange" style="width:{build_pct}%"></span></div><span>{build_pct}%</span>
-            </div>
-            <div class="radar-row">
-                <span>重复信号</span><div class="bar"><span style="width:{repeat_pct}%"></span></div><span>{repeated_count}</span>
-            </div>
+        <div class="brief">
+            <h2>今日判断</h2>
+            <p>扫描 {esc(raw_count)} 条原始信号，筛出 {esc(candidate_count)} 条候选，合并为 {esc(total_clusters)} 个需求簇。</p>
+            <p>{esc(build_now)} 个进入立即验证，{esc(monitor)} 个继续观察。{esc(source_line)}</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
-def render_idea_card(idea: dict) -> None:
-    verdict = idea.get("verdict", "Monitor")
-    verdict_class = "tag-strong" if verdict == "Build Now" else "tag-warm" if verdict == "Monitor" else ""
+def section_title(title: str, note: str = "") -> None:
     st.markdown(
         f"""
-        <div class="idea-card">
-            <span class="tag">{esc(idea.get("category", "其他/待判定"))}</span>
-            <span class="tag {verdict_class}">{esc(verdict)}</span>
-            <span class="tag">Score {esc(idea.get("total_score", 0))}</span>
-            <span class="tag">7天重复 {esc(idea.get("repeat_7d", 1))}</span>
+        <div class="section-title">
+            <h2>{esc(title)}</h2>
+            <span>{esc(note)}</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def evidence_html(chain: Dict) -> str:
+    if not chain:
+        return (
+            '<div class="evidence">'
+            "<h4>证据链：未评估</h4>"
+            '<div class="evidence-row"><div class="miss">缺口</div><div class="ev-label">字段</div><div>当前快照缺少 evidence_chain。</div></div>'
+            "</div>"
+        )
+    summary = evidence_chain_summary({"evidence_chain": chain})
+    rows = []
+    for item in chain.get("items", []) or []:
+        passed = bool(item.get("passed"))
+        rows.append(
+            '<div class="evidence-row">'
+            f'<div class="{"pass" if passed else "miss"}">{"通过" if passed else "缺口"}</div>'
+            f'<div class="ev-label">{esc(item.get("label", ""))}</div>'
+            f'<div>{esc(item.get("detail", ""))}</div>'
+            "</div>"
+        )
+    return (
+        '<div class="evidence">'
+        f'<h4>证据链：{esc(summary.get("passed_count", 0))}/{esc(summary.get("total_count", 0))} · {esc(summary.get("label", ""))}</h4>'
+        f'{"".join(rows)}'
+        "</div>"
+    )
+
+
+def action_html(cluster: Dict) -> str:
+    action = build_action_view(cluster)
+    funnel = action.get("funnel", {})
+    blockers = [item for item in funnel.get("blockers", []) if item]
+    blocker_html = (
+        "<ul>" + "".join(f"<li>{esc(item)}</li>" for item in blockers) + "</ul>"
+        if blockers
+        else "<p>暂无明确阻塞项。</p>"
+    )
+    return f"""
+    <aside class="action">
+        <h4>验证漏斗</h4>
+        <div class="action-band">
+            <div class="action-cell"><span>Verdict</span><strong>{esc(funnel.get("verdict", "未评估"))}</strong></div>
+            <div class="action-cell"><span>Score</span><strong>{esc(funnel.get("total_score", 0))}</strong></div>
+            <div class="action-cell"><span>Risk</span><strong>{esc(funnel.get("risk_penalty", 0))}</strong></div>
+        </div>
+        <p><strong>下一步：</strong>{esc(action.get("next_step", ""))}</p>
+        <p><strong>竞争/分发：</strong>Competitor {esc(funnel.get("competitor_score", 0))} · Distribution {esc(funnel.get("distribution_score", 0))}</p>
+        <p><strong>阻塞：</strong></p>
+        {blocker_html}
+    </aside>
+    """
+
+
+def render_cluster(cluster: Dict) -> None:
+    decision = cluster.get("decision_verdict", "Monitor")
+    funnel_verdict = cluster.get("funnel_verdict") or (cluster.get("funnel_score") or {}).get("verdict", "")
+    anti_signals = cluster.get("anti_signals") or cluster.get("codex_anti_signals") or []
+    anti_html = ""
+    if anti_signals:
+        anti_html = "<p><strong>反信号：</strong>" + esc("；".join(str(item) for item in anti_signals if item)) + "</p>"
+
+    opportunity_hypothesis = cluster.get("opportunity_hypothesis") or cluster.get("codex_opportunity_thesis") or ""
+    evidence = cluster.get("evidence") or cluster.get("evidence_summary") or ""
+    paid_signal = cluster.get("paid_signal") or "尚未形成明确付费信号。"
+    not_build_now = cluster.get("not_build_now_reason") or cluster.get("decision_reason") or ""
+    validation = cluster.get("seven_day_validation") or cluster.get("recommended_action") or cluster.get("funnel_next_step") or ""
+
+    st.markdown(
+        f"""
+        <article class="memo">
+            <div class="memo-head">
+                <div>
+                    <div class="tag-row">
+                        <span class="tag {verdict_class(decision)}">{esc(verdict_label(decision))}</span>
+                        <span class="tag {verdict_class(funnel_verdict)}">Funnel · {esc(verdict_label(funnel_verdict))}</span>
+                        <span class="tag">{esc(cluster.get("category", "其他/待判定"))}</span>
+                    </div>
+                    <h3>{esc(cluster.get("title", "待验证机会"))}</h3>
+                </div>
+                <div class="memo-score">{esc(cluster.get("decision_score", 0))}<span>Decision Score</span></div>
+            </div>
+            <div class="memo-grid">
+                <div class="memo-stat"><span>7天重复</span><strong>{esc(cluster.get("count_7d", 0))}</strong></div>
+                <div class="memo-stat"><span>来源数</span><strong>{esc(cluster.get("source_count", 0))}</strong></div>
+                <div class="memo-stat"><span>最高原始分</span><strong>{esc(cluster.get("top_score", 0))}</strong></div>
+                <div class="memo-stat"><span>平均分</span><strong>{esc(cluster.get("avg_score", 0))}</strong></div>
+            </div>
+            <div class="memo-body">
+                <section class="memo-copy">
+                    <p><strong>机会假设：</strong>{esc(opportunity_hypothesis)}</p>
+                    <p><strong>证据：</strong>{esc(evidence)}</p>
+                    <p><strong>付费信号：</strong>{esc(paid_signal)}</p>
+                    <p><strong>暂缓理由：</strong>{esc(not_build_now)}</p>
+                    {anti_html}
+                    <p><strong>7天动作：</strong>{esc(validation)}</p>
+                    {evidence_html(cluster.get("evidence_chain", {}))}
+                </section>
+                {action_html(cluster)}
+            </div>
+        </article>
+        """,
+        unsafe_allow_html=True,
+    )
+    samples = cluster.get("sample_ideas", []) or []
+    if samples:
+        with st.expander(f"样本来源 · {cluster.get('title', '待验证机会')}", expanded=False):
+            for sample in samples:
+                title = sample.get("title", "Untitled")
+                source = sample.get("source", "")
+                score = sample.get("total_score", 0)
+                if sample.get("source_url"):
+                    st.markdown(f"- [{esc(title)}]({sample.get('source_url')}) · {esc(source)} · Score {esc(score)}")
+                else:
+                    st.markdown(f"- {esc(title)} · {esc(source)} · Score {esc(score)}")
+
+
+def render_idea(idea: Dict) -> None:
+    verdict = idea.get("verdict", "Monitor")
+    st.markdown(
+        f"""
+        <div class="idea">
+            <div class="tag-row">
+                <span class="tag">{esc(idea.get("category", "其他/待判定"))}</span>
+                <span class="tag {verdict_class(verdict)}">{esc(verdict_label(verdict))}</span>
+                <span class="tag">Score {esc(idea.get("total_score", 0))}</span>
+                <span class="tag">7天重复 {esc(idea.get("repeat_7d", 1))}</span>
+            </div>
             <h3>{esc(idea.get("mvp_concept", ""))}</h3>
             <p>{esc(idea.get("pain_summary", ""))}</p>
             <p><strong>下一步：</strong>{esc(idea.get("validation_step", ""))}</p>
@@ -732,228 +954,103 @@ def render_idea_card(idea: dict) -> None:
         unsafe_allow_html=True,
     )
     if idea.get("source_url"):
-        st.markdown(f"[来源：{esc(idea.get('source', ''))} - {esc(idea.get('title', ''))}]({idea.get('source_url')})")
+        st.markdown(f"[{esc(idea.get('source', '来源'))} · {esc(idea.get('title', 'Untitled'))}]({idea.get('source_url')})")
 
 
-def render_evidence_chain(chain: dict) -> str:
-    if not chain:
-        return (
-            '<div class="evidence-chain">'
-            "<h4>证据链完整度：未评估</h4>"
-            '<div class="evidence-row">'
-            '<div class="evidence-miss">缺口</div>'
-            '<div class="evidence-label">证据链数据</div>'
-            "<div>当前快照缺少 evidence_chain 字段，请重新生成报告。</div>"
-            "</div>"
-            "</div>"
-        )
-    summary = evidence_chain_summary({"evidence_chain": chain})
-    rows = []
-    for item in chain.get("items", []) or []:
-        passed = bool(item.get("passed"))
-        status_class = "evidence-pass" if passed else "evidence-miss"
-        status_text = "通过" if passed else "缺口"
-        rows.append(
-            '<div class="evidence-row">'
-            f'<div class="{status_class}">{status_text}</div>'
-            f'<div class="evidence-label">{esc(item.get("label", ""))}</div>'
-            f'<div>{esc(item.get("detail", ""))}</div>'
-            "</div>"
-        )
-    score_text = f"{esc(summary.get('passed_count', 0))}/{esc(summary.get('total_count', 0))}"
-    return (
-        '<div class="evidence-chain">'
-        f"<h4>证据链完整度：{score_text} · {esc(summary.get('label', ''))}</h4>"
-        f"{''.join(rows)}"
-        "</div>"
-    )
-
-
-def render_action_view(cluster: dict) -> str:
-    action = build_action_view(cluster)
-    funnel = action["funnel"]
-    blockers = "".join(f"<li>{esc(item)}</li>" for item in funnel.get("blockers", []) if item)
-    blocker_html = f'<ul class="anti-list">{blockers}</ul>' if blockers else "<p>暂无漏斗阻塞项。</p>"
-    return f"""
-        <div class="action-grid">
-            <div class="action-box"><span>Funnel Verdict</span><strong>{esc(funnel.get("verdict", "未评估"))}</strong></div>
-            <div class="action-box"><span>Funnel Score</span><strong>{esc(funnel.get("total_score", 0))}</strong></div>
-            <div class="action-box"><span>Risk Penalty</span><strong>{esc(funnel.get("risk_penalty", 0))}</strong></div>
-        </div>
-        <p class="analysis-section"><strong>漏斗拆分：</strong>Competitor {esc(funnel.get("competitor_score", 0))} · Distribution {esc(funnel.get("distribution_score", 0))}</p>
-        <p class="analysis-section"><strong>下一步动作：</strong>{esc(action.get("next_step", ""))}</p>
-        <div class="analysis-section"><strong>漏斗阻塞：</strong>{blocker_html}</div>
-    """
-
-
-def render_cluster_card(cluster: dict) -> None:
-    verdict = cluster.get("decision_verdict", "Monitor")
-    verdict_class = "tag-strong" if verdict == "Build Now" else "tag-warm" if verdict == "Monitor" else ""
-    label = decision_label(verdict)
-    anti_signals = cluster.get("anti_signals") or cluster.get("codex_anti_signals") or []
-    anti_items = "".join(f"<li>{esc(item)}</li>" for item in anti_signals if item)
-    anti_html = (
-        f'<div class="analysis-section"><strong>反信号：</strong><ul class="anti-list">{anti_items}</ul></div>'
-        if anti_items
-        else ""
-    )
-    evidence_chain = render_evidence_chain(cluster.get("evidence_chain", {}))
-    opportunity_hypothesis = cluster.get("opportunity_hypothesis") or cluster.get("codex_opportunity_thesis") or ""
-    evidence = cluster.get("evidence") or cluster.get("evidence_summary") or ""
-    not_build_now_reason = cluster.get("not_build_now_reason") or cluster.get("decision_reason") or ""
-    seven_day_validation = cluster.get("seven_day_validation") or cluster.get("recommended_action") or ""
-    paid_signal = cluster.get("paid_signal") or "尚未形成明确付费信号。"
-    action_view = render_action_view(cluster)
-    st.markdown(
-        f"""
-        <div class="cluster-card">
-            <div class="cluster-kicker">
-                <span class="tag {verdict_class}">{esc(label)}</span>
-                <span class="tag">判断分 {esc(cluster.get("decision_score", 0))}</span>
-                <span class="tag">{esc(cluster.get("category", "其他/待判定"))}</span>
-            </div>
-            <h3>{esc(cluster.get("title", "待验证机会"))}</h3>
-            {evidence_chain}
-            <div class="cluster-meta">
-                <div><span>7天重复</span><strong>{esc(cluster.get("count_7d", 0))}</strong></div>
-                <div><span>来源数</span><strong>{esc(cluster.get("source_count", 0))}</strong></div>
-                <div><span>最高原始分</span><strong>{esc(cluster.get("top_score", 0))}</strong></div>
-                <div><span>平均分</span><strong>{esc(cluster.get("avg_score", 0))}</strong></div>
-            </div>
-            <p class="analysis-section"><strong>机会假设：</strong>{esc(opportunity_hypothesis)}</p>
-            <p class="analysis-section"><strong>证据：</strong>{esc(evidence)}</p>
-            <p class="analysis-section"><strong>付费信号：</strong>{esc(paid_signal)}</p>
-            <p class="analysis-section"><strong>为什么不是立即开工：</strong>{esc(not_build_now_reason)}</p>
-            {anti_html}
-            <p class="analysis-section"><strong>7天验证动作：</strong>{esc(seven_day_validation)}</p>
-            {action_view}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    samples = cluster.get("sample_ideas", []) or []
-    if samples:
-        with st.expander("代表样本", expanded=False):
-            for sample in samples:
-                title = esc(sample.get("title", "Untitled"))
-                source = esc(sample.get("source", ""))
-                score = esc(sample.get("total_score", 0))
-                if sample.get("source_url"):
-                    st.markdown(f"- [{title}]({sample.get('source_url')}) · {source} · Score {score}")
-                else:
-                    st.markdown(f"- {title} · {source} · Score {score}")
-
-
-def render_source_stats(source_stats: dict) -> None:
-    st.subheader("来源统计")
-    if not source_stats or not source_stats.get("total_candidates"):
+def render_source_stats(source_stats: Dict) -> None:
+    total = as_int(source_stats.get("total_candidates")) if source_stats else 0
+    if not total:
         st.info("暂无来源统计。")
         return
-
-    st.caption(f"按候选信号统计，共 {source_stats.get('total_candidates', 0)} 条。")
     for platform in source_stats.get("platforms", []):
-        percent = int(platform.get("percent", 0) or 0)
+        value = as_int(platform.get("percent"))
         st.markdown(
             f"""
             <div class="source-row">
                 <div>
-                    <div class="source-name">{esc(platform.get("name", ""))}</div>
-                    <div class="source-bar"><span style="width:{percent}%"></span></div>
+                    <span>{esc(platform.get("name", ""))}</span>
+                    <div class="source-bar"><b style="width:{value}%"></b></div>
                 </div>
-                <div class="source-count">{esc(platform.get("count", 0))} · {esc(percent)}%</div>
+                <div class="source-count">{esc(platform.get("count", 0))} · {esc(value)}%</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-
     top_sources = source_stats.get("top_sources", [])
     if top_sources:
-        with st.expander("具体来源排行", expanded=False):
-            rows = [
-                {
-                    "来源": item.get("source", ""),
-                    "候选数": item.get("count", 0),
-                    "占比": f"{item.get('percent', 0)}%",
-                }
-                for item in top_sources
-            ]
-            st.dataframe(rows, width="stretch", hide_index=True)
-
-
-def render_counts_table(title: str, counts: dict, key_name: str) -> None:
-    st.subheader(title)
-    if counts:
         rows = [
-            {key_name: key, "数量": value}
-            for key, value in sorted(counts.items(), key=lambda item: item[1], reverse=True)
+            {"来源": item.get("source", ""), "候选数": item.get("count", 0), "占比": f"{item.get('percent', 0)}%"}
+            for item in top_sources
         ]
         st.dataframe(rows, width="stretch", hide_index=True)
-    else:
+
+
+def render_counts_table(title: str, counts: Dict, key_name: str) -> None:
+    st.subheader(title)
+    if not counts:
         st.info(f"暂无{title}。")
+        return
+    rows = [
+        {key_name: key, "数量": value}
+        for key, value in sorted(counts.items(), key=lambda item: item[1], reverse=True)
+    ]
+    st.dataframe(rows, width="stretch", hide_index=True)
 
 
-def render_source_health(source_health: dict) -> None:
+def render_source_health(source_health: Dict) -> None:
     if not source_health:
         return
-    st.subheader("数据源健康")
     st.markdown(
         f"""
-        <div class="quiet-box">
-            <h3>{esc(source_health.get("status", "unknown"))} · 错误 {esc(source_health.get("error_count", 0))}</h3>
-            <p>原始 {esc(source_health.get("raw_count", 0))} · 去重 {esc(source_health.get("unique_count", 0))} · 候选 {esc(source_health.get("candidate_count", 0))}</p>
+        <div class="quiet">
+            <h3>数据源健康 · {esc(source_health.get("status", "unknown"))}</h3>
+            <p>原始 {esc(source_health.get("raw_count", 0))} · 去重 {esc(source_health.get("unique_count", 0))} · 候选 {esc(source_health.get("candidate_count", 0))} · 错误 {esc(source_health.get("error_count", 0))}</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    counts = source_health.get("source_counts", {})
-    if counts:
-        render_counts_table("候选来源", counts, "来源")
+    rows = source_health.get("sources", [])
+    if rows:
+        st.dataframe(rows, width="stretch", hide_index=True)
 
 
-def render_source_metrics(source_metrics: list) -> None:
-    st.subheader("Source Metrics")
+def render_repeated_signals(repeated: List[Dict]) -> None:
+    if not repeated:
+        st.info("最近 7 天还没有出现 2 次以上的重复信号。")
+        return
+    for signal in repeated:
+        st.markdown(
+            f"""
+            <div class="quiet">
+                <h3>{esc(signal.get("category", "其他/待判定"))} · {esc(signal.get("count", 0))} 次 · Top {esc(signal.get("top_score", 0))}</h3>
+                <p>{esc(signal.get("sample_concept", ""))}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        if signal.get("sample_url"):
+            st.markdown(f"[查看样本]({signal.get('sample_url')})")
+
+
+def render_source_metrics(source_metrics: List[Dict]) -> None:
     rows = build_source_metric_rows(source_metrics)
     if not rows:
         st.info("暂无 source metrics。")
         return
-    st.caption("按 raw/candidate/cluster/validation 反馈判断数据源投入策略。")
     st.dataframe(rows, width="stretch", hide_index=True)
 
 
-def render_artifact_summaries(snapshot: dict) -> None:
+def render_artifacts(snapshot: Dict) -> None:
     rows = build_artifact_summary_rows(
         snapshot.get("container_summary", {}),
         snapshot.get("pain_signal_summary", {}),
     )
-    if not rows:
-        return
-    st.subheader("Discovery Artifacts")
     st.dataframe(rows, width="stretch", hide_index=True)
-
-
-def render_repeated_signals(repeated: list) -> None:
-    st.subheader("7 天重复信号")
-    if repeated:
-        for signal in repeated:
-            st.markdown(
-                f"""
-                <div class="quiet-box">
-                    <h3>{esc(signal.get("category", "其他/待判定"))} · 出现 {esc(signal.get("count", 0))} 次 · 最高分 {esc(signal.get("top_score", 0))}</h3>
-                    <p>{esc(signal.get("sample_concept", ""))}</p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-            if signal.get("sample_url"):
-                st.markdown(f"[查看样本]({signal.get('sample_url')})")
-    else:
-        st.info("最近 7 天还没有出现 2 次以上的重复信号。")
 
 
 def render_markdown_report(report: str, generated_at: str) -> None:
     if not report:
         return
-    st.subheader("Markdown 日报")
     st.download_button(
         "下载 Markdown 日报",
         data=report,
@@ -961,23 +1058,24 @@ def render_markdown_report(report: str, generated_at: str) -> None:
         mime="text/markdown",
         width="stretch",
     )
-    with st.expander("预览日报", expanded=False):
+    with st.expander("日报预览", expanded=False):
         st.code(report, language="markdown")
 
 
-def render_audit_appendix(snapshot: dict, source_stats: dict, source_health: dict, repeated: list, generated_at: str) -> None:
-    with st.expander("审计附录：来源、分类、历史和日报", expanded=False):
-        st.caption("这些内容用于追溯和复核，不参与第一眼的行动判断。")
-        source_col, category_col = st.columns([1, 1], gap="large")
-        with source_col:
-            render_source_stats(source_stats)
-            render_source_health(source_health)
-            render_source_metrics(snapshot.get("source_metrics", []))
-        with category_col:
-            render_counts_table("分类分布", snapshot.get("category_counts", {}), "分类")
-            render_counts_table("人工标注", snapshot.get("label_counts", {}), "标注")
-        render_repeated_signals(repeated)
-        render_markdown_report(snapshot.get("markdown_report", ""), generated_at)
+def render_empty_state() -> None:
+    st.markdown(
+        """
+        <section class="hf-stage identity">
+            <div>
+                <div class="kicker">OPC PAIN INTELLIGENCE SYSTEM</div>
+                <h1>等待第一份快照</h1>
+                <p>本地扫描完成后，页面会展示机会决策、证据链和验证动作。</p>
+            </div>
+        </section>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.info("缺少 `data/dashboard_snapshot.json`。请在本地运行：`python3 local_runner.py`。")
 
 
 render_styles()
@@ -991,7 +1089,7 @@ summary = snapshot.get("summary", {})
 decision_summary = snapshot.get("decision_summary", {})
 source_health = snapshot.get("source_health", {})
 source_stats = snapshot.get("source_stats", {})
-opportunity_clusters = snapshot.get("opportunity_clusters", [])
+clusters = snapshot.get("opportunity_clusters", [])
 top_ideas = snapshot.get("top_ideas", [])
 repeated = snapshot.get("repeated_signals_7d", [])
 generated_at = snapshot.get("generated_at", "未生成")
@@ -1001,58 +1099,60 @@ analysis_label = (
     f"{analysis_metadata.get('analysis_status', 'local')}"
 )
 
-hero_left, hero_right = st.columns([1.55, 1], gap="large")
-with hero_left:
-    st.markdown(
-        f"""
-        <section class="hero dashboard-shell">
-            <div class="eyebrow">HYPERFRAMES PERSONAL RADAR · LOCAL-FIRST</div>
-            <h1>OPC Pain Intelligence</h1>
-            <p>把公开信号、人工线索和漏斗评分压成一张个人机会驾驶舱。今天只看证据链、付费暗示和下一步验证动作。</p>
-            {render_signal_strip(summary, analysis_label, generated_at)}
-        </section>
-        """,
-        unsafe_allow_html=True,
-    )
-with hero_right:
-    render_radar_panel(summary, decision_summary, len(repeated))
-
-render_executive_summary(summary, decision_summary, source_stats)
+render_command_stage(snapshot, analysis_label)
 render_quality_notices(build_quality_notices(snapshot))
 
-metric_cols = st.columns(4)
-with metric_cols[0]:
-    render_metric("候选机会", summary.get("candidate_count", 0), f"原始信号 {summary.get('raw_count', 0)}")
-with metric_cols[1]:
-    render_metric("立即验证", decision_summary.get("build_now_count", summary.get("build_now_count", 0)), "证据链完整")
-with metric_cols[2]:
-    render_metric("继续观察", decision_summary.get("monitor_count", summary.get("monitor_count", 0)), "等待更多重复")
-with metric_cols[3]:
-    render_metric("需求簇", decision_summary.get("total_clusters", len(opportunity_clusters)), f"重复信号 {len(repeated)}")
+tab_command, tab_signal, tab_audit = st.tabs(["指挥台", "信号板", "审计"])
 
-if summary.get("errors"):
-    with st.expander("本地扫描记录的抓取错误", expanded=False):
-        for error in summary.get("errors", []):
-            st.warning(error)
+with tab_command:
+    executive_brief(summary, decision_summary, source_stats)
+    if summary.get("errors"):
+        with st.expander("本地扫描错误", expanded=False):
+            for error in summary.get("errors", []):
+                st.warning(error)
 
-st.divider()
-if opportunity_clusters:
-    st.markdown(
-        """
-        <div class="section-band">
-            <h2>今日机会决策备忘录</h2>
-            <span>按 funnel score、证据链完整度和下一步动作排序阅读</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    for cluster in opportunity_clusters:
-        render_cluster_card(cluster)
-else:
-    st.subheader("Top 机会")
-    if not top_ideas:
-        st.info("当前快照没有候选机会。")
-    for idea in top_ideas:
-        render_idea_card(idea)
+    if clusters:
+        section_title("机会决策队列", "按 funnel score、证据链完整度和下一步动作阅读")
+        sorted_clusters = sorted(
+            clusters,
+            key=lambda item: (
+                as_float((item.get("funnel_score") or {}).get("total_score")),
+                as_float(item.get("decision_score")),
+            ),
+            reverse=True,
+        )
+        for cluster in sorted_clusters:
+            render_cluster(cluster)
+    else:
+        section_title("Top 候选机会", "当前快照尚未形成需求簇")
+        for idea in top_ideas:
+            render_idea(idea)
 
-render_audit_appendix(snapshot, source_stats, source_health, repeated, generated_at)
+with tab_signal:
+    left, right = st.columns([1.08, 0.92], gap="large")
+    with left:
+        section_title("候选信号", "原始痛点经过过滤后的候选列表")
+        if top_ideas:
+            for idea in top_ideas:
+                render_idea(idea)
+        else:
+            st.info("当前快照没有候选机会。")
+    with right:
+        section_title("来源质量", "来源分布、候选率和投入建议")
+        render_source_stats(source_stats)
+        render_source_metrics(snapshot.get("source_metrics", []))
+        section_title("重复信号", "7 天内反复出现的主题")
+        render_repeated_signals(repeated)
+
+with tab_audit:
+    left, right = st.columns([1, 1], gap="large")
+    with left:
+        section_title("数据源健康", "采集、缓存和降级状态")
+        render_source_health(source_health)
+        render_counts_table("分类分布", snapshot.get("category_counts", {}), "分类")
+        render_counts_table("人工标注", snapshot.get("label_counts", {}), "标注")
+    with right:
+        section_title("发现产物", "后续阶段的容器、评论和痛点信号摘要")
+        render_artifacts(snapshot)
+        section_title("日报", "本地生成的 Markdown 报告")
+        render_markdown_report(snapshot.get("markdown_report", ""), generated_at)
