@@ -7,7 +7,13 @@ import html
 
 import streamlit as st
 
-from dashboard_presenter import build_quality_notices, evidence_chain_summary
+from dashboard_presenter import (
+    build_action_view,
+    build_artifact_summary_rows,
+    build_quality_notices,
+    build_source_metric_rows,
+    evidence_chain_summary,
+)
 from snapshot_exporter import load_dashboard_snapshot
 
 
@@ -31,22 +37,96 @@ def render_styles() -> None:
             --opc-border-soft: #eef0f3;
             --opc-surface: #ffffff;
             --opc-surface-soft: #f8fafc;
+            --opc-surface-glass: rgba(255, 255, 255, 0.84);
+            --opc-canvas: #f4f7f8;
+            --opc-rail: #d8ebe7;
             --opc-green: #0f766e;
             --opc-blue: #2563eb;
             --opc-amber: #b45309;
             --opc-red: #b42318;
+            --opc-coral: #e11d48;
+            --opc-shadow: 0 18px 55px rgba(15, 23, 42, 0.08);
         }
         html, body, [data-testid="stAppViewContainer"] {
             font-family: "Source Sans 3", "Noto Sans SC", "PingFang SC", sans-serif;
             color: var(--opc-body);
+            background:
+                linear-gradient(90deg, rgba(15, 118, 110, 0.055) 1px, transparent 1px),
+                linear-gradient(180deg, rgba(37, 99, 235, 0.045) 1px, transparent 1px),
+                linear-gradient(180deg, #fbfcfd 0%, var(--opc-canvas) 44%, #ffffff 100%);
+            background-size: 44px 44px, 44px 44px, auto;
+        }
+        [data-testid="stHeader"] {
+            background: transparent;
+        }
+        [data-testid="stToolbar"] {
+            right: 1.25rem;
         }
         .block-container {
-            padding-top: 2.25rem;
+            padding-top: 1.7rem;
             padding-bottom: 4rem;
-            max-width: 1180px;
+            max-width: 1220px;
+        }
+        .dashboard-shell {
+            border: 1px solid rgba(15, 118, 110, 0.16);
+            border-radius: 8px;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.94), rgba(248,250,252,0.86)),
+                repeating-linear-gradient(90deg, transparent 0 68px, rgba(15,118,110,0.035) 68px 69px);
+            box-shadow: var(--opc-shadow);
+            padding: 22px;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        .dashboard-shell:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-top: 3px solid var(--opc-green);
+            pointer-events: none;
+        }
+        .dashboard-shell:after {
+            content: "";
+            position: absolute;
+            left: 22px;
+            right: 22px;
+            bottom: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--opc-green), var(--opc-blue), var(--opc-amber), var(--opc-coral));
+            opacity: 0.85;
+        }
+        .signal-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 0;
+        }
+        .signal-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            border: 1px solid rgba(15, 118, 110, 0.18);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.72);
+            color: var(--opc-body);
+            font-size: 13px;
+            padding: 7px 11px;
+            min-height: 34px;
+        }
+        .signal-pill b {
+            color: var(--opc-ink);
+            font-weight: 750;
+        }
+        .signal-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: var(--opc-green);
+            box-shadow: 0 0 0 4px rgba(15,118,110,0.12);
         }
         .hero {
-            padding: 34px 0 24px;
+            padding: 4px 0 12px;
         }
         .eyebrow {
             color: var(--opc-green);
@@ -57,9 +137,10 @@ def render_styles() -> None:
         }
         .hero h1 {
             color: var(--opc-ink);
-            font-size: 52px;
+            font-size: 54px;
             line-height: 1.06;
             margin: 0 0 14px;
+            max-width: 820px;
         }
         .hero p {
             color: var(--opc-body);
@@ -72,11 +153,14 @@ def render_styles() -> None:
             align-items: stretch;
         }
         .radar-panel {
-            border: 1px solid var(--opc-border);
+            border: 1px solid rgba(15, 118, 110, 0.18);
             border-radius: 8px;
-            background: var(--opc-surface);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.92)),
+                repeating-linear-gradient(135deg, transparent 0 14px, rgba(15,118,110,0.035) 14px 15px);
             padding: 20px;
             min-height: 230px;
+            box-shadow: 0 14px 38px rgba(15, 23, 42, 0.07);
         }
         .radar-title {
             color: var(--opc-ink);
@@ -96,27 +180,29 @@ def render_styles() -> None:
         .bar {
             height: 10px;
             border-radius: 999px;
-            background: #edf2f7;
+            background: #e6edf2;
             overflow: hidden;
+            position: relative;
         }
         .bar span {
             display: block;
             height: 10px;
             border-radius: 999px;
-            background: var(--opc-green);
+            background: linear-gradient(90deg, var(--opc-green), #14b8a6);
         }
         .bar .orange {
-            background: #f97316;
+            background: linear-gradient(90deg, #f97316, var(--opc-amber));
         }
         .bar .blue {
-            background: var(--opc-blue);
+            background: linear-gradient(90deg, var(--opc-blue), #38bdf8);
         }
         .metric-card {
-            border: 1px solid var(--opc-border);
+            border: 1px solid rgba(16, 24, 40, 0.09);
             border-radius: 8px;
             padding: 18px;
-            background: var(--opc-surface);
+            background: var(--opc-surface-glass);
             min-height: 112px;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.055);
         }
         .metric-label {
             color: var(--opc-muted);
@@ -135,11 +221,12 @@ def render_styles() -> None:
             margin-top: 8px;
         }
         .summary-box {
-            border: 1px solid var(--opc-border);
+            border: 1px solid rgba(15, 118, 110, 0.16);
             border-radius: 8px;
-            background: var(--opc-surface);
+            background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.88));
             padding: 20px;
             margin: 8px 0 20px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.045);
         }
         .summary-box h2 {
             color: var(--opc-ink);
@@ -156,7 +243,7 @@ def render_styles() -> None:
             border: 1px solid var(--opc-border);
             border-radius: 8px;
             padding: 18px 18px 14px;
-            background: var(--opc-surface);
+            background: var(--opc-surface-glass);
             margin-bottom: 14px;
         }
         .idea-card h3 {
@@ -171,11 +258,45 @@ def render_styles() -> None:
             margin: 7px 0;
         }
         .cluster-card {
-            border: 1px solid var(--opc-border);
+            border: 1px solid rgba(16, 24, 40, 0.10);
             border-radius: 8px;
             padding: 22px;
-            background: var(--opc-surface);
-            margin-bottom: 18px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.97), rgba(252,253,254,0.96)),
+                linear-gradient(90deg, rgba(15,118,110,0.09), transparent 28%);
+            margin-bottom: 20px;
+            box-shadow: var(--opc-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .cluster-card:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--opc-green), var(--opc-blue));
+        }
+        .section-band {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 22px 0 14px;
+            padding: 12px 14px;
+            border: 1px solid rgba(15,118,110,0.14);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.74);
+        }
+        .section-band h2 {
+            color: var(--opc-ink);
+            font-size: 20px;
+            margin: 0;
+        }
+        .section-band span {
+            color: var(--opc-muted);
+            font-size: 13px;
         }
         .cluster-kicker {
             display: flex;
@@ -206,7 +327,7 @@ def render_styles() -> None:
             border: 1px solid var(--opc-border-soft);
             border-radius: 8px;
             padding: 10px;
-            background: var(--opc-surface-soft);
+            background: rgba(248,250,252,0.82);
         }
         .cluster-meta span {
             display: block;
@@ -234,11 +355,11 @@ def render_styles() -> None:
             margin: 4px 0;
         }
         .evidence-chain {
-            border: 1px solid var(--opc-border-soft);
+            border: 1px solid rgba(15,118,110,0.13);
             border-radius: 8px;
             margin: 14px 0;
             padding: 12px;
-            background: var(--opc-surface-soft);
+            background: linear-gradient(180deg, rgba(248,250,252,0.94), rgba(255,255,255,0.88));
         }
         .evidence-chain h4 {
             color: var(--opc-ink);
@@ -275,7 +396,7 @@ def render_styles() -> None:
             border-radius: 8px;
             padding: 14px 16px;
             margin: 10px 0;
-            background: var(--opc-surface-soft);
+            background: rgba(255,255,255,0.82);
         }
         .quality-notice h3 {
             color: var(--opc-ink);
@@ -333,11 +454,11 @@ def render_styles() -> None:
             display: inline-block;
             border: 1px solid #d0d5dd;
             border-radius: 999px;
-            padding: 3px 9px;
+            padding: 4px 10px;
             font-size: 12px;
             color: #344054;
             margin: 0 6px 6px 0;
-            background: var(--opc-surface);
+            background: rgba(255,255,255,0.82);
         }
         .tag-strong {
             border-color: #99f6e4;
@@ -365,12 +486,59 @@ def render_styles() -> None:
             margin: 0;
             line-height: 1.6;
         }
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin: 14px 0;
+        }
+        .action-box {
+            border: 1px solid rgba(15,118,110,0.15);
+            border-radius: 8px;
+            background: linear-gradient(180deg, rgba(248,250,252,0.95), rgba(255,255,255,0.9));
+            padding: 12px;
+            min-height: 96px;
+        }
+        .action-box span {
+            display: block;
+            color: var(--opc-muted);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .action-box strong {
+            color: var(--opc-ink);
+            font-size: 18px;
+        }
+        .asset-box {
+            border: 1px solid var(--opc-border-soft);
+            border-radius: 8px;
+            padding: 12px;
+            background: #fcfcfd;
+            margin: 10px 0;
+        }
+        .asset-box h4 {
+            color: var(--opc-ink);
+            font-size: 15px;
+            margin: 0 0 6px;
+        }
+        .asset-box p, .asset-box li {
+            color: var(--opc-body);
+            font-size: 14px;
+            line-height: 1.55;
+        }
         button, [role="button"], .stDownloadButton button {
             min-height: 44px;
         }
         @media (max-width: 760px) {
             .block-container {
                 padding-top: 1.25rem;
+            }
+            .dashboard-shell {
+                padding: 16px;
+            }
+            .section-band {
+                align-items: flex-start;
+                flex-direction: column;
             }
             .hero h1 {
                 font-size: 38px;
@@ -383,6 +551,9 @@ def render_styles() -> None:
             }
             .cluster-meta {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .action-grid {
+                grid-template-columns: 1fr;
             }
             .cluster-card {
                 padding: 16px;
@@ -460,6 +631,23 @@ def render_executive_summary(summary: dict, decision_summary: dict, source_stats
         """,
         unsafe_allow_html=True,
     )
+
+
+def render_signal_strip(summary: dict, analysis_label: str, generated_at: str) -> str:
+    raw_count = int(summary.get("raw_count", 0) or 0)
+    candidate_count = int(summary.get("candidate_count", 0) or 0)
+    saved_count = int(summary.get("saved_count", 0) or 0)
+    error_count = len(summary.get("errors", []) or [])
+    candidate_rate = round(candidate_count / max(raw_count, 1) * 100)
+    return f"""
+        <div class="signal-strip">
+            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(candidate_rate)}%</b> 候选率</div>
+            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(saved_count)}</b> 条写入历史</div>
+            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(error_count)}</b> 个来源错误</div>
+            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(analysis_label)}</b> 分析状态</div>
+            <div class="signal-pill"><span class="signal-dot"></span><b>{esc(generated_at)}</b> 快照时间</div>
+        </div>
+        """
 
 
 def render_quality_notices(notices: list) -> None:
@@ -581,6 +769,23 @@ def render_evidence_chain(chain: dict) -> str:
     )
 
 
+def render_action_view(cluster: dict) -> str:
+    action = build_action_view(cluster)
+    funnel = action["funnel"]
+    blockers = "".join(f"<li>{esc(item)}</li>" for item in funnel.get("blockers", []) if item)
+    blocker_html = f'<ul class="anti-list">{blockers}</ul>' if blockers else "<p>暂无漏斗阻塞项。</p>"
+    return f"""
+        <div class="action-grid">
+            <div class="action-box"><span>Funnel Verdict</span><strong>{esc(funnel.get("verdict", "未评估"))}</strong></div>
+            <div class="action-box"><span>Funnel Score</span><strong>{esc(funnel.get("total_score", 0))}</strong></div>
+            <div class="action-box"><span>Risk Penalty</span><strong>{esc(funnel.get("risk_penalty", 0))}</strong></div>
+        </div>
+        <p class="analysis-section"><strong>漏斗拆分：</strong>Competitor {esc(funnel.get("competitor_score", 0))} · Distribution {esc(funnel.get("distribution_score", 0))}</p>
+        <p class="analysis-section"><strong>下一步动作：</strong>{esc(action.get("next_step", ""))}</p>
+        <div class="analysis-section"><strong>漏斗阻塞：</strong>{blocker_html}</div>
+    """
+
+
 def render_cluster_card(cluster: dict) -> None:
     verdict = cluster.get("decision_verdict", "Monitor")
     verdict_class = "tag-strong" if verdict == "Build Now" else "tag-warm" if verdict == "Monitor" else ""
@@ -598,6 +803,7 @@ def render_cluster_card(cluster: dict) -> None:
     not_build_now_reason = cluster.get("not_build_now_reason") or cluster.get("decision_reason") or ""
     seven_day_validation = cluster.get("seven_day_validation") or cluster.get("recommended_action") or ""
     paid_signal = cluster.get("paid_signal") or "尚未形成明确付费信号。"
+    action_view = render_action_view(cluster)
     st.markdown(
         f"""
         <div class="cluster-card">
@@ -620,6 +826,7 @@ def render_cluster_card(cluster: dict) -> None:
             <p class="analysis-section"><strong>为什么不是立即开工：</strong>{esc(not_build_now_reason)}</p>
             {anti_html}
             <p class="analysis-section"><strong>7天验证动作：</strong>{esc(seven_day_validation)}</p>
+            {action_view}
         </div>
         """,
         unsafe_allow_html=True,
@@ -703,6 +910,27 @@ def render_source_health(source_health: dict) -> None:
         render_counts_table("候选来源", counts, "来源")
 
 
+def render_source_metrics(source_metrics: list) -> None:
+    st.subheader("Source Metrics")
+    rows = build_source_metric_rows(source_metrics)
+    if not rows:
+        st.info("暂无 source metrics。")
+        return
+    st.caption("按 raw/candidate/cluster/validation 反馈判断数据源投入策略。")
+    st.dataframe(rows, width="stretch", hide_index=True)
+
+
+def render_artifact_summaries(snapshot: dict) -> None:
+    rows = build_artifact_summary_rows(
+        snapshot.get("container_summary", {}),
+        snapshot.get("pain_signal_summary", {}),
+    )
+    if not rows:
+        return
+    st.subheader("Discovery Artifacts")
+    st.dataframe(rows, width="stretch", hide_index=True)
+
+
 def render_repeated_signals(repeated: list) -> None:
     st.subheader("7 天重复信号")
     if repeated:
@@ -744,6 +972,7 @@ def render_audit_appendix(snapshot: dict, source_stats: dict, source_health: dic
         with source_col:
             render_source_stats(source_stats)
             render_source_health(source_health)
+            render_source_metrics(snapshot.get("source_metrics", []))
         with category_col:
             render_counts_table("分类分布", snapshot.get("category_counts", {}), "分类")
             render_counts_table("人工标注", snapshot.get("label_counts", {}), "标注")
@@ -776,10 +1005,11 @@ hero_left, hero_right = st.columns([1.55, 1], gap="large")
 with hero_left:
     st.markdown(
         f"""
-        <section class="hero">
-            <div class="eyebrow">LOCAL-FIRST DEMAND RADAR</div>
-            <h1>蓝海机会雷达</h1>
-            <p>本地扫描公开信号，GitHub 保存结果快照，Streamlit 只展示机会看板。最近更新：{esc(generated_at)} · 分析：{esc(analysis_label)}</p>
+        <section class="hero dashboard-shell">
+            <div class="eyebrow">HYPERFRAMES PERSONAL RADAR · LOCAL-FIRST</div>
+            <h1>OPC Pain Intelligence</h1>
+            <p>把公开信号、人工线索和漏斗评分压成一张个人机会驾驶舱。今天只看证据链、付费暗示和下一步验证动作。</p>
+            {render_signal_strip(summary, analysis_label, generated_at)}
         </section>
         """,
         unsafe_allow_html=True,
@@ -807,7 +1037,15 @@ if summary.get("errors"):
 
 st.divider()
 if opportunity_clusters:
-    st.subheader("今日机会决策备忘录")
+    st.markdown(
+        """
+        <div class="section-band">
+            <h2>今日机会决策备忘录</h2>
+            <span>按 funnel score、证据链完整度和下一步动作排序阅读</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     for cluster in opportunity_clusters:
         render_cluster_card(cluster)
 else:

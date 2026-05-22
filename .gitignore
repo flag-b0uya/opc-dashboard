@@ -5,5 +5,14 @@ data/demand_history.json
 data/demand_labels.json
 data/demand_engine.db
 data/source_cache.json
+data/manual_intake.json
+data/source_metrics.json
+data/source_metrics_history.json
+data/failed_snapshot.json
+data/experiment_results.json
+data/containers.json
+data/comments_by_container.json
+data/pain_signals.json
+data/offline_demo_snapshot.json
 .gstack/
 reports/

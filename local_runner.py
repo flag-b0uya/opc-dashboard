@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Union
 
+from codex_analysis import CodexAnalysisError, analyze_clusters_with_codex
 from demand_engine import (
     build_decision_summary,
     build_opportunity_clusters,
@@ -24,8 +25,17 @@ from demand_engine import (
     save_scan_to_history,
     score_candidate,
 )
-from codex_analysis import CodexAnalysisError, analyze_clusters_with_codex
+from manual_intake import load_manual_items, manual_items_to_raw_items
+from pipeline_enricher import enrich_clusters_with_pipeline
+from query_bank import runner_app_ids, runner_hn_queries, runner_subreddits
 from snapshot_exporter import build_dashboard_snapshot, write_dashboard_snapshot
+from source_metrics import (
+    append_source_metrics_history,
+    apply_source_metric_trends,
+    build_source_metrics_from_counts,
+    load_source_metrics_history,
+    save_source_metrics,
+)
 from source_reliability import (
     DEFAULT_SOURCE_CACHE_PATH,
     SourceFetchResult,
@@ -37,32 +47,25 @@ from source_reliability import (
 DEFAULT_CONFIG_PATH = Path("dashboard_config.json")
 DEFAULT_OUTPUT_PATH = "data/dashboard_snapshot.json"
 DEFAULT_HISTORY_MAX_RECORDS = 10000
-DEFAULT_RUNNER_HN_QUERIES = [
-    "alternative to",
-    "too expensive",
-    "manual workflow",
-    "missing feature",
-    "developer tool",
-    "need a tool",
-    "looking for",
-    "doesn't support",
-    "takes too long",
-    "spreadsheet workflow",
-]
-DEFAULT_RUNNER_SUBREDDITS = [
-]
-DEFAULT_RUNNER_APP_IDS = [
-    "1232780281",
-    "618783545",
-    "461504587",
-    "489969512",
-    "572688855",
-    "914172636",
-    "897446215",
-    "1278508951",
-    "842849113",
-    "1535098836",
-]
+DEFAULT_RUNNER_HN_QUERIES = list(runner_hn_queries)
+DEFAULT_RUNNER_SUBREDDITS = list(runner_subreddits)
+DEFAULT_RUNNER_APP_IDS = list(runner_app_ids)
+
+
+def failed_snapshot_path(output_path: Path) -> Path:
+    return output_path.parent / "failed_snapshot.json"
+
+
+def is_empty_failed_scan(summary: Dict[str, Any]) -> bool:
+    return (
+        int(summary.get("raw_count") or 0) == 0
+        and int(summary.get("candidate_count") or 0) == 0
+        and bool(summary.get("errors"))
+    )
+
+
+def should_preserve_existing_snapshot(summary: Dict[str, Any], output_path: Path) -> bool:
+    return output_path.exists() and is_empty_failed_scan(summary)
 
 
 def _split_csv(value: str) -> List[str]:
@@ -155,7 +158,19 @@ def _fetch_result(fetch_output) -> SourceFetchResult:
     return SourceFetchResult(items=list(items), errors=list(errors))
 
 
-def fetch_items_with_reliability(options: Dict[str, Any]):
+def _source_status(source_label: str, status: str, items: Iterable, errors: Iterable[str]) -> Dict[str, Any]:
+    item_list = list(items)
+    return {
+        "source": source_label,
+        "status": status,
+        "count": len(item_list),
+        "errors": list(errors),
+        "used_cache": False,
+        "cache_age_hours": None,
+    }
+
+
+def fetch_items_with_reliability(options: Dict[str, Any], extra_items: Optional[Iterable] = None):
     cache_path = Path(options["source_cache_path"])
     statuses = []
     all_items = []
@@ -198,6 +213,11 @@ def fetch_items_with_reliability(options: Dict[str, Any]):
     all_items.extend(app_items)
     statuses.append(app_status)
 
+    manual_items = list(extra_items or [])
+    if manual_items:
+        all_items.extend(manual_items)
+        statuses.append(_source_status("Manual intake", "ok", manual_items, []))
+
     return all_items, SourceReliabilityReport(statuses)
 
 
@@ -212,11 +232,41 @@ def score_items(all_items):
     return unique_items, candidates, scored
 
 
+def _count_items_by_source(items: Iterable) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for item in items:
+        source = str(getattr(item, "source", "") or "Unknown")
+        counts[source] = counts.get(source, 0) + 1
+    return counts
+
+
+def _source_error_counts(statuses: Iterable[Dict[str, Any]]) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for status in statuses:
+        errors = status.get("errors") or []
+        if errors:
+            source = str(status.get("source") or "Unknown")
+            counts[source] = counts.get(source, 0) + len(errors)
+    return counts
+
+
+def _build_failed_snapshot(snapshot: Dict[str, Any], output_path: Path) -> int:
+    failed_path = failed_snapshot_path(output_path)
+    write_dashboard_snapshot(snapshot, failed_path)
+    if output_path.exists():
+        print(f"Snapshot preserved: {output_path}")
+    else:
+        print(f"Snapshot not written: {output_path}")
+    print(f"Failed snapshot written: {failed_path}")
+    return 0 if output_path.exists() else 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     args = parse_args(argv)
     options = resolve_scan_options(args)
+    manual_raw_items = manual_items_to_raw_items(load_manual_items())
 
-    all_items, reliability_report = fetch_items_with_reliability(options)
+    all_items, reliability_report = fetch_items_with_reliability(options, manual_raw_items)
     unique_items, candidates, ideas = score_items(all_items)
     summary = {
         "raw_count": len(all_items),
@@ -225,8 +275,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         "build_now_count": sum(1 for idea in ideas if idea.verdict == "Build Now"),
         "monitor_count": sum(1 for idea in ideas if idea.verdict == "Monitor"),
         "discard_count": sum(1 for idea in ideas if idea.verdict == "Discard"),
-        "errors": [],
+        "errors": reliability_report.errors(),
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "raw_source_counts": _count_items_by_source(unique_items),
+        "candidate_source_counts": _count_items_by_source(item for item, _rules in candidates),
+        "source_error_counts": _source_error_counts(reliability_report.statuses),
     }
     source_health = reliability_report.to_source_health(
         raw_count=summary["raw_count"],
@@ -234,14 +287,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         candidate_count=summary["candidate_count"],
     )
 
-    if not source_health["publishable"]:
-        print("Snapshot blocked: source coverage is not publishable.")
-        print(f"Coverage: {source_health.get('coverage_status')}")
-        for error in source_health.get("errors", []):
-            print(f"  {error}")
-        return 2
-
-    saved_count = save_scan_to_history(ideas, summary, max_records=options["history_max_records"])
+    saved_count = 0
+    if source_health["publishable"] and not is_empty_failed_scan(summary):
+        saved_count = save_scan_to_history(ideas, summary, max_records=options["history_max_records"])
     summary["saved_count"] = saved_count
 
     report = format_markdown_report(ideas, summary)
@@ -262,6 +310,15 @@ def main(argv: Optional[List[str]] = None) -> int:
                 "analysis_error": str(exc),
             }
             summary.setdefault("errors", []).append(f"Codex analysis fallback: {exc}")
+
+    opportunity_clusters = enrich_clusters_with_pipeline(opportunity_clusters)
+    source_metric_rows = build_source_metrics_from_counts(
+        summary.get("raw_source_counts", {}),
+        summary.get("candidate_source_counts", {}),
+        opportunity_clusters,
+        summary.get("source_error_counts", {}),
+    )
+    source_metric_rows = apply_source_metric_trends(source_metric_rows, load_source_metrics_history())
     decision_summary = build_decision_summary(opportunity_clusters)
     snapshot = build_dashboard_snapshot(
         ideas=rows,
@@ -272,13 +329,29 @@ def main(argv: Optional[List[str]] = None) -> int:
         decision_summary=decision_summary,
         source_health=source_health,
         analysis_metadata=analysis_metadata,
+        source_metrics=source_metric_rows,
     )
     output_path = Path(options["output"])
+
+    if not source_health["publishable"] or is_empty_failed_scan(summary):
+        print("Snapshot blocked: source coverage is not publishable.")
+        print(f"Coverage: {source_health.get('coverage_status')}")
+        for error in source_health.get("errors", []):
+            print(f"  {error}")
+        exit_code = _build_failed_snapshot(snapshot, output_path)
+        print(f"Candidates: {summary.get('candidate_count', 0)}")
+        print(f"Errors: {len(summary.get('errors', []))}")
+        return exit_code
+
+    save_source_metrics(source_metric_rows)
+    append_source_metrics_history(source_metric_rows, summary.get("generated_at", ""))
     write_dashboard_snapshot(snapshot, output_path)
 
     print(f"Snapshot written: {output_path}")
     print(f"Candidates: {summary.get('candidate_count', 0)}")
     print(f"Build Now: {summary.get('build_now_count', 0)}")
+    print(f"Source coverage: {source_health.get('coverage_status', 'unknown')}")
+    print(f"Source cache: {options['source_cache_path']}")
     print(f"Analysis: {analysis_metadata.get('analysis_provider')} / {analysis_metadata.get('analysis_status')}")
     print("Next:")
     print(f"  git add {output_path}")

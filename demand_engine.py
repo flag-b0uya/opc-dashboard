@@ -22,6 +22,8 @@ from dataclasses import dataclass, asdict
 from datetime import datetime, timedelta, timezone
 from typing import Dict, Iterable, List, Optional, Tuple
 
+from noise_filter import analyze_text
+
 
 DEFAULT_HN_QUERIES = [
     "alternative to",
@@ -753,15 +755,40 @@ def filter_candidates(items: Iterable[RawItem], min_chars: int = 30) -> List[Tup
     for item in items:
         text = get_candidate_text(item)
         lowered = text.lower()
-        if len(text) < min_chars:
+        effective_min_chars = 8 if item.source.startswith("Manual ") else min_chars
+        if len(text) < effective_min_chars:
             continue
         if any(pattern == lowered or lowered.startswith(pattern) for pattern in LOW_VALUE_PATTERNS):
             continue
         rules = match_rules(text)
         if not rules:
             continue
+        if analyze_text(text)["decision"] == "discard":
+            continue
         candidates.append((item, rules))
     return candidates
+
+
+def _count_items_by_source(items: Iterable[RawItem]) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for item in items:
+        source = item.source or "Unknown"
+        counts[source] = counts.get(source, 0) + 1
+    return counts
+
+
+def _source_error_counts(errors: Iterable[str], app_store_country: str) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for error in errors:
+        source = "Unknown"
+        if error.startswith("HN "):
+            source = "Hacker News"
+        elif error.startswith("Reddit `r/"):
+            source = "Reddit r/" + error.split("Reddit `r/", 1)[1].split("`", 1)[0]
+        elif error.startswith("App Store "):
+            source = f"App Store {app_store_country.upper()}"
+        counts[source] = counts.get(source, 0) + 1
+    return counts
 
 
 def _count_matches(text: str, patterns: Iterable[str]) -> int:
@@ -1276,6 +1303,7 @@ def run_demand_scan(
     app_ids: Iterable[str],
     app_store_country: str,
     limit_per_source: int = 10,
+    extra_items: Optional[Iterable[RawItem]] = None,
 ) -> Tuple[List[ScoredIdea], Dict]:
     all_items: List[RawItem] = []
     errors: List[str] = []
@@ -1287,6 +1315,7 @@ def run_demand_scan(
     all_items.extend(hn_items)
     all_items.extend(reddit_items)
     all_items.extend(app_items)
+    all_items.extend(list(extra_items or []))
     errors.extend(hn_errors)
     errors.extend(reddit_errors)
     errors.extend(app_errors)
@@ -1308,6 +1337,9 @@ def run_demand_scan(
         "discard_count": sum(1 for idea in scored if idea.verdict == "Discard"),
         "errors": errors,
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "raw_source_counts": _count_items_by_source(unique_items),
+        "candidate_source_counts": _count_items_by_source(item for item, _rules in candidates),
+        "source_error_counts": _source_error_counts(errors, app_store_country),
     }
     return scored, summary
 

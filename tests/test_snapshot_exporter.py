@@ -161,6 +161,32 @@ class SnapshotExporterTest(unittest.TestCase):
         self.assertEqual(snapshot["source_health"]["cache_fallback_count"], 1)
         self.assertEqual(snapshot["source_health"]["sources"][1]["status"], "fallback")
 
+    def test_snapshot_includes_source_metrics_when_provided(self):
+        metrics = [{"source": "Manual xiaohongshu", "candidate_rate": 1.0, "recommended_action": "increase"}]
+
+        snapshot = build_dashboard_snapshot(
+            ideas=[],
+            summary={},
+            history_summary={},
+            markdown_report="",
+            source_metrics=metrics,
+        )
+
+        self.assertEqual(snapshot["source_metrics"], metrics)
+
+    def test_snapshot_includes_optional_artifact_summaries(self):
+        snapshot = build_dashboard_snapshot(
+            ideas=[],
+            summary={},
+            history_summary={},
+            markdown_report="",
+            container_summary={"total_containers": 2},
+            pain_signal_summary={"total_pain_signals": 3},
+        )
+
+        self.assertEqual(snapshot["container_summary"]["total_containers"], 2)
+        self.assertEqual(snapshot["pain_signal_summary"]["total_pain_signals"], 3)
+
     def test_load_dashboard_snapshot_handles_missing_and_invalid_files(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             missing_path = Path(tmpdir) / "missing.json"

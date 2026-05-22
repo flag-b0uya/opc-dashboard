@@ -1,435 +1,282 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-05-19 14:29:13",
+  "generated_at": "2026-05-22 14:13:13",
   "summary": {
-    "raw_count": 140,
-    "unique_count": 102,
-    "candidate_count": 51,
-    "build_now_count": 0,
-    "monitor_count": 2,
-    "discard_count": 49,
-    "saved_count": 51,
+    "raw_count": 4,
+    "unique_count": 4,
+    "candidate_count": 4,
+    "build_now_count": 4,
+    "monitor_count": 0,
+    "discard_count": 0,
+    "saved_count": 0,
     "errors": []
   },
   "top_ideas": [
     {
-      "idea_id": "38a0b4cfa32f4473",
+      "idea_id": "demo-reddit-invoice",
+      "mvp_concept": "为r/smallbusiness 中反复表达类似痛点的用户提供一个更轻量、低成本的替代工具。",
+      "category": "运营/内部流程",
+      "total_score": 86,
+      "verdict": "Build Now",
+      "pain_summary": "Need alternative to Expensify for invoice export workflow Our finance team manually exports Shopify invoices to Excel every week.",
+      "validation_step": "今天访谈 5 个有相同流程的人，确认他们每周浪费的时间和愿付价格。",
+      "source": "Reddit r/smallbusiness",
+      "title": "Need alternative to Expensify for invoice export workflow",
+      "source_url": "offline://reddit/demo-reddit-invoice",
+      "repeat_7d": 1,
+      "label": "未标注"
+    },
+    {
+      "idea_id": "demo-manual-invoice",
       "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
       "category": "运营/内部流程",
-      "total_score": 55,
-      "verdict": "Monitor",
-      "pain_summary": "Show HN: Flowdash – Build internal tools for your team’s manual workflows",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Hacker News",
-      "title": "Show HN: Flowdash – Build internal tools for your team’s manual workflows",
-      "source_url": "https://flowdash.com/",
-      "repeat_7d": 3,
+      "total_score": 83,
+      "verdict": "Build Now",
+      "pain_summary": "每周手动导出 Shopify 发票到 Excel 太麻烦了 财务团队每周都要手动整理账单报表，Expensify 太贵，而且缺少我们需要的导出 workflow。",
+      "validation_step": "今天访谈 5 个有相同流程的人，确认他们每周浪费的时间和愿付价格。",
+      "source": "Manual xiaohongshu",
+      "title": "每周手动导出 Shopify 发票到 Excel 太麻烦了",
+      "source_url": "offline://manual/demo-manual-invoice",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "7a8061a1bb5ce4ac",
+      "idea_id": "demo-youtube-comments",
       "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
       "category": "运营/内部流程",
-      "total_score": 55,
-      "verdict": "Monitor",
-      "pain_summary": "Replacing manual marketing workflows with autonomous AI agents",
-      "validation_step": "继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。",
-      "source": "Hacker News",
-      "title": "Replacing manual marketing workflows with autonomous AI agents",
-      "source_url": "https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8",
-      "repeat_7d": 3,
+      "total_score": 78,
+      "verdict": "Build Now",
+      "pain_summary": "Looking for a cheaper report automation workflow Small business operators say the current subscription is too expensive and the manual export process takes too long every week.",
+      "validation_step": "今天访谈 5 个有相同流程的人，确认他们每周浪费的时间和愿付价格。",
+      "source": "YouTube comments",
+      "title": "Looking for a cheaper report automation workflow",
+      "source_url": "offline://youtube/demo-youtube-comments",
+      "repeat_7d": 1,
       "label": "未标注"
     },
     {
-      "idea_id": "3f599ad17ca74501",
-      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户提供一个定价更友好的垂直轻量版。",
-      "category": "定价/商业模式",
-      "total_score": 54,
-      "verdict": "Discard",
-      "pain_summary": "They tried Made in the USA – it was too expensive for their customers",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "They tried Made in the USA – it was too expensive for their customers",
-      "source_url": "https://www.reuters.com/business/they-tried-made-usa-it-was-too-expensive-their-customers-2025-07-02/",
-      "repeat_7d": 3,
-      "label": "未标注"
-    },
-    {
-      "idea_id": "79b19f6c34f80465",
-      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。",
+      "idea_id": "demo-github-reporting",
+      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
       "category": "研发/产品功能",
-      "total_score": 53,
-      "verdict": "Discard",
-      "pain_summary": "How to handle division by zero in a language that doesn't support exceptions?",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "How to handle division by zero in a language that doesn't support exceptions?",
-      "source_url": "http://programmers.stackexchange.com/questions/208677/how-to-handle-divide-by-zero-in-a-language-that-doesnt-support-exceptions",
-      "repeat_7d": 3,
-      "label": "未标注"
-    },
-    {
-      "idea_id": "3c6d210d0b0d2498",
-      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。",
-      "category": "研发/产品功能",
-      "total_score": 53,
-      "verdict": "Discard",
-      "pain_summary": "Google's Dart doesn't support deserialising JSON (or anything) into Dart Types",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "Google's Dart doesn't support deserialising JSON (or anything) into Dart Types",
-      "source_url": "https://groups.google.com/a/dartlang.org/forum/#!topic/misc/0pv-Uaq8FGI",
-      "repeat_7d": 3,
-      "label": "未标注"
-    },
-    {
-      "idea_id": "9d8113fe5f73b8e9",
-      "mvp_concept": "为有明确工具替代需求的利基用户提供一个更轻量、低成本的替代工具。",
-      "category": "客服/成功/留存",
-      "total_score": 52,
-      "verdict": "Discard",
-      "pain_summary": "Docs – Open source alternative to Notion or Outline",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "Docs – Open source alternative to Notion or Outline",
-      "source_url": "https://github.com/suitenumerique/docs",
-      "repeat_7d": 3,
-      "label": "未标注"
-    },
-    {
-      "idea_id": "cc0c810a0aa32ab5",
-      "mvp_concept": "为开发者、独立黑客或技术团队构建一个自动化工具，消除重复手动流程。",
-      "category": "运营/内部流程",
-      "total_score": 52,
-      "verdict": "Discard",
-      "pain_summary": "Show HN: Phiona – Automate manual data workflows, no code required",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "Show HN: Phiona – Automate manual data workflows, no code required",
-      "source_url": "https://news.ycombinator.com/item?id=25126131",
-      "repeat_7d": 3,
-      "label": "未标注"
-    },
-    {
-      "idea_id": "340c2e885cd4377b",
-      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
-      "category": "运营/内部流程",
-      "total_score": 52,
-      "verdict": "Discard",
-      "pain_summary": "Show HN: The Cost of Manual Workflows",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "Show HN: The Cost of Manual Workflows",
-      "source_url": "https://news.ycombinator.com/item?id=47459627",
-      "repeat_7d": 3,
-      "label": "未标注"
-    },
-    {
-      "idea_id": "994eb03b6a48bd36",
-      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
-      "category": "运营/内部流程",
-      "total_score": 52,
-      "verdict": "Discard",
-      "pain_summary": "A manual workflow to fix the \"muffled\" audio of AI music models",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "A manual workflow to fix the \"muffled\" audio of AI music models",
-      "source_url": "https://news.ycombinator.com/item?id=46884442",
-      "repeat_7d": 3,
-      "label": "未标注"
-    },
-    {
-      "idea_id": "00453cd656f16bb4",
-      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
-      "category": "运营/内部流程",
-      "total_score": 52,
-      "verdict": "Discard",
-      "pain_summary": "Why do VCs fund AI-native companies but still run on manual workflows?",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "Why do VCs fund AI-native companies but still run on manual workflows?",
-      "source_url": "https://or-levi.medium.com/the-cobblers-children-have-no-co-pilot-why-vcs-are-losing-the-ai-operational-race-6d6c3baafcc6",
-      "repeat_7d": 3,
-      "label": "未标注"
-    },
-    {
-      "idea_id": "c522370e5752ac31",
-      "mvp_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。",
-      "category": "运营/内部流程",
-      "total_score": 52,
-      "verdict": "Discard",
-      "pain_summary": "Turn Manual Excel Workflow into Automated Web App",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "Turn Manual Excel Workflow into Automated Web App",
-      "source_url": "https://keikai.io/blog/p/payroll-template",
-      "repeat_7d": 3,
-      "label": "未标注"
-    },
-    {
-      "idea_id": "486ecc3e84e03e66",
-      "mvp_concept": "为有明确工具替代需求的利基用户提供一个定价更友好的垂直轻量版。",
-      "category": "定价/商业模式",
-      "total_score": 51,
-      "verdict": "Discard",
-      "pain_summary": "Insulin is way too expensive. California has a solution: Make its own",
-      "validation_step": "暂不投入开发，只保留为低优先级观察样本。",
-      "source": "Hacker News",
-      "title": "Insulin is way too expensive. California has a solution: Make its own",
-      "source_url": "https://www.vox.com/policy-and-politics/23574178/insulin-cost-california-biden-medicare-coverage",
-      "repeat_7d": 3,
+      "total_score": 76,
+      "verdict": "Build Now",
+      "pain_summary": "Missing CSV export for weekly support dashboard Support team needs a weekly report export.",
+      "validation_step": "今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。",
+      "source": "GitHub issues",
+      "title": "Missing CSV export for weekly support dashboard",
+      "source_url": "offline://github/demo-github-reporting",
+      "repeat_7d": 1,
       "label": "未标注"
     }
   ],
-  "category_counts": {
-    "运营/内部流程": 21,
-    "定价/商业模式": 24,
-    "研发/产品功能": 30,
-    "客服/成功/留存": 6,
-    "竞品/市场情报": 21,
-    "营销/内容增长": 3,
-    "其他/待判定": 45,
-    "销售/线索转化": 3
-  },
-  "repeated_signals_7d": [
-    {
-      "signal_key": "825c766f7a08ddf8",
-      "category": "运营/内部流程",
-      "count": 3,
-      "top_score": 55,
-      "sample_title": "Show HN: Flowdash – Build internal tools for your team’s manual workflows",
-      "sample_url": "https://flowdash.com/",
-      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "0b1fb6e769fb83e7",
-      "category": "运营/内部流程",
-      "count": 3,
-      "top_score": 55,
-      "sample_title": "Replacing manual marketing workflows with autonomous AI agents",
-      "sample_url": "https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8",
-      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "c6789ee1a223ee5f",
-      "category": "定价/商业模式",
-      "count": 3,
-      "top_score": 54,
-      "sample_title": "They tried Made in the USA – it was too expensive for their customers",
-      "sample_url": "https://www.reuters.com/business/they-tried-made-usa-it-was-too-expensive-their-customers-2025-07-02/",
-      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户提供一个定价更友好的垂直轻量版。"
-    },
-    {
-      "signal_key": "f35614b5f182847a",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 53,
-      "sample_title": "How to handle division by zero in a language that doesn't support exceptions?",
-      "sample_url": "http://programmers.stackexchange.com/questions/208677/how-to-handle-divide-by-zero-in-a-language-that-doesnt-support-exceptions",
-      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。"
-    },
-    {
-      "signal_key": "fdb3d3b1f285cbc2",
-      "category": "研发/产品功能",
-      "count": 3,
-      "top_score": 53,
-      "sample_title": "Google's Dart doesn't support deserialising JSON (or anything) into Dart Types",
-      "sample_url": "https://groups.google.com/a/dartlang.org/forum/#!topic/misc/0pv-Uaq8FGI",
-      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。"
-    },
-    {
-      "signal_key": "4353ac03a55ff0b2",
-      "category": "客服/成功/留存",
-      "count": 3,
-      "top_score": 52,
-      "sample_title": "Docs – Open source alternative to Notion or Outline",
-      "sample_url": "https://github.com/suitenumerique/docs",
-      "sample_concept": "为有明确工具替代需求的利基用户提供一个更轻量、低成本的替代工具。"
-    },
-    {
-      "signal_key": "082b4645338d27e4",
-      "category": "运营/内部流程",
-      "count": 3,
-      "top_score": 52,
-      "sample_title": "Show HN: Phiona – Automate manual data workflows, no code required",
-      "sample_url": "https://news.ycombinator.com/item?id=25126131",
-      "sample_concept": "为开发者、独立黑客或技术团队构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "52f097b44a19bb11",
-      "category": "运营/内部流程",
-      "count": 3,
-      "top_score": 52,
-      "sample_title": "Show HN: The Cost of Manual Workflows",
-      "sample_url": "https://news.ycombinator.com/item?id=47459627",
-      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "a56274ed7ce1d183",
-      "category": "运营/内部流程",
-      "count": 3,
-      "top_score": 52,
-      "sample_title": "A manual workflow to fix the \"muffled\" audio of AI music models",
-      "sample_url": "https://news.ycombinator.com/item?id=46884442",
-      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "300885788a229a21",
-      "category": "运营/内部流程",
-      "count": 3,
-      "top_score": 52,
-      "sample_title": "Why do VCs fund AI-native companies but still run on manual workflows?",
-      "sample_url": "https://or-levi.medium.com/the-cobblers-children-have-no-co-pilot-why-vcs-are-losing-the-ai-operational-race-6d6c3baafcc6",
-      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "7a9ac17fe523d468",
-      "category": "运营/内部流程",
-      "count": 3,
-      "top_score": 52,
-      "sample_title": "Turn Manual Excel Workflow into Automated Web App",
-      "sample_url": "https://keikai.io/blog/p/payroll-template",
-      "sample_concept": "为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。"
-    },
-    {
-      "signal_key": "5e2bf5d85efdefef",
-      "category": "定价/商业模式",
-      "count": 3,
-      "top_score": 51,
-      "sample_title": "Insulin is way too expensive. California has a solution: Make its own",
-      "sample_url": "https://www.vox.com/policy-and-politics/23574178/insulin-cost-california-biden-medicare-coverage",
-      "sample_concept": "为有明确工具替代需求的利基用户提供一个定价更友好的垂直轻量版。"
-    }
-  ],
+  "category_counts": {},
+  "repeated_signals_7d": [],
   "opportunity_clusters": [
     {
-      "cluster_id": "cluster-support-6db8b74a0ad98bb7",
-      "title": "开发者平台缺失能力的工作流补丁层",
+      "cluster_id": "cluster-invoice-1512cc5dce6c6509",
+      "title": "发票/账单流程自动化",
+      "category": "运营/内部流程",
+      "count_7d": 2,
+      "source_count": 2,
+      "source_names": [
+        "Manual xiaohongshu",
+        "Reddit r/smallbusiness"
+      ],
+      "top_score": 86,
+      "avg_score": 84.5,
+      "decision_score": 95,
+      "decision_verdict": "Build Now",
+      "decision_reason": "原始最高分 86，重复加分 +5，来源加分 +4，决策分 95；重复、场景和验证动作均达标",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "demo-reddit-invoice",
+          "title": "Need alternative to Expensify for invoice export workflow",
+          "source": "Reddit r/smallbusiness",
+          "source_url": "offline://reddit/demo-reddit-invoice",
+          "total_score": 86,
+          "pain_summary": "Need alternative to Expensify for invoice export workflow Our finance team manually exports Shopify invoices to Excel every week.",
+          "label": "未标注"
+        },
+        {
+          "idea_id": "demo-manual-invoice",
+          "title": "每周手动导出 Shopify 发票到 Excel 太麻烦了",
+          "source": "Manual xiaohongshu",
+          "source_url": "offline://manual/demo-manual-invoice",
+          "total_score": 83,
+          "pain_summary": "每周手动导出 Shopify 发票到 Excel 太麻烦了 财务团队每周都要手动整理账单报表，Expensify 太贵，而且缺少我们需要的导出 workflow。",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 2 条同类信号，覆盖 2 个来源；最高原始分 86，平均分 84.5。",
+      "evidence_chain": {
+        "passed_count": 5,
+        "total_count": 5,
+        "score": 100,
+        "status": "medium",
+        "items": [
+          {
+            "label": "2 个以上独立来源",
+            "passed": true,
+            "detail": "当前覆盖 2 个来源"
+          },
+          {
+            "label": "明确付费/预算信号",
+            "passed": true,
+            "detail": "文本中出现价格、账单、预算、付费或成本线索"
+          },
+          {
+            "label": "现有替代方案抱怨",
+            "passed": true,
+            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
+          },
+          {
+            "label": "具体工作流",
+            "passed": true,
+            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
+          },
+          {
+            "label": "7 天内可触达验证",
+            "passed": true,
+            "detail": "样本包含可回访的公开来源链接"
+          }
+        ]
+      },
+      "recommended_action": "本周访谈 5 个同类团队，量化每周节省时间和愿付价格。",
+      "funnel_score": {
+        "total_score": 85,
+        "verdict": "Build Now",
+        "competitor_score": 15,
+        "distribution_score": 12,
+        "risk_penalty": 0,
+        "reasons": [
+          "evidence 100",
+          "sources 2",
+          "repeat_7d 2",
+          "top_score 86"
+        ],
+        "blockers": [],
+        "next_step": "Run 5 user interviews and ask for a paid commitment before building."
+      },
+      "funnel_verdict": "Build Now",
+      "funnel_next_step": "Run 5 user interviews and ask for a paid commitment before building."
+    },
+    {
+      "cluster_id": "cluster-reporting-757a9190a4058559",
+      "title": "报表与数据导出工作流",
+      "category": "运营/内部流程",
+      "count_7d": 1,
+      "source_count": 1,
+      "source_names": [
+        "YouTube comments"
+      ],
+      "top_score": 78,
+      "avg_score": 78.0,
+      "decision_score": 78,
+      "decision_verdict": "Monitor",
+      "decision_reason": "原始最高分 78，重复加分 +0，来源加分 +0，决策分 78；7 天重复信号不足",
+      "label_adjustment": 0,
+      "noise_penalty": 0,
+      "sample_ideas": [
+        {
+          "idea_id": "demo-youtube-comments",
+          "title": "Looking for a cheaper report automation workflow",
+          "source": "YouTube comments",
+          "source_url": "offline://youtube/demo-youtube-comments",
+          "total_score": 78,
+          "pain_summary": "Looking for a cheaper report automation workflow Small business operators say the current subscription is too expensive and the manual export process takes too long every week.",
+          "label": "未标注"
+        }
+      ],
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 78，平均分 78.0。",
+      "evidence_chain": {
+        "passed_count": 3,
+        "total_count": 5,
+        "score": 60,
+        "status": "medium",
+        "items": [
+          {
+            "label": "2 个以上独立来源",
+            "passed": false,
+            "detail": "当前覆盖 1 个来源"
+          },
+          {
+            "label": "明确付费/预算信号",
+            "passed": true,
+            "detail": "文本中出现价格、账单、预算、付费或成本线索"
+          },
+          {
+            "label": "现有替代方案抱怨",
+            "passed": true,
+            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
+          },
+          {
+            "label": "具体工作流",
+            "passed": true,
+            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
+          },
+          {
+            "label": "7 天内可触达验证",
+            "passed": false,
+            "detail": "缺少可直接回访的来源链接"
+          }
+        ]
+      },
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 1 条。",
+      "funnel_score": {
+        "total_score": 47,
+        "verdict": "Monitor",
+        "competitor_score": 5,
+        "distribution_score": 4,
+        "risk_penalty": 0,
+        "reasons": [
+          "evidence 60",
+          "sources 1",
+          "repeat_7d 1",
+          "top_score 78"
+        ],
+        "blockers": [
+          "needs a second independent source",
+          "needs repeated signals"
+        ],
+        "next_step": "Collect more repeated signals and a clearer workflow before outreach."
+      },
+      "funnel_verdict": "Monitor",
+      "funnel_next_step": "Collect more repeated signals and a clearer workflow before outreach."
+    },
+    {
+      "cluster_id": "cluster-reporting-3c80d460ab03aafd",
+      "title": "报表与数据导出工作流",
       "category": "研发/产品功能",
-      "count_7d": 3,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 53,
-      "avg_score": 52.0,
-      "decision_score": 63,
-      "decision_verdict": "Monitor",
-      "decision_reason": "暂不立即开工；虽然重复痛点存在，但还没有收敛到一个具体语言、框架和高频工作流，直接做会变成泛开发者工具。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "79b19f6c34f80465",
-          "title": "How to handle division by zero in a language that doesn't support exceptions?",
-          "source": "Hacker News",
-          "source_url": "http://programmers.stackexchange.com/questions/208677/how-to-handle-divide-by-zero-in-a-language-that-doesnt-support-exceptions",
-          "total_score": 53,
-          "pain_summary": "How to handle division by zero in a language that doesn't support exceptions?",
-          "label": "未标注"
-        },
-        {
-          "idea_id": "3c6d210d0b0d2498",
-          "title": "Google's Dart doesn't support deserialising JSON (or anything) into Dart Types",
-          "source": "Hacker News",
-          "source_url": "https://groups.google.com/a/dartlang.org/forum/#!topic/misc/0pv-Uaq8FGI",
-          "total_score": 53,
-          "pain_summary": "Google's Dart doesn't support deserialising JSON (or anything) into Dart Types",
-          "label": "未标注"
-        },
-        {
-          "idea_id": "77bb9cb2cb0c7374",
-          "title": "Wikimedia doesn't support Net Neutrality",
-          "source": "Hacker News",
-          "source_url": "https://www.accessnow.org/wikipedia-zero-and-net-neutrality-wikimedia-turns-its-back-on-the-open/",
-          "total_score": 50,
-          "pain_summary": "Wikimedia doesn't support Net Neutrality",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "同簇信号都指向“平台不支持某个本应内置的能力”带来的重复工程成本，例如异常处理、类型化 JSON 反序列化、生态能力缺口等；这些痛点通常会形成长期讨论和临时方案。",
-      "evidence_chain": {
-        "passed_count": 4,
-        "total_count": 5,
-        "score": 80,
-        "status": "strong",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": true,
-            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内访谈 15 名在 Dart、JVM、PostgreSQL 或类似生态中维护生产项目的工程师，要求他们展示最近一次因缺失能力写下的 workaround；通过标准是至少 6 人能提供真实代码片段，且至少 3 人愿意试用一个针对单一缺口的 CLI 或库。",
-      "opportunity_hypothesis": "当语言、框架或大型平台缺少基础能力时，开发者会被迫维护脆弱的手写规约、转换代码和边界处理逻辑。机会不在做通用开发工具，而在选一个高频缺口做可安装、可验证、可迁移的补丁层。",
-      "evidence": "同簇信号都指向“平台不支持某个本应内置的能力”带来的重复工程成本，例如异常处理、类型化 JSON 反序列化、生态能力缺口等；这些痛点通常会形成长期讨论和临时方案。",
-      "anti_signals": [
-        "当前样本混入了不属于开发者工作流的公共政策类信号，聚类纯度不足",
-        "缺少明确预算方，开发者抱怨不等于团队愿意为补丁工具付费"
-      ],
-      "not_build_now_reason": "暂不立即开工；虽然重复痛点存在，但还没有收敛到一个具体语言、框架和高频工作流，直接做会变成泛开发者工具。",
-      "seven_day_validation": "7 天内访谈 15 名在 Dart、JVM、PostgreSQL 或类似生态中维护生产项目的工程师，要求他们展示最近一次因缺失能力写下的 workaround；通过标准是至少 6 人能提供真实代码片段，且至少 3 人愿意试用一个针对单一缺口的 CLI 或库。",
-      "paid_signal": "尚不明确；需要验证团队是否愿意为减少维护成本、降低线上错误或提升迁移速度支付每月 20-100 美元。",
-      "codex_opportunity_thesis": "当语言、框架或大型平台缺少基础能力时，开发者会被迫维护脆弱的手写规约、转换代码和边界处理逻辑。机会不在做通用开发工具，而在选一个高频缺口做可安装、可验证、可迁移的补丁层。",
-      "codex_anti_signals": [
-        "当前样本混入了不属于开发者工作流的公共政策类信号，聚类纯度不足",
-        "缺少明确预算方，开发者抱怨不等于团队愿意为补丁工具付费"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-replacing-marketing-workflows-1e6bd0dd2e90e860",
-      "title": "中小团队营销运营流程 AI 代理",
-      "category": "运营/内部流程",
       "count_7d": 1,
       "source_count": 1,
       "source_names": [
-        "Hacker News"
+        "GitHub issues"
       ],
-      "top_score": 55,
-      "avg_score": 55.0,
-      "decision_score": 55,
+      "top_score": 76,
+      "avg_score": 76.0,
+      "decision_score": 76,
       "decision_verdict": "Monitor",
-      "decision_reason": "不是立即开工；最强理由是工作流高频且有预算，但必须先定位到一个窄场景，例如广告素材巡检、潜客 enrichment 或活动复盘。",
+      "decision_reason": "原始最高分 76，重复加分 +0，来源加分 +0，决策分 76；7 天重复信号不足",
       "label_adjustment": 0,
       "noise_penalty": 0,
       "sample_ideas": [
         {
-          "idea_id": "7a8061a1bb5ce4ac",
-          "title": "Replacing manual marketing workflows with autonomous AI agents",
-          "source": "Hacker News",
-          "source_url": "https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8",
-          "total_score": 55,
-          "pain_summary": "Replacing manual marketing workflows with autonomous AI agents",
+          "idea_id": "demo-github-reporting",
+          "title": "Missing CSV export for weekly support dashboard",
+          "source": "GitHub issues",
+          "source_url": "offline://github/demo-github-reporting",
+          "total_score": 76,
+          "pain_summary": "Missing CSV export for weekly support dashboard Support team needs a weekly report export.",
           "label": "未标注"
         }
       ],
-      "evidence_summary": "候选信号明确提出用自治 AI 代理替代手动营销流程，且与更大簇中的“人工流程成本”信号同向；痛点集中在重复、跨工具、低判断密度的运营任务。",
+      "evidence_summary": "7 天内出现 1 条同类信号，覆盖 1 个来源；最高原始分 76，平均分 76.0。",
       "evidence_chain": {
-        "passed_count": 4,
+        "passed_count": 3,
         "total_count": 5,
-        "score": 80,
+        "score": 60,
         "status": "medium",
         "items": [
           {
@@ -454,878 +301,155 @@
           },
           {
             "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
+            "passed": false,
+            "detail": "缺少可直接回访的来源链接"
           }
         ]
       },
-      "recommended_action": "7 天内触达 20 名 5-50 人 B2B SaaS 的创始人、增长负责人或营销运营，收集他们每周最耗时的 3 个营销手动流程；通过标准是至少 5 人愿意连接真实工具做一次 30 分钟流程审计，且至少 2 人同意为自动化试点支付 200 美元以上。",
-      "opportunity_hypothesis": "小型 B2B 团队的营销工作常被拆成线索整理、素材改写、投放检查、CRM 更新和周报汇总等手动环节。机会是做一个面向“营销运营执行”的代理，而不是泛内容生成工具。",
-      "evidence": "候选信号明确提出用自治 AI 代理替代手动营销流程，且与更大簇中的“人工流程成本”信号同向；痛点集中在重复、跨工具、低判断密度的运营任务。",
-      "anti_signals": [
-        "当前只有 1 条直接营销流程信号，重复性不足",
-        "营销自动化市场拥挤，HubSpot、Zapier、Clay、Make 和各类 AI SDR 工具都可能覆盖部分需求"
-      ],
-      "not_build_now_reason": "不是立即开工；最强理由是工作流高频且有预算，但必须先定位到一个窄场景，例如广告素材巡检、潜客 enrichment 或活动复盘。",
-      "seven_day_validation": "7 天内触达 20 名 5-50 人 B2B SaaS 的创始人、增长负责人或营销运营，收集他们每周最耗时的 3 个营销手动流程；通过标准是至少 5 人愿意连接真实工具做一次 30 分钟流程审计，且至少 2 人同意为自动化试点支付 200 美元以上。",
-      "paid_signal": "有潜在付费信号，因为营销流程直接关联线索和收入；需验证客户是否愿意为节省人力或提升转化支付试点费。",
-      "codex_opportunity_thesis": "小型 B2B 团队的营销工作常被拆成线索整理、素材改写、投放检查、CRM 更新和周报汇总等手动环节。机会是做一个面向“营销运营执行”的代理，而不是泛内容生成工具。",
-      "codex_anti_signals": [
-        "当前只有 1 条直接营销流程信号，重复性不足",
-        "营销自动化市场拥挤，HubSpot、Zapier、Clay、Make 和各类 AI SDR 工具都可能覆盖部分需求"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-support-d569341940393085",
-      "title": "成本敏感产品的本土化供应链定价模拟",
-      "category": "定价/商业模式",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 54,
-      "avg_score": 54.0,
-      "decision_score": 54,
-      "decision_verdict": "Discard",
-      "decision_reason": "不立即开工；当前更像行业趋势样本，不是明确的用户拉动需求。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "3f599ad17ca74501",
-          "title": "They tried Made in the USA – it was too expensive for their customers",
-          "source": "Hacker News",
-          "source_url": "https://www.reuters.com/business/they-tried-made-usa-it-was-too-expensive-their-customers-2025-07-02/",
-          "total_score": 54,
-          "pain_summary": "They tried Made in the USA – it was too expensive for their customers",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本反映“Made in USA”因成本过高而难以被客户接受，背后是供应链选择、毛利和价格弹性的决策压力；但目前只是一条宏观商业新闻。",
-      "evidence_chain": {
-        "passed_count": 4,
-        "total_count": 5,
-        "score": 80,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": true,
-            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
+      "recommended_action": "继续收集同类信号；7 天内累计到 3 条以上且场景更清楚后再进入验证。当前 1 条。",
+      "funnel_score": {
+        "total_score": 48,
+        "verdict": "Monitor",
+        "competitor_score": 5,
+        "distribution_score": 6,
+        "risk_penalty": 0,
+        "reasons": [
+          "evidence 60",
+          "sources 1",
+          "repeat_7d 1",
+          "top_score 76"
+        ],
+        "blockers": [
+          "needs a second independent source",
+          "needs repeated signals"
+        ],
+        "next_step": "Collect more repeated signals and a clearer workflow before outreach."
       },
-      "recommended_action": "7 天内联系 10 个 Shopify/DTC 品牌运营者和 5 个小型制造商，询问他们是否做过本土化供应链报价比较；通过标准是至少 4 人提供真实成本表或报价单，并愿意用工具计算售价、毛利和客户流失风险。",
-      "opportunity_hypothesis": "当品牌尝试本土制造或替代供应链时，最大阻力往往不是技术，而是最终售价超出客户接受区间。机会可能是面向小制造商和 DTC 品牌的成本-售价-需求情景模拟工具。",
-      "evidence": "样本反映“Made in USA”因成本过高而难以被客户接受，背后是供应链选择、毛利和价格弹性的决策压力；但目前只是一条宏观商业新闻。",
-      "anti_signals": [
-        "单一新闻信号无法证明这是一个可重复的软件购买场景",
-        "供应链和制造成本问题高度行业化，轻量 SaaS 可能无法接入关键数据"
-      ],
-      "not_build_now_reason": "不立即开工；当前更像行业趋势样本，不是明确的用户拉动需求。",
-      "seven_day_validation": "7 天内联系 10 个 Shopify/DTC 品牌运营者和 5 个小型制造商，询问他们是否做过本土化供应链报价比较；通过标准是至少 4 人提供真实成本表或报价单，并愿意用工具计算售价、毛利和客户流失风险。",
-      "paid_signal": "尚不明确；需要验证品牌是否愿意为一次性采购决策分析付费，还是只会找顾问或用表格解决。",
-      "codex_opportunity_thesis": "当品牌尝试本土制造或替代供应链时，最大阻力往往不是技术，而是最终售价超出客户接受区间。机会可能是面向小制造商和 DTC 品牌的成本-售价-需求情景模拟工具。",
-      "codex_anti_signals": [
-        "单一新闻信号无法证明这是一个可重复的软件购买场景",
-        "供应链和制造成本问题高度行业化，轻量 SaaS 可能无法接入关键数据"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-docs-open-source-c159568bbc782cd4",
-      "title": "开源可控的团队知识库替代品",
-      "category": "客服/成功/留存",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 52,
-      "avg_score": 52.0,
-      "decision_score": 52,
-      "decision_verdict": "Monitor",
-      "decision_reason": "暂不立即开工；除非找到一个有强约束的垂直人群，例如政府部门或受监管企业，否则差异化不足。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "9d8113fe5f73b8e9",
-          "title": "Docs – Open source alternative to Notion or Outline",
-          "source": "Hacker News",
-          "source_url": "https://github.com/suitenumerique/docs",
-          "total_score": 52,
-          "pain_summary": "Docs – Open source alternative to Notion or Outline",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本明确出现开源 Notion/Outline 替代品，说明存在对封闭 SaaS、成本或数据控制的替代需求；这类需求通常来自政府、教育、医疗、企业内网和开源组织。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": false,
-            "detail": "仍偏泛，需要收窄到具体工作流"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内触达 15 个正在使用 Notion、Confluence、Outline 或自托管 Wiki 的团队管理员，重点找政府、教育和合规行业；通过标准是至少 5 个团队表达迁移痛点，且至少 2 个团队愿意为托管、权限、审计日志或迁移服务支付年费。",
-      "opportunity_hypothesis": "部分团队需要 Notion 或 Outline 的协作体验，但又要求开源、自托管、数据主权和更低成本。机会在“合规团队知识库迁移与托管”，而不是再做一个通用文档编辑器。",
-      "evidence": "样本明确出现开源 Notion/Outline 替代品，说明存在对封闭 SaaS、成本或数据控制的替代需求；这类需求通常来自政府、教育、医疗、企业内网和开源组织。",
-      "anti_signals": [
-        "单条信号不足，且开源文档协作赛道已有大量成熟项目",
-        "用户可能只想免费自托管，不一定愿意为托管、迁移或支持付费"
-      ],
-      "not_build_now_reason": "暂不立即开工；除非找到一个有强约束的垂直人群，例如政府部门或受监管企业，否则差异化不足。",
-      "seven_day_validation": "7 天内触达 15 个正在使用 Notion、Confluence、Outline 或自托管 Wiki 的团队管理员，重点找政府、教育和合规行业；通过标准是至少 5 个团队表达迁移痛点，且至少 2 个团队愿意为托管、权限、审计日志或迁移服务支付年费。",
-      "paid_signal": "尚不明确；需要验证付费点是在软件本身、托管服务、迁移服务还是企业支持。",
-      "codex_opportunity_thesis": "部分团队需要 Notion 或 Outline 的协作体验，但又要求开源、自托管、数据主权和更低成本。机会在“合规团队知识库迁移与托管”，而不是再做一个通用文档编辑器。",
-      "codex_anti_signals": [
-        "单条信号不足，且开源文档协作赛道已有大量成熟项目",
-        "用户可能只想免费自托管，不一定愿意为托管、迁移或支持付费"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-muffled-audio-music-1e8580cc7348f609",
-      "title": "AI 音乐音质修复与自动母带处理",
-      "category": "运营/内部流程",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 52,
-      "avg_score": 52.0,
-      "decision_score": 52,
-      "decision_verdict": "Monitor",
-      "decision_reason": "不是立即开工；痛点具体但市场和付费意愿还没验证，适合先做手工服务式验证。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "994eb03b6a48bd36",
-          "title": "A manual workflow to fix the \"muffled\" audio of AI music models",
-          "source": "Hacker News",
-          "source_url": "https://news.ycombinator.com/item?id=46884442",
-          "total_score": 52,
-          "pain_summary": "A manual workflow to fix the \"muffled\" audio of AI music models",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本直接描述了修复 AI 音乐模型“发闷”音质的手动流程，说明创作者已经在为模型输出缺陷投入后期处理时间。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": false,
-            "detail": "尚未看到对现有替代方案的明确抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": true,
-            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内在 Suno、Udio、YouTube 音乐创作者、AI 音乐 Discord 社群中找 30 名创作者，免费处理 20 首有问题的 AI 曲目；通过标准是至少 8 人认为修复前后差异可用于发布，且至少 3 人愿意为每首 5-20 美元或月费工具付费。",
-      "opportunity_hypothesis": "AI 音乐创作者正在用手动流程修复闷、糊、动态差等模型输出问题。机会是做一个针对 AI 生成音乐的自动清晰化、母带和发布前质检工具。",
-      "evidence": "样本直接描述了修复 AI 音乐模型“发闷”音质的手动流程，说明创作者已经在为模型输出缺陷投入后期处理时间。",
-      "anti_signals": [
-        "目前只有 1 条信号，无法确认这是广泛痛点还是个别技巧",
-        "传统音频插件、母带服务和模型升级都可能快速吞掉需求"
-      ],
-      "not_build_now_reason": "不是立即开工；痛点具体但市场和付费意愿还没验证，适合先做手工服务式验证。",
-      "seven_day_validation": "7 天内在 Suno、Udio、YouTube 音乐创作者、AI 音乐 Discord 社群中找 30 名创作者，免费处理 20 首有问题的 AI 曲目；通过标准是至少 8 人认为修复前后差异可用于发布，且至少 3 人愿意为每首 5-20 美元或月费工具付费。",
-      "paid_signal": "尚不明确；需要验证创作者是否愿意为更高发布质量付费，而不是继续使用免费插件链。",
-      "codex_opportunity_thesis": "AI 音乐创作者正在用手动流程修复闷、糊、动态差等模型输出问题。机会是做一个针对 AI 生成音乐的自动清晰化、母带和发布前质检工具。",
-      "codex_anti_signals": [
-        "目前只有 1 条信号，无法确认这是广泛痛点还是个别技巧",
-        "传统音频插件、母带服务和模型升级都可能快速吞掉需求"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-fund-native-companies-06d8caa05c1bddee",
-      "title": "VC 基金运营流程自动化后台",
-      "category": "运营/内部流程",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 52,
-      "avg_score": 52.0,
-      "decision_score": 52,
-      "decision_verdict": "Monitor",
-      "decision_reason": "暂不立即开工；最强理由是客户有预算，但必须先证明某个窄流程有强痛点和数据接入可行性。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "00453cd656f16bb4",
-          "title": "Why do VCs fund AI-native companies but still run on manual workflows?",
-          "source": "Hacker News",
-          "source_url": "https://or-levi.medium.com/the-cobblers-children-have-no-co-pilot-why-vcs-are-losing-the-ai-operational-race-6d6c3baafcc6",
-          "total_score": 52,
-          "pain_summary": "Why do VCs fund AI-native companies but still run on manual workflows?",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本指出 VC 仍依赖手动工作流，这与更大范围的人工流程自动化信号一致；VC 机构客单价高、信息流程密集，存在垂直化空间。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": false,
-            "detail": "尚未看到对现有替代方案的明确抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": true,
-            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内触达 12 名微型基金 GP、投资经理或平台负责人，要求他们展示当前 deal flow、投后跟踪或 LP 更新流程；通过标准是至少 4 家承认每周超过 5 小时人工整理，且至少 2 家愿意提供脱敏数据做付费试点。",
-      "opportunity_hypothesis": "VC 机构投资 AI 公司，但自身仍用表格、邮件和人工研究维护 deal flow、投后跟踪和 LP 更新。机会是面向小型基金的 AI 运营后台，先切入一个高频流程，如项目录入、竞品追踪或投后月报。",
-      "evidence": "样本指出 VC 仍依赖手动工作流，这与更大范围的人工流程自动化信号一致；VC 机构客单价高、信息流程密集，存在垂直化空间。",
-      "anti_signals": [
-        "只有 1 条直接信号，且可能是观点文章而非真实购买需求",
-        "VC 工作流高度关系驱动，工具替换阻力和数据保密顾虑较强"
-      ],
-      "not_build_now_reason": "暂不立即开工；最强理由是客户有预算，但必须先证明某个窄流程有强痛点和数据接入可行性。",
-      "seven_day_validation": "7 天内触达 12 名微型基金 GP、投资经理或平台负责人，要求他们展示当前 deal flow、投后跟踪或 LP 更新流程；通过标准是至少 4 家承认每周超过 5 小时人工整理，且至少 2 家愿意提供脱敏数据做付费试点。",
-      "paid_signal": "有潜在付费信号，因为基金管理费支持软件预算；需验证是否愿意为节省投资团队时间而非“酷 AI”买单。",
-      "codex_opportunity_thesis": "VC 机构投资 AI 公司，但自身仍用表格、邮件和人工研究维护 deal flow、投后跟踪和 LP 更新。机会是面向小型基金的 AI 运营后台，先切入一个高频流程，如项目录入、竞品追踪或投后月报。",
-      "codex_anti_signals": [
-        "只有 1 条直接信号，且可能是观点文章而非真实购买需求",
-        "VC 工作流高度关系驱动，工具替换阻力和数据保密顾虑较强"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-mobile-443c8845320c755b",
-      "title": "Excel 核心流程一键转 Web 应用",
-      "category": "运营/内部流程",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 52,
-      "avg_score": 52.0,
-      "decision_score": 52,
-      "decision_verdict": "Monitor",
-      "decision_reason": "暂不立即开工；需要先选择一个垂直模板场景，工资或合规审批比“任意 Excel 转应用”更可执行。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "c522370e5752ac31",
-          "title": "Turn Manual Excel Workflow into Automated Web App",
-          "source": "Hacker News",
-          "source_url": "https://keikai.io/blog/p/payroll-template",
-          "total_score": 52,
-          "pain_summary": "Turn Manual Excel Workflow into Automated Web App",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本直接描述把手动 Excel 工作流转为自动化 Web App，且与多条“手动流程成本”信号同向；Excel 是大量非技术团队事实上的流程系统。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": false,
-            "detail": "尚未看到对现有替代方案的明确抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": true,
-            "detail": "能落到具体流程、清单、报表、集成或自动化场景"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内找 20 个仍用 Excel 管工资、报价、排班或审批的小企业运营/财务负责人，收集 10 个脱敏模板；通过标准是至少 5 个模板每周被多人编辑，且至少 2 家愿意付费 300 美元让你把其中一个流程转成 Web 表单。",
-      "opportunity_hypothesis": "很多中小企业把工资、审批、报价、排班等关键流程压在复杂 Excel 模板里，协作、权限和审计都很脆弱。机会是把高价值 Excel 模板转成带表单、权限、日志和自动计算的轻量 Web 应用。",
-      "evidence": "样本直接描述把手动 Excel 工作流转为自动化 Web App，且与多条“手动流程成本”信号同向；Excel 是大量非技术团队事实上的流程系统。",
-      "anti_signals": [
-        "单条样本不足，且 Excel 用户常有强烈路径依赖",
-        "通用无代码平台、Airtable、Retool、AppSheet 已覆盖部分需求"
-      ],
-      "not_build_now_reason": "暂不立即开工；需要先选择一个垂直模板场景，工资或合规审批比“任意 Excel 转应用”更可执行。",
-      "seven_day_validation": "7 天内找 20 个仍用 Excel 管工资、报价、排班或审批的小企业运营/财务负责人，收集 10 个脱敏模板；通过标准是至少 5 个模板每周被多人编辑，且至少 2 家愿意付费 300 美元让你把其中一个流程转成 Web 表单。",
-      "paid_signal": "有潜在付费信号，因为它替代人工错误和重复录入；需验证客户是否愿意为具体模板改造一次性付费或订阅。",
-      "codex_opportunity_thesis": "很多中小企业把工资、审批、报价、排班等关键流程压在复杂 Excel 模板里，协作、权限和审计都很脆弱。机会是把高价值 Excel 模板转成带表单、权限、日志和自动计算的轻量 Web 应用。",
-      "codex_anti_signals": [
-        "单条样本不足，且 Excel 用户常有强烈路径依赖",
-        "通用无代码平台、Airtable、Retool、AppSheet 已覆盖部分需求"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-firefox-alternative-chrome-69781e8051a7bfc5",
-      "title": "反平台垄断的浏览器替代需求",
-      "category": "竞品/市场情报",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 50,
-      "avg_score": 50.0,
-      "decision_score": 50,
-      "decision_verdict": "Discard",
-      "decision_reason": "不应开工；除非发现一个浏览器生态周边的窄需求，例如企业策略迁移、隐私配置或插件兼容，否则这是宏大议题。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "9e206819f8bc5f7f",
-          "title": "Firefox is the alternative to a Chrome hegemony",
-          "source": "Hacker News",
-          "source_url": "https://batsov.com/articles/2021/11/28/firefox-is-the-only-alternative/",
-          "total_score": 50,
-          "pain_summary": "Firefox is the alternative to a Chrome hegemony",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本表达 Firefox 作为 Chrome 垄断替代品的诉求，反映用户对平台集中化的担忧。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": false,
-            "detail": "仍偏泛，需要收窄到具体工作流"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内只做观察验证：在 Firefox、隐私工具和企业 IT 社群中收集 30 条从 Chrome 迁移的具体障碍；通过标准是至少 10 条集中在同一可工具化问题，如插件迁移、策略管理或账号隔离。",
-      "opportunity_hypothesis": "部分用户希望摆脱 Chrome 生态依赖，重视开放 Web、隐私和可选择性。但这更像市场情绪和价值观表达，不是一个容易切入的新产品机会。",
-      "evidence": "样本表达 Firefox 作为 Chrome 垄断替代品的诉求，反映用户对平台集中化的担忧。",
-      "anti_signals": [
-        "浏览器是资本、生态和分发壁垒极高的市场，不适合作为轻量机会切入",
-        "信号没有落到具体工作流、付费预算或未被满足的窄功能"
-      ],
-      "not_build_now_reason": "不应开工；除非发现一个浏览器生态周边的窄需求，例如企业策略迁移、隐私配置或插件兼容，否则这是宏大议题。",
-      "seven_day_validation": "7 天内只做观察验证：在 Firefox、隐私工具和企业 IT 社群中收集 30 条从 Chrome 迁移的具体障碍；通过标准是至少 10 条集中在同一可工具化问题，如插件迁移、策略管理或账号隔离。",
-      "paid_signal": "尚不明确；当前没有直接付费信号，需要验证是否存在企业 IT 或隐私专业用户愿为迁移工具付费。",
-      "codex_opportunity_thesis": "部分用户希望摆脱 Chrome 生态依赖，重视开放 Web、隐私和可选择性。但这更像市场情绪和价值观表达，不是一个容易切入的新产品机会。",
-      "codex_anti_signals": [
-        "浏览器是资本、生态和分发壁垒极高的市场，不适合作为轻量机会切入",
-        "信号没有落到具体工作流、付费预算或未被满足的窄功能"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-libretaxi-free-open-fcd97469507cc03f",
-      "title": "本地出行平台的开源替代方案",
-      "category": "竞品/市场情报",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 50,
-      "avg_score": 50.0,
-      "decision_score": 50,
-      "decision_verdict": "Discard",
-      "decision_reason": "不立即开工；当前机会过重，除非有特定城市、司机协会或机构客户明确牵头。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "991d7eaf461f990d",
-          "title": "LibreTaxi – A free and open source alternative to Uber and Lyft",
-          "source": "Hacker News",
-          "source_url": "http://libretaxi.org/",
-          "total_score": 50,
-          "pain_summary": "LibreTaxi – A free and open source alternative to Uber and Lyft",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本出现免费开源的 Uber/Lyft 替代品，说明存在对平台抽成、控制权和本地自治的替代诉求。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": false,
-            "detail": "仍偏泛，需要收窄到具体工作流"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内联系 10 个出租车合作社、本地出行组织或校园/园区交通运营者，询问是否有自建调度系统需求；通过标准是至少 2 个组织有明确预算、车辆规模和上线时间表。",
-      "opportunity_hypothesis": "部分城市、社区或司机组织希望摆脱中心化网约车平台的抽成和规则控制。机会可能在合作社式调度、白标本地出行系统或司机端运营工具，而不是直接复制 Uber。",
-      "evidence": "样本出现免费开源的 Uber/Lyft 替代品，说明存在对平台抽成、控制权和本地自治的替代诉求。",
-      "anti_signals": [
-        "双边市场冷启动极难，技术产品不是主要瓶颈",
-        "监管、支付、安全和供需密度比软件功能更决定成败"
-      ],
-      "not_build_now_reason": "不立即开工；当前机会过重，除非有特定城市、司机协会或机构客户明确牵头。",
-      "seven_day_validation": "7 天内联系 10 个出租车合作社、本地出行组织或校园/园区交通运营者，询问是否有自建调度系统需求；通过标准是至少 2 个组织有明确预算、车辆规模和上线时间表。",
-      "paid_signal": "尚不明确；要验证付费方是司机组织、城市机构、园区还是本地运营商。",
-      "codex_opportunity_thesis": "部分城市、社区或司机组织希望摆脱中心化网约车平台的抽成和规则控制。机会可能在合作社式调度、白标本地出行系统或司机端运营工具，而不是直接复制 Uber。",
-      "codex_anti_signals": [
-        "双边市场冷启动极难，技术产品不是主要瓶颈",
-        "监管、支付、安全和供需密度比软件功能更决定成败"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-localsend-open-source-ce0f4428d8a39248",
-      "title": "跨平台近场文件传输工具",
-      "category": "竞品/市场情报",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 50,
-      "avg_score": 50.0,
-      "decision_score": 50,
-      "decision_verdict": "Monitor",
-      "decision_reason": "暂不立即开工；个人工具机会弱，只有在企业设备管理、离线环境或安全审计场景中才可能成立。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "fbda2d087881b5a9",
-          "title": "Localsend: An open-source cross-platform alternative to AirDrop",
-          "source": "Hacker News",
-          "source_url": "https://github.com/localsend/localsend",
-          "total_score": 50,
-          "pain_summary": "Localsend: An open-source cross-platform alternative to AirDrop",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本中的开源跨平台 AirDrop 替代品说明用户对系统生态限制有替代需求，尤其是 Android、Windows、Linux 与 macOS 混用场景。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": false,
-            "detail": "仍偏泛，需要收窄到具体工作流"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内访谈 15 名学校 IT、影视制作现场、实验室和制造现场管理员，确认他们是否频繁跨平台传大文件且受限于网络或权限；通过标准是至少 5 个团队有明确场景，且至少 2 个愿意为管理控制台或审计功能付费。",
-      "opportunity_hypothesis": "非苹果生态或混合设备团队需要像 AirDrop 一样简单的本地文件传输体验。机会不是再做一个免费传输工具，而是面向企业、学校或现场团队提供可管理、可审计的跨平台传输。",
-      "evidence": "样本中的开源跨平台 AirDrop 替代品说明用户对系统生态限制有替代需求，尤其是 Android、Windows、Linux 与 macOS 混用场景。",
-      "anti_signals": [
-        "个人用户已被免费开源工具充分满足，直接收费困难",
-        "系统厂商和协作软件可能逐步覆盖基础传输能力"
-      ],
-      "not_build_now_reason": "暂不立即开工；个人工具机会弱，只有在企业设备管理、离线环境或安全审计场景中才可能成立。",
-      "seven_day_validation": "7 天内访谈 15 名学校 IT、影视制作现场、实验室和制造现场管理员，确认他们是否频繁跨平台传大文件且受限于网络或权限；通过标准是至少 5 个团队有明确场景，且至少 2 个愿意为管理控制台或审计功能付费。",
-      "paid_signal": "尚不明确；需要验证企业是否愿意为安全、管理和审计能力付费，而不是使用免费工具。",
-      "codex_opportunity_thesis": "非苹果生态或混合设备团队需要像 AirDrop 一样简单的本地文件传输体验。机会不是再做一个免费传输工具，而是面向企业、学校或现场团队提供可管理、可审计的跨平台传输。",
-      "codex_anti_signals": [
-        "个人用户已被免费开源工具充分满足，直接收费困难",
-        "系统厂商和协作软件可能逐步覆盖基础传输能力"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-launch-promise-cost-8a3f7283dbc313b3",
-      "title": "司法替代监管的低成本管理平台",
-      "category": "竞品/市场情报",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 50,
-      "avg_score": 50.0,
-      "decision_score": 50,
-      "decision_verdict": "Discard",
-      "decision_reason": "不立即开工；这是高复杂度政务市场，不适合在缺少机构合作方时启动。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "c696a7fb46e4f027",
-          "title": "Launch HN: Promise (YC W18) – Cost-effective, more humane alternative to jail",
-          "source": "Hacker News",
-          "source_url": "https://news.ycombinator.com/item?id=16630971",
-          "total_score": 50,
-          "pain_summary": "Launch HN: Promise (YC W18) – Cost-effective, more humane alternative to jail",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本提到比监禁更具成本效益和人性化的替代方案，说明公共部门存在降本和结果改善压力。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": false,
-            "detail": "仍偏泛，需要收窄到具体工作流"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内联系 8 名公益司法组织、县级项目负责人或政策研究人员，了解替代监管项目中的日常管理痛点；通过标准是至少 2 个机构愿意介绍真实采购流程或开放试点讨论。",
-      "opportunity_hypothesis": "政府和司法系统可能需要比监禁更低成本、更人性化的替代监管方案。机会是为机构提供案件管理、签到、提醒、合规记录和结果追踪平台。",
-      "evidence": "样本提到比监禁更具成本效益和人性化的替代方案，说明公共部门存在降本和结果改善压力。",
-      "anti_signals": [
-        "公共部门销售周期长、合规要求高、试点门槛高",
-        "单条信号不足，且该领域已有专业供应商和政策依赖"
-      ],
-      "not_build_now_reason": "不立即开工；这是高复杂度政务市场，不适合在缺少机构合作方时启动。",
-      "seven_day_validation": "7 天内联系 8 名公益司法组织、县级项目负责人或政策研究人员，了解替代监管项目中的日常管理痛点；通过标准是至少 2 个机构愿意介绍真实采购流程或开放试点讨论。",
-      "paid_signal": "有潜在机构预算，但尚不明确；需要验证采购方、预算科目和合规门槛。",
-      "codex_opportunity_thesis": "政府和司法系统可能需要比监禁更低成本、更人性化的替代监管方案。机会是为机构提供案件管理、签到、提醒、合规记录和结果追踪平台。",
-      "codex_anti_signals": [
-        "公共部门销售周期长、合规要求高、试点门槛高",
-        "单条信号不足，且该领域已有专业供应商和政策依赖"
-      ],
-      "analysis_provider": "codex"
-    },
-    {
-      "cluster_id": "cluster-jitsi-meet-open-b36e29fb04f67d58",
-      "title": "可自托管的视频会议替代方案",
-      "category": "竞品/市场情报",
-      "count_7d": 1,
-      "source_count": 1,
-      "source_names": [
-        "Hacker News"
-      ],
-      "top_score": 50,
-      "avg_score": 50.0,
-      "decision_score": 50,
-      "decision_verdict": "Discard",
-      "decision_reason": "不立即开工；除非找到一个合规或内网部署场景，否则做通用会议产品没有优势。",
-      "label_adjustment": 0,
-      "noise_penalty": 0,
-      "sample_ideas": [
-        {
-          "idea_id": "58e9ab75ab5e1d0f",
-          "title": "Jitsi Meet: An open source alternative to Zoom",
-          "source": "Hacker News",
-          "source_url": "https://meet.jit.si",
-          "total_score": 50,
-          "pain_summary": "Jitsi Meet: An open source alternative to Zoom",
-          "label": "未标注"
-        }
-      ],
-      "evidence_summary": "样本出现开源 Zoom 替代品，代表对主流会议 SaaS 的替代需求；该需求在教育、政府、开源社区和隐私敏感团队中更明显。",
-      "evidence_chain": {
-        "passed_count": 3,
-        "total_count": 5,
-        "score": 60,
-        "status": "medium",
-        "items": [
-          {
-            "label": "2 个以上独立来源",
-            "passed": false,
-            "detail": "当前覆盖 1 个来源"
-          },
-          {
-            "label": "明确付费/预算信号",
-            "passed": true,
-            "detail": "文本中出现价格、账单、预算、付费或成本线索"
-          },
-          {
-            "label": "现有替代方案抱怨",
-            "passed": true,
-            "detail": "出现替代品、缺失能力、太贵或不好用等抱怨"
-          },
-          {
-            "label": "具体工作流",
-            "passed": false,
-            "detail": "仍偏泛，需要收窄到具体工作流"
-          },
-          {
-            "label": "7 天内可触达验证",
-            "passed": true,
-            "detail": "样本包含可回访的公开来源链接"
-          }
-        ]
-      },
-      "recommended_action": "7 天内触达 15 个学校、开源社区、政府承包商或隐私敏感企业的 IT 管理员，询问他们是否部署或评估过 Jitsi/Zoom 替代品；通过标准是至少 4 个团队有部署维护痛点，且至少 2 个愿意为托管、监控或 SSO 集成付费。",
-      "opportunity_hypothesis": "部分团队需要 Zoom 之外的开源、自托管或低成本视频会议方案，核心需求通常来自数据控制、合规、成本或品牌定制。机会更可能在托管运维、行业部署包和管理控制台，而不是基础视频会议功能。",
-      "evidence": "样本出现开源 Zoom 替代品，代表对主流会议 SaaS 的替代需求；该需求在教育、政府、开源社区和隐私敏感团队中更明显。",
-      "anti_signals": [
-        "视频会议基础能力已经高度商品化，竞争强且基础设施成本高",
-        "用户选择开源方案可能是为了省钱，未必愿意支付商业订阅"
-      ],
-      "not_build_now_reason": "不立即开工；除非找到一个合规或内网部署场景，否则做通用会议产品没有优势。",
-      "seven_day_validation": "7 天内触达 15 个学校、开源社区、政府承包商或隐私敏感企业的 IT 管理员，询问他们是否部署或评估过 Jitsi/Zoom 替代品；通过标准是至少 4 个团队有部署维护痛点，且至少 2 个愿意为托管、监控或 SSO 集成付费。",
-      "paid_signal": "尚不明确；需要验证客户是否愿意为运维可靠性、合规部署和企业集成付费。",
-      "codex_opportunity_thesis": "部分团队需要 Zoom 之外的开源、自托管或低成本视频会议方案，核心需求通常来自数据控制、合规、成本或品牌定制。机会更可能在托管运维、行业部署包和管理控制台，而不是基础视频会议功能。",
-      "codex_anti_signals": [
-        "视频会议基础能力已经高度商品化，竞争强且基础设施成本高",
-        "用户选择开源方案可能是为了省钱，未必愿意支付商业订阅"
-      ],
-      "analysis_provider": "codex"
+      "funnel_verdict": "Monitor",
+      "funnel_next_step": "Collect more repeated signals and a clearer workflow before outreach."
     }
   ],
   "decision_summary": {
-    "total_clusters": 12,
-    "build_now_count": 0,
-    "monitor_count": 7,
-    "discard_count": 5
+    "total_clusters": 3,
+    "build_now_count": 1,
+    "monitor_count": 2,
+    "discard_count": 0
   },
   "source_health": {
     "status": "ok",
-    "coverage_status": "ok",
-    "publishable": true,
-    "raw_count": 140,
-    "unique_count": 102,
-    "candidate_count": 51,
+    "raw_count": 4,
+    "unique_count": 4,
+    "candidate_count": 4,
     "error_count": 0,
     "errors": [],
-    "sources": [
-      {
-        "source": "Hacker News",
-        "status": "ok",
-        "count": 100,
-        "errors": [],
-        "used_cache": false,
-        "cache_age_hours": null
-      },
-      {
-        "source": "Reddit",
-        "status": "disabled",
-        "count": 0,
-        "errors": [],
-        "used_cache": false,
-        "cache_age_hours": null
-      },
-      {
-        "source": "App Store",
-        "status": "ok",
-        "count": 40,
-        "errors": [],
-        "used_cache": false,
-        "cache_age_hours": null
-      }
-    ],
-    "usable_source_count": 2,
-    "cache_fallback_count": 0,
-    "partial_source_count": 0
+    "source_counts": {
+      "Reddit r/smallbusiness": 1,
+      "Manual xiaohongshu": 1,
+      "YouTube comments": 1,
+      "GitHub issues": 1
+    }
   },
   "source_stats": {
-    "total_candidates": 51,
+    "total_candidates": 4,
     "platforms": [
       {
-        "name": "Hacker News",
-        "count": 51,
-        "percent": 100
+        "name": "Reddit",
+        "count": 1,
+        "percent": 25
+      },
+      {
+        "name": "Manual xiaohongshu",
+        "count": 1,
+        "percent": 25
+      },
+      {
+        "name": "YouTube comments",
+        "count": 1,
+        "percent": 25
+      },
+      {
+        "name": "GitHub issues",
+        "count": 1,
+        "percent": 25
       }
     ],
     "top_sources": [
       {
-        "source": "Hacker News",
-        "count": 51,
-        "percent": 100
+        "source": "Reddit r/smallbusiness",
+        "count": 1,
+        "percent": 25
+      },
+      {
+        "source": "Manual xiaohongshu",
+        "count": 1,
+        "percent": 25
+      },
+      {
+        "source": "YouTube comments",
+        "count": 1,
+        "percent": 25
+      },
+      {
+        "source": "GitHub issues",
+        "count": 1,
+        "percent": 25
       }
     ]
   },
+  "source_metrics": [
+    {
+      "source": "GitHub issues",
+      "raw_count": 1,
+      "candidate_count": 1,
+      "candidate_rate": 1.0,
+      "signal_count": 1,
+      "cluster_count": 1,
+      "validation_candidate_count": 0,
+      "error_count": 0,
+      "recommended_action": "increase"
+    },
+    {
+      "source": "Manual xiaohongshu",
+      "raw_count": 1,
+      "candidate_count": 1,
+      "candidate_rate": 1.0,
+      "signal_count": 1,
+      "cluster_count": 1,
+      "validation_candidate_count": 1,
+      "error_count": 0,
+      "recommended_action": "increase"
+    },
+    {
+      "source": "Reddit r/smallbusiness",
+      "raw_count": 1,
+      "candidate_count": 1,
+      "candidate_rate": 1.0,
+      "signal_count": 1,
+      "cluster_count": 1,
+      "validation_candidate_count": 1,
+      "error_count": 0,
+      "recommended_action": "increase"
+    },
+    {
+      "source": "YouTube comments",
+      "raw_count": 1,
+      "candidate_count": 1,
+      "candidate_rate": 1.0,
+      "signal_count": 1,
+      "cluster_count": 1,
+      "validation_candidate_count": 0,
+      "error_count": 0,
+      "recommended_action": "increase"
+    }
+  ],
+  "container_summary": {},
+  "pain_signal_summary": {},
   "label_counts": {
-    "未标注": 51
+    "未标注": 4
   },
   "analysis_metadata": {
-    "analysis_provider": "codex",
-    "analysis_status": "ok",
-    "analysis_binary": "/Users/e/.vscode/extensions/openai.chatgpt-26.513.21555-darwin-arm64/bin/macos-aarch64/codex"
+    "analysis_provider": "offline_demo",
+    "analysis_status": "fixture"
   },
-  "markdown_report": "# 蓝海需求扫描日报 - 2026-05-19 14:29:13\n\n## 概览\n\n- 原始数据：140 条\n- 去重后：102 条\n- 候选痛点：51 条\n- Build Now：0 条\n- Monitor：2 条\n\n## Top 机会\n\n### 1. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://flowdash.com/)\n- 原标题：Show HN: Flowdash – Build internal tools for your team’s manual workflows\n- 总分：55 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 24 / RICE 6\n- 结论：Monitor\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Show HN: Flowdash – Build internal tools for your team’s manual workflows\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 2. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://www.google.com/search?q=site%3Avect.pro&oq=&gs_lcrp=EgZjaHJvbWUqCQgAECMYJxjqAjIJCAAQIxgnGOoCMgkIARAjGCcY6gIyCQgCECMYJxjqAjIJCAMQIxgnGOoCMgkIBBAjGCcY6gIyCQgFECMYJxjqAjIJCAYQIxgnGOoCMgkIBxAjGCcY6gIyCQgIECMYJxjqAjIJCAkQIxgnGOoCMgkIChAjGCcY6gIyCQgLECMYJxjqAjIJCAwQIxgnGOoCMgkIDRAjGCcY6gIyCQgOECMYJxjqAjIRCA8QABgDGEIYjwEYtAIY6gIyEQgQEAAYAxhCGI8BGLQCGOoCMg8IERAuGAMYjwEYtAIY6gIyEQgSEAAYAxhCGI8BGLQCGOoCMhEIExAAGAMYQhiPARi0AhjqAtIBBi0xajBqN6gCFLACAfEFyEooud4PPuI&client=ms-android-hmd&sourceid=chrome-mobile&ie=UTF-8)\n- 原标题：Replacing manual marketing workflows with autonomous AI agents\n- 总分：55 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 24 / RICE 6\n- 结论：Monitor\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Replacing manual marketing workflows with autonomous AI agents\n- 命中规则：manual\n- 下一步：继续收集同类信号，等 7 天内出现 3 条以上重复信号后再进入验证。\n\n### 3. 为需要降低人工流程成本的小团队或 B2B 用户提供一个定价更友好的垂直轻量版。\n\n- 来源：[Hacker News](https://www.reuters.com/business/they-tried-made-usa-it-was-too-expensive-their-customers-2025-07-02/)\n- 原标题：They tried Made in the USA – it was too expensive for their customers\n- 总分：54 / 100\n- 分类：定价/商业模式\n- 7 天重复信号：3\n- 评分：ERRC 11 / JTBD 14 / OPC 15 / RICE 14\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：They tried Made in the USA – it was too expensive for their customers\n- 命中规则：too expensive\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 4. 为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Hacker News](http://programmers.stackexchange.com/questions/208677/how-to-handle-divide-by-zero-in-a-language-that-doesnt-support-exceptions)\n- 原标题：How to handle division by zero in a language that doesn't support exceptions?\n- 总分：53 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 15 / JTBD 9 / OPC 15 / RICE 14\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：How to handle division by zero in a language that doesn't support exceptions?\n- 命中规则：doesn't support\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 5. 为需要降低人工流程成本的小团队或 B2B 用户补齐现有产品缺失的关键工作流。\n\n- 来源：[Hacker News](https://groups.google.com/a/dartlang.org/forum/#!topic/misc/0pv-Uaq8FGI)\n- 原标题：Google's Dart doesn't support deserialising JSON (or anything) into Dart Types\n- 总分：53 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：3\n- 评分：ERRC 15 / JTBD 9 / OPC 15 / RICE 14\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Google's Dart doesn't support deserialising JSON (or anything) into Dart Types\n- 命中规则：doesn't support\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 6. 为有明确工具替代需求的利基用户提供一个更轻量、低成本的替代工具。\n\n- 来源：[Hacker News](https://github.com/suitenumerique/docs)\n- 原标题：Docs – Open source alternative to Notion or Outline\n- 总分：52 / 100\n- 分类：客服/成功/留存\n- 7 天重复信号：3\n- 评分：ERRC 15 / JTBD 9 / OPC 12 / RICE 16\n- 结论：Discard\n- 目标用户：有明确工具替代需求的利基用户\n- 痛点摘要：Docs – Open source alternative to Notion or Outline\n- 命中规则：alternative to\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 7. 为开发者、独立黑客或技术团队构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://news.ycombinator.com/item?id=25126131)\n- 原标题：Show HN: Phiona – Automate manual data workflows, no code required\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：开发者、独立黑客或技术团队\n- 痛点摘要：Show HN: Phiona – Automate manual data workflows, no code required\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 8. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://news.ycombinator.com/item?id=47459627)\n- 原标题：Show HN: The Cost of Manual Workflows\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Show HN: The Cost of Manual Workflows\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 9. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://news.ycombinator.com/item?id=46884442)\n- 原标题：A manual workflow to fix the \"muffled\" audio of AI music models\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：A manual workflow to fix the \"muffled\" audio of AI music models\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n\n### 10. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Hacker News](https://or-levi.medium.com/the-cobblers-children-have-no-co-pilot-why-vcs-are-losing-the-ai-operational-race-6d6c3baafcc6)\n- 原标题：Why do VCs fund AI-native companies but still run on manual workflows?\n- 总分：52 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：3\n- 评分：ERRC 16 / JTBD 9 / OPC 21 / RICE 6\n- 结论：Discard\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Why do VCs fund AI-native companies but still run on manual workflows?\n- 命中规则：manual\n- 下一步：暂不投入开发，只保留为低优先级观察样本。\n"
+  "markdown_report": "# 蓝海需求扫描日报 - 2026-05-22 14:13:13\n\n## 概览\n\n- 原始数据：4 条\n- 去重后：4 条\n- 候选痛点：4 条\n- Build Now：4 条\n- Monitor：0 条\n\n## Top 机会\n\n### 1. 为r/smallbusiness 中反复表达类似痛点的用户提供一个更轻量、低成本的替代工具。\n\n- 来源：[Reddit r/smallbusiness](offline://reddit/demo-reddit-invoice)\n- 原标题：Need alternative to Expensify for invoice export workflow\n- 总分：86 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：1\n- 评分：ERRC 25 / JTBD 23 / OPC 30 / RICE 8\n- 结论：Build Now\n- 目标用户：r/smallbusiness 中反复表达类似痛点的用户\n- 痛点摘要：Need alternative to Expensify for invoice export workflow Our finance team manually exports Shopify invoices to Excel every week.\n- 命中规则：alternative to, too expensive, missing, manual\n- 下一步：今天访谈 5 个有相同流程的人，确认他们每周浪费的时间和愿付价格。\n\n### 2. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[Manual xiaohongshu](offline://manual/demo-manual-invoice)\n- 原标题：每周手动导出 Shopify 发票到 Excel 太麻烦了\n- 总分：83 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：1\n- 评分：ERRC 25 / JTBD 23 / OPC 27 / RICE 8\n- 结论：Build Now\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：每周手动导出 Shopify 发票到 Excel 太麻烦了 财务团队每周都要手动整理账单报表，Expensify 太贵，而且缺少我们需要的导出 workflow。\n- 命中规则：太贵, 手动, 麻烦, 缺少\n- 下一步：今天访谈 5 个有相同流程的人，确认他们每周浪费的时间和愿付价格。\n\n### 3. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[YouTube comments](offline://youtube/demo-youtube-comments)\n- 原标题：Looking for a cheaper report automation workflow\n- 总分：78 / 100\n- 分类：运营/内部流程\n- 7 天重复信号：1\n- 评分：ERRC 25 / JTBD 23 / OPC 24 / RICE 6\n- 结论：Build Now\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Looking for a cheaper report automation workflow Small business operators say the current subscription is too expensive and the manual export process takes too long every week.\n- 命中规则：too expensive, manual, takes too long, looking for\n- 下一步：今天访谈 5 个有相同流程的人，确认他们每周浪费的时间和愿付价格。\n\n### 4. 为需要降低人工流程成本的小团队或 B2B 用户构建一个自动化工具，消除重复手动流程。\n\n- 来源：[GitHub issues](offline://github/demo-github-reporting)\n- 原标题：Missing CSV export for weekly support dashboard\n- 总分：76 / 100\n- 分类：研发/产品功能\n- 7 天重复信号：1\n- 评分：ERRC 25 / JTBD 15 / OPC 30 / RICE 6\n- 结论：Build Now\n- 目标用户：需要降低人工流程成本的小团队或 B2B 用户\n- 痛点摘要：Missing CSV export for weekly support dashboard Support team needs a weekly report export.\n- 命中规则：missing, manual, slow\n- 下一步：今天直接做 5 个目标用户私信访谈，验证是否愿意付费或留下邮箱。\n"
 }

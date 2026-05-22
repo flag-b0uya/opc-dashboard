@@ -127,6 +127,9 @@ def build_dashboard_snapshot(
     decision_summary: Optional[Dict] = None,
     source_health: Optional[Dict] = None,
     analysis_metadata: Optional[Dict] = None,
+    source_metrics: Optional[List[Dict]] = None,
+    container_summary: Optional[Dict] = None,
+    pain_signal_summary: Optional[Dict] = None,
 ) -> Dict:
     top_ideas = [_idea_to_snapshot_row(idea) for idea in ideas[:top_n]]
     clusters = list(opportunity_clusters or [])
@@ -150,6 +153,9 @@ def build_dashboard_snapshot(
         "decision_summary": dict(decision_summary or _default_decision_summary(clusters)),
         "source_health": dict(source_health or _default_source_health(summary, ideas)),
         "source_stats": build_source_stats(ideas),
+        "source_metrics": list(source_metrics or []),
+        "container_summary": dict(container_summary or {}),
+        "pain_signal_summary": dict(pain_signal_summary or {}),
         "label_counts": count_labels(ideas),
         "analysis_metadata": dict(analysis_metadata or {"analysis_provider": "heuristic", "analysis_status": "local"}),
         "markdown_report": markdown_report,

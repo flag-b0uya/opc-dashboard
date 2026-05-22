@@ -89,3 +89,47 @@ def build_quality_notices(snapshot: Dict) -> List[Dict]:
         })
 
     return notices
+
+
+def build_action_view(cluster: Dict) -> Dict:
+    funnel = cluster.get("funnel_score") or {}
+    return {
+        "funnel": {
+            "total_score": int(funnel.get("total_score") or 0),
+            "verdict": funnel.get("verdict") or cluster.get("funnel_verdict") or "",
+            "competitor_score": int(funnel.get("competitor_score") or 0),
+            "distribution_score": int(funnel.get("distribution_score") or 0),
+            "risk_penalty": int(funnel.get("risk_penalty") or 0),
+            "blockers": list(funnel.get("blockers") or []),
+        },
+        "next_step": cluster.get("funnel_next_step") or funnel.get("next_step") or "",
+    }
+
+
+def build_source_metric_rows(source_metrics: List[Dict]) -> List[Dict]:
+    rows: List[Dict] = []
+    for item in source_metrics or []:
+        rate = float(item.get("candidate_rate") or 0)
+        rows.append({
+            "来源": item.get("source", ""),
+            "原始": int(item.get("raw_count") or 0),
+            "候选": int(item.get("candidate_count") or 0),
+            "候选率": f"{round(rate * 100)}%",
+            "信号": int(item.get("signal_count") or 0),
+            "需求簇": int(item.get("cluster_count") or 0),
+            "可验证": int(item.get("validation_candidate_count") or 0),
+            "错误": int(item.get("error_count") or 0),
+            "建议": item.get("recommended_action", ""),
+        })
+    return sorted(rows, key=lambda row: (row["可验证"], row["候选"], -row["错误"]), reverse=True)
+
+
+def build_artifact_summary_rows(container_summary: Dict, pain_signal_summary: Dict) -> List[Dict]:
+    return [
+        {"指标": "Containers", "值": int(container_summary.get("total_containers") or 0)},
+        {"指标": "Selected Containers", "值": int(container_summary.get("selected_for_sampling") or 0)},
+        {"指标": "Pain Signals", "值": int(pain_signal_summary.get("total_pain_signals") or 0)},
+        {"指标": "High Confidence Signals", "值": int(pain_signal_summary.get("high_confidence_count") or 0)},
+        {"指标": "Payment Signals", "值": int(pain_signal_summary.get("payment_signal_count") or 0)},
+        {"指标": "Average Confidence", "值": pain_signal_summary.get("average_confidence", 0)},
+    ]
